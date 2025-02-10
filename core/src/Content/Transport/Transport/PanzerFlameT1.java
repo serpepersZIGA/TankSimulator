@@ -11,7 +11,7 @@ import com.mygdx.game.transport.Transport;
 import com.mygdx.game.transport.UnitType;
 
 public class PanzerFlameT1 extends Transport {
-    public PanzerFlameT1(float x, float y, ArrayList<Transport> tr){
+    public PanzerFlameT1(float x, float y, ArrayList<Transport> tr,byte team){
         this.type_unit = UnitType.PanzerFlameT1;
         this.x = x;this.y = y;
         this.speed_inert = 0;this.speed = 0;
@@ -22,7 +22,6 @@ public class PanzerFlameT1 extends Transport {
         this.armor = 50;
         this.penetration = 2;
         this.acceleration = 0.2f;
-        this.team = 2;
         this.behavior = (byte) (2+rand.rand(1));
         this.reload_max = 2;
         this.height = 1;
@@ -34,6 +33,7 @@ public class PanzerFlameT1 extends Transport {
         this.y_tower = 20;
         this.distance_target = 150;
         this.distance_target_2 = 30;
+        this.team = team;
 
 
         this.corpus_width = 50;

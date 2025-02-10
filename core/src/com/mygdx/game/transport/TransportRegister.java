@@ -17,10 +17,10 @@ public class TransportRegister {
         PlayerCannonBullTank = new PlayerCannonBullTank(0,0, Main.PlayerList,false);
         PlayerCannonAcid = new PlayerCannonAcid(0,0, Main.PlayerList,false);
 
-        PanzerMortarT1 = new PanzerMortarT1(0,0, Main.EnemyList);
-        PanzerFlameT1 = new PanzerFlameT1(0,0, Main.EnemyList);
-        PanzerAcidT1 = new PanzerAcidT1(0,0, Main.EnemyList);
-        PanzerT1 = new PanzerT1(0,0, Main.EnemyList);
+        PanzerMortarT1 = new PanzerMortarT1(0,0, Main.EnemyList,(byte)2);
+        PanzerFlameT1 = new PanzerFlameT1(0,0, Main.EnemyList,(byte)2);
+        PanzerAcidT1 = new PanzerAcidT1(0,0, Main.EnemyList,(byte)2);
+        PanzerT1 = new PanzerT1(0,0, Main.EnemyList,(byte)2);
 
         TrackRemountT1 = new TrackRemountT1(0,0, Main.EnemyList);
         TrackSoldatT1 = new TrackSoldatT1(0,0, Main.EnemyList);

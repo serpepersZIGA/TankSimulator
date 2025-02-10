@@ -10,7 +10,7 @@ import com.mygdx.game.transport.Transport;
 import com.mygdx.game.transport.UnitType;
 
 public class PanzerT1 extends Transport {
-    public PanzerT1(float x, float y, ArrayList<Transport> tr){
+    public PanzerT1(float x, float y, ArrayList<Transport> tr,byte team){
         this.type_unit = UnitType.PanzerT1;
         this.x = x;this.y = y;
         this.speed_inert = 0;this.speed = 0;
@@ -29,13 +29,13 @@ public class PanzerT1 extends Transport {
         this.height = 1;
         this.behavior = 3;
         this.reload_max = 180;
-        this.team = 2;
         this.t = 0;
         this.x_tower = 15;
         this.y_tower = 20;
         this.distance_target = 150;
         this.distance_target_2 = 30;
         this.host = true;
+        this.team = team;
 
         this.tower_img = Main.ContentImage.tower_enemy;
         this.corpus_img = Main.ContentImage.corpus_enemy;

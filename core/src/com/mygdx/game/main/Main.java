@@ -126,22 +126,7 @@ public class Main extends ApplicationAdapter {
 		SoldatList.add(new SoldatBull(1200,200,EnemyList));
 		MapScan.MapInput("Map/maps/MapBase.mapt");
 		MapAllLoad.MapCount();
-//		EnemyList.add(new PanzerFlameT1(2200,2000,Main.EnemyList));
-//		EnemyList.add(new PanzerFlameT1(2200,2000,Main.EnemyList));
-		EnemyList.add(new PanzerFlameT1(2200,2000,Main.EnemyList));
-		EnemyList.add(new PanzerFlameT1(1800,2000,Main.EnemyList));
-		EnemyList.add(new PanzerMortarT1(1800,2000,Main.EnemyList));
-		EnemyList.add(new PanzerAcidT1(1800,2000,Main.EnemyList));
-		//PlayerList.add(new PanzerMortarT1(1200,500,Main.PlayerList,(byte)1));
-
-//		EnemyList.add(new PanzerFlameT1(2200,2000,Main.EnemyList));
-//		EnemyList.add(new PanzerFlameT1(2200,2000,Main.EnemyList));
-//		EnemyList.add(new PanzerFlameT1(2200,2000,Main.EnemyList));
-//		EnemyList.add(new PanzerFlameT1(2200,2000,Main.EnemyList));
-		//EnemyList.add(new TrackSoldatT1(2200,2000,Main.EnemyList));
-		//EnemyList.add(new HelicopterT1(2200,2000,Main.EnemyList));
-
-		//EnemyList.add(new TrackRemountT1(2200,2100,Main.EnemyList));
+		EnemyList.add(new PanzerFlameT1(2200,2000,Main.EnemyList,(byte)2));
 		LiquidList.add(new Acid(200,200));
 		LiquidList.add(new Blood(200,200));
 		FlameSpawnList.add(new FlameSpawn(200,200));

@@ -307,16 +307,16 @@ public class ClientMain extends Listener{
     private void enemy_create(int i){
         switch (PacketEnemy.get(i).name) {
             case PanzerFlameT1:
-                EnemyList.add(new PanzerFlameT1(0, 0, EnemyList));
+                EnemyList.add(new PanzerFlameT1(0, 0, EnemyList,(byte)2));
                 break;
             case PanzerMortarT1:
-                EnemyList.add(new PanzerMortarT1(0, 0, EnemyList));
+                EnemyList.add(new PanzerMortarT1(0, 0, EnemyList,(byte)2));
                 break;
             case PanzerT1:
-                EnemyList.add(new PanzerT1(0, 0, EnemyList));
+                EnemyList.add(new PanzerT1(0, 0, EnemyList,(byte)2));
                 break;
             case PanzerAcidT1:
-                EnemyList.add(new PanzerAcidT1(0, 0, EnemyList));
+                EnemyList.add(new PanzerAcidT1(0, 0, EnemyList,(byte)2));
                 break;
             case TrackRemountT1:
                 EnemyList.add(new TrackRemountT1(0, 0, EnemyList));
