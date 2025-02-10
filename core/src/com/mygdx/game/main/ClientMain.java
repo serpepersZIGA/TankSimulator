@@ -115,16 +115,16 @@ public class ClientMain extends Listener{
                 for (i = 0; i < PacketPlayer.size(); i++) {
                     switch (PacketPlayer.get(i).name) {
                         case PlayerFlameT1:
-                            PlayerList.add(new PlayerCannonFlame(0, 0, PlayerList, PacketPlayer.get(i).host));
+                            PlayerList.add(new PlayerCannonFlame(0, 0, PlayerList, PacketPlayer.get(i).host,(byte)1));
                             break;
                         case PlayerMortarT1:
-                            PlayerList.add(new PlayerCannonMortar(0, 0, PlayerList, PacketPlayer.get(i).host));
+                            PlayerList.add(new PlayerCannonMortar(0, 0, PlayerList, PacketPlayer.get(i).host,(byte)1));
                             break;
                         case PlayerT1:
-                            PlayerList.add(new PlayerCannonBullTank(0, 0, PlayerList, PacketPlayer.get(i).host));
+                            PlayerList.add(new PlayerCannonBullTank(0, 0, PlayerList, PacketPlayer.get(i).host,(byte)1));
                             break;
                         case PlayerAcidT1:
-                            PlayerList.add(new PlayerCannonAcid(0, 0, PlayerList, PacketPlayer.get(i).host));
+                            PlayerList.add(new PlayerCannonAcid(0, 0, PlayerList, PacketPlayer.get(i).host,(byte)1));
                             break;
                     }
                     player_data(i);

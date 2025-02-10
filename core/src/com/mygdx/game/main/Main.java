@@ -34,6 +34,7 @@ import com.mygdx.game.soldat.Soldat;
 import com.mygdx.game.soldat.SoldatRegister;
 import Data.DataSound;
 import com.mygdx.game.unit.*;
+import com.mygdx.game.unit.Controller.RegisterController;
 import com.mygdx.game.unit.PlayerSpawnList.PlayerAllLoad;
 import com.mygdx.game.unit.SpawnPlayer.PlayerSpawnData;
 import com.mygdx.game.unit.SpawnPlayer.PlayerSpawnListData;
@@ -106,6 +107,7 @@ public class Main extends ApplicationAdapter {
 	public static PlayerSpawnData SpawnPlayer;
 	public static CycleTimeDay CycleDayNight;
 	public static int flame_spawn_time,flame_spawn_time_max = 20;
+	public static RegisterController RegisterControl;
 
 
 
@@ -201,6 +203,7 @@ public class Main extends ApplicationAdapter {
 		ContentImage = new DataImage();
 		ContentSound = new DataSound();
 		new PlayerSpawnListData();
+		RegisterControl = new RegisterController();
 		CycleDayNight = new CycleTimeDay(5,5,3,3,0.4f,0.9f);
 		BuildingRegister = new UpdateBuildingRegister();
 		PacketBuildingServer = new PacketBuildingServer();

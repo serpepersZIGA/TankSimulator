@@ -1,13 +1,15 @@
 package com.mygdx.game.unit.Controller;
 
+import com.mygdx.game.unit.Unit;
+
 public abstract class Controller {
-    public void ControllerIteration(){
+    public void ControllerIterationClientAnHost(Unit unit){
 
     }
-    public void ControllerIterationClientAnHost(){
+    public void ControllerIterationClientAnClient(Unit unit){
 
     }
-    public void ControllerIterationClientAnClient(){
+    public void ControllerIteration(Unit unit,int i){
 
     }
 }

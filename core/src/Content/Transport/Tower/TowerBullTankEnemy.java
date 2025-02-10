@@ -41,8 +41,8 @@ public class TowerBullTankEnemy extends Unit {
         this.rotation_corpus = rotation;
         this.trigger_attack = sost;
         this.trigger_fire = sost_2;
-        this.aim_x = aim_x;
-        this.aim_y = aim_y;
+        this.TargetX = aim_x;
+        this.TargetY = aim_y;
         tower_xy_2();
         tower_ii_2();
         bot_bull_tank_fire(allyList.get(i).tower_obj.get(iTower), this.enemyList);

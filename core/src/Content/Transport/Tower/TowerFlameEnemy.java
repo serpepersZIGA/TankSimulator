@@ -41,8 +41,8 @@ public class TowerFlameEnemy extends Unit {
         this.rotation_corpus = rotation;
         this.trigger_attack = sost;
         this.trigger_fire = sost_2;
-        this.aim_x = aim_x;
-        this.aim_y = aim_y;
+        this.TargetX = aim_x;
+        this.TargetY = aim_y;
         //this.left_mouse = sost_fire_bot;
         tower_xy_2();
         tower_ii_2();

@@ -41,7 +41,7 @@ public class TowerBullTankPlayer extends Unit {
         this.rotation_corpus = rotation;
         this.left_mouse = sost_fire_bot;
         tower_xy_2();
-        tower_player();
+        TowerControl();
         fire_player_bull_tank();
         center_render_tower();
         RenderMethod.transorm_img(this.x_tower_rend,this.y_tower_rend,this.width_tower_zoom,this.height_tower_zoom,this.rotation_tower,this.tower_img,const_x_tower,const_y_tower);
@@ -73,7 +73,7 @@ public class TowerBullTankPlayer extends Unit {
         this.rotation_corpus = rotation;
         this.left_mouse = sost_fire_bot;
         super.tower_xy_2();
-        super.tower_player_2();
+        super.TowerControlClient();
         Main.PacketClient.rot_tower.add(this.rotation_tower);
         center_render_tower();
         RenderMethod.transorm_img(this.x_tower_rend,this.y_tower_rend,this.width_tower_zoom,this.height_tower_zoom,this.rotation_tower,this.tower_img,const_x_tower,const_y_tower);

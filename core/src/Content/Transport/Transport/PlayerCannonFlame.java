@@ -106,13 +106,13 @@ public class PlayerCannonFlame extends Unit {
     }
     public void all_action(int i) {
         super.all_action(i);
-        super.host_control();
-        super.motor_player();
+        Main.RegisterControl.controllerPlayer.ControllerIteration(Main.PlayerList.get(i),i);
+        super.MotorControl();
         super.fire_player_flame();
         super.build_corpus(i);
         super.corpus_corpus(this.enemyList);
         super.tower_xy();
-        super.tower_player();
+        super.TowerControl();
         Main.RC.x = this.tower_x;
         Main.RC.y = this.tower_y;
         center_render();
@@ -126,7 +126,7 @@ public class PlayerCannonFlame extends Unit {
     public void all_action_client(int i) {
         super.all_action_client(i);
         super.client_control();
-        super.motor_player();
+        super.MotorControl();
         super.fire_player_flame();
         super.build_corpus(i);
         super.corpus_corpus(this.enemyList);
@@ -144,7 +144,7 @@ public class PlayerCannonFlame extends Unit {
         super.all_action_client_1(i);
         move_xy_transport();
         super.tower_xy();
-        super.tower_player();
+        super.TowerControl();
         Main.RC.x = this.tower_x;
         Main.RC.y = this.tower_y;
         center_render();

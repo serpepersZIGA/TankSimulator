@@ -63,7 +63,6 @@ public class PanzerAcidT1 extends Unit {
     }
     public void all_action(int i) {
         super.all_action(i);
-        //super.motor_player();
         super.behavior_bot(this.enemyList, i);
         super.bot_acid_fire(allyList.get(i), enemyList);
         super.tower_ii(i);

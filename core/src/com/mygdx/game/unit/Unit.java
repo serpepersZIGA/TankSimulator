@@ -12,6 +12,7 @@ import com.mygdx.game.method.*;
 import Content.Particle.FlameSpawn;
 import Content.Particle.Bang;
 import com.mygdx.game.soldat.*;
+import com.mygdx.game.unit.Controller.Controller;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -40,7 +41,7 @@ public abstract class Unit {
     public float max_speed=4, min_speed=-4,damage,penetration,damage_fragment,penetration_fragment,t,t_damage,armor,reload_max,acceleration=0.2f,speed,speed_inert, rotation_inert, rotation_tower, speed_tower=0.2f, speed_rotation=0.2f
             , rotation_corpus,tower_x,tower_y
             , tower_x_const, tower_y_const, tower_width_2, tower_height_2,reload,corpus_width,corpus_height,corpus_width_2,corpus_height_2,
-            hill, width_tower, height_tower,aim_x,aim_y,corpus_height_3,corpus_width_3;
+            hill, width_tower, height_tower, TargetX, TargetY,corpus_height_3,corpus_width_3;
     protected float slowing = 0.05f;
     public static float speed_minimum = 0.5f;
     public int time_max_relocation = 300,time_relocation = 0;
@@ -64,8 +65,12 @@ public abstract class Unit {
     public ArrayList<Unit> allyList, enemyList,tower_obj = new ArrayList<>();
     public int const_x_corpus,const_y_corpus,const_x_tower,const_y_tower,const_tower_x = 7,const_tower_y = 10;
     public boolean sost_fire_bot,guidance,left_mouse,right_mouse,trigger_attack,trigger_fire;
-    private boolean press_w,press_a,press_s,press_d;
+    public boolean press_w;
+    public boolean press_a;
+    public boolean press_s;
+    public boolean press_d;
     public Sprite tower_img,corpus_img;
+    public Controller control;
     public Unit(){
 
     }
@@ -148,7 +153,7 @@ public abstract class Unit {
     }
     protected final void tower_iteration_bot(int iTr){
         for (i = 0;i<tower_obj.size();i++){
-            tower_obj.get(i).tower_action(iTr,i,this.x,this.y,this.rotation_corpus,trigger_attack,trigger_fire,aim_x,aim_y);
+            tower_obj.get(i).tower_action(iTr,i,this.x,this.y,this.rotation_corpus,trigger_attack,trigger_fire, TargetX, TargetY);
         }
     }
     protected final void tower_iteration_bot_client(int iTr){
@@ -156,7 +161,7 @@ public abstract class Unit {
             tower_obj.get(i).tower_action_client(iTr,i,this.x,this.y,this.rotation_corpus,trigger_attack,trigger_fire);
         }
     }
-    protected final void behavior_bot(ArrayList<Unit>trTarget, int i){
+    public final void behavior_bot(ArrayList<Unit>trTarget, int i){
         review_field(i, trTarget);
         if (!this.trigger_attack) {
             if (this.time_trigger_bull_bot > 0) {
@@ -213,7 +218,7 @@ public abstract class Unit {
         //bypass_build(Main.build,this.x_relocation,this.y_relocation,this.rotation_relocation,g_right,g_left,i);
 
     }
-    protected final void tower_ii(int i){
+    public final void tower_ii(int i){
         if (this.trigger_attack) {
             tower_bot_enemy(i);
         }
@@ -222,7 +227,7 @@ public abstract class Unit {
             if(this.rotation_tower<this.rotation_corpus+180){this.rotation_tower += this.speed_tower;}
         }
     }
-    protected void tower_ii_2(){
+    public void tower_ii_2(){
         if (this.trigger_attack) {
             tower_bot();
         }
@@ -231,15 +236,7 @@ public abstract class Unit {
             if(this.rotation_tower<this.rotation_corpus+180){this.rotation_tower += this.speed_tower;}
         }
     }
-    protected final void host_control(){
-        this.left_mouse = Keyboard.LeftMouse;
-        this.right_mouse = Keyboard.RightMouse;
-        this.press_w = Keyboard.PressW;
-        this.press_a = Keyboard.PressA;
-        this.press_s = Keyboard.PressS;
-        this.press_d = Keyboard.PressD;
-    }
-    protected final void client_control(){
+    public final void client_control(){
         for(i = 0;i<Clients.size();i++){
             if(Clients.get(i).IDClient==nConnect){
                 this.left_mouse = Clients.get(i).left_mouse;
@@ -272,7 +269,7 @@ public abstract class Unit {
 //        this.press_s = Main.PressSClient;
 //        this.press_d = Main.PressDClient;
     }
-    protected final void motor_player(){
+    protected final void MotorControl(){
         this.time_sound_motor -= 1;
         if (this.press_w) {
             if (this.time_sound_motor < 0) {
@@ -325,31 +322,27 @@ public abstract class Unit {
     }
     protected final void tower_bot_enemy(int i) {
         if(this.enemyList.size() != 0) {
-            try{
-                int i2 = Method.detection_near_transport_i(this.allyList.get(i), this.enemyList);
-                this.aim_x = this.enemyList.get(i2).tower_x;
-                this.aim_y = this.enemyList.get(i2).tower_y;
-                this.rotation_tower = Method.tower(this.tower_x, this.tower_y,this.enemyList.get(i2).tower_x, this.enemyList.get(i2).tower_y, this.rotation_tower, this.speed_tower);}
-            catch(Exception ignored){
 
-            }
+             int i2 = Method.detection_near_transport_i(this.allyList.get(i), this.enemyList);
+             this.TargetX = this.enemyList.get(i2).tower_x;
+             this.TargetY = this.enemyList.get(i2).tower_y;
+
         }
     }
     protected final void tower_bot() {
         if(this.enemyList.size() != 0) {
             try{
-                this.rotation_tower = Method.tower(this.tower_x, this.tower_y,this.aim_x,this.aim_y, this.rotation_tower, this.speed_tower);}
+                this.rotation_tower = Method.tower(this.tower_x, this.tower_y,this.TargetX,this.TargetY, this.rotation_tower, this.speed_tower);}
             catch(Exception ignored){
 
             }
         }
     }
-
-    protected void tower_player() {
-        this.rotation_tower = (float) Method.tower_player(this.x_tower_rend+this.tower_width_2,this.y_tower_rend+this.tower_height_2, this.rotation_tower, this.speed_tower);
+    protected void TowerControl() {
+        this.rotation_tower = Method.tower(this.x_tower_rend+this.tower_width_2,this.y_tower_rend+this.tower_height_2,TargetX,TargetY, this.rotation_tower, this.speed_tower);
     }
-    protected void tower_player_2() {
-        this.rotation_tower = (float) Method.tower_player(RC.width_2, RC.height_2, this.rotation_tower, this.speed_tower);
+    protected void TowerControlClient() {
+        this.rotation_tower = Method.tower(this.tower_x,this.tower_y,TargetX,TargetY, this.rotation_tower, this.speed_tower);
     }
 //    public void tower_player_client(double mouse_x,double mouse_y) {
 //        this.rotation_tower = metod.tower(mouse_x,mouse_y,this.x_tower_rend, this.y_tower_rend, this.rotation_tower, this.speed_tower);
@@ -394,7 +387,7 @@ public abstract class Unit {
         this.rotation_tower += speed_tower;
     }
     //public void
-    protected void bot_fragmentation_bull_fire(Unit obj_1, ArrayList<Unit>obj_2){
+    public void bot_fragmentation_bull_fire(Unit obj_1, ArrayList<Unit> obj_2){
         bot_fire(obj_1,obj_2);
         if(this.sost_fire_bot && this.trigger_attack){
             SoundPlay.sound( this.sound_fire,1-((float) sqrt(pow2(this.x_rend) + pow2(this.y_rend))/200));
@@ -626,7 +619,7 @@ public abstract class Unit {
             switch (behavior) {
                 case 1:{
                     if (this.speed > this.min_speed) {
-                        this.speed -= this.acceleration;
+                        press_w = true;
                         if (this.time_sound_motor < 0) {
                             SoundPlay.sound(Main.ContentSound.motor, 1f-((float) sqrt(pow2(this.x_rend) + pow2((float)this.y_rend))/SoundConst));
                             this.time_sound_motor = this.time_max_sound_motor;
@@ -635,13 +628,13 @@ public abstract class Unit {
                 }
                 case 2:{
                     if (g > distance_target && this.speed < this.max_speed) {
-                        this.speed += this.acceleration;
+                        press_w = true;
                         if (this.time_sound_motor < 0) {
                             SoundPlay.sound(Main.ContentSound.motor_back, 1f-((float) sqrt(pow2(this.x_rend) + pow2((float)this.y_rend))/SoundConst));
                             this.time_sound_motor = this.time_max_sound_motor;
                         }
                     } else if(this.speed > this.min_speed){
-                        this.speed -= this.acceleration;
+                        press_s = true;
                         if (this.time_sound_motor < 0) {
                             SoundPlay.sound(Main.ContentSound.motor, 1f-((float) sqrt(pow2(this.x_rend) + pow2((float)this.y_rend))/SoundConst));
                             this.time_sound_motor = this.time_max_sound_motor;
@@ -650,43 +643,22 @@ public abstract class Unit {
                 }
                 case 3:{
                     if (g > distance_target && this.speed < this.max_speed) {
-                        this.speed += this.acceleration;
+                        press_w = true;
                         if (this.time_sound_motor < 0) {
                             SoundPlay.sound(Main.ContentSound.motor_back, 1f-((float) sqrt(pow2(this.x_rend) + pow2((float)this.y_rend))/SoundConst));
                             this.time_sound_motor = this.time_max_sound_motor;
                         }
                     } else if (g > distance_target_2 && this.speed > this.min_speed) {
-                        this.speed -= this.acceleration;
+                        press_s = true;
                         if (this.time_sound_motor < 0) {
                             SoundPlay.sound(Main.ContentSound.motor, 1f-((float) sqrt(pow2(this.x_rend) + pow2((float)this.y_rend))/SoundConst));
                             this.time_sound_motor = this.time_max_sound_motor;
                         }
 
-                    } else {
-                        if (this.speed < 0) {
-                            this.speed -= this.acceleration;
-                            if (this.time_sound_motor < 0) {
-                                SoundPlay.sound(Main.ContentSound.motor, 1f-((float) sqrt(pow2(this.x_rend) + pow2(this.y_rend))/SoundConst));
-                                this.time_sound_motor = this.time_max_sound_motor;
-                            }
-                        } else if (this.speed > 0) {
-                            this.speed += this.acceleration;
-                            if (this.time_sound_motor < 0) {
-                                SoundPlay.sound(Main.ContentSound.motor_back, 1f-((float) sqrt(pow2(this.x_rend) + pow2(this.y_rend))/SoundConst));
-                                this.time_sound_motor = this.time_max_sound_motor;
-                            }
-                        }
                     }
                 }
             }
-        } else {
-            if (this.speed < 0) {
-                this.speed += this.acceleration;
-            } else if (this.speed > 0) {
-                this.speed -=this.acceleration;
-            }
         }
-        move_xy_transport_bot();
     }
     private void motor_bot_base(int g,byte behavior){
         this.time_sound_motor -=1;
@@ -794,22 +766,13 @@ public abstract class Unit {
         this.time_sound_motor -= 1;
         if (this.trigger_drive == 1 && this.crite_life == 0) {
             if (this.speed < this.max_speed) {
-                this.speed += this.acceleration;
+                press_w = true;
                 if (this.time_sound_motor < 0) {
                     SoundPlay.sound(Main.ContentSound.motor, 1f-((float) sqrt(pow2(this.x_rend) + pow2((float)this.y_rend))/SoundConst));
                     this.time_sound_motor = this.time_max_sound_motor;
                 }
             }
         }
-        else {
-            if (this.speed < 0) {
-                this.speed += this.acceleration;
-            } else if (this.speed > 0) {
-                this.speed -=this.acceleration;
-            }
-        }
-        this.x -= move.move_sin(this.speed, -this.rotation_corpus);
-        this.y -= move.move_cos(this.speed, -this.rotation_corpus);
     }
 
     private void bypass_build(ArrayList<Building> obj_building, ArrayList<Unit> obj_tr, float g, int i3, int i2) {
