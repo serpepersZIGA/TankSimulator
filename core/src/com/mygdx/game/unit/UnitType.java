@@ -1,4 +1,4 @@
-package com.mygdx.game.transport;
+package com.mygdx.game.unit;
 
 public enum UnitType {
     PanzerAcidT1,

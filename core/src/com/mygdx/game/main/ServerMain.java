@@ -14,11 +14,11 @@ import Content.Soldat.SoldatFlame;
 import com.mygdx.game.soldat.SoldatPacket;
 import com.mygdx.game.object_map.ObjectMapAssets;
 import com.mygdx.game.object_map.PacketMapObject;
-import com.mygdx.game.transport.DebrisPacket;
+import com.mygdx.game.unit.DebrisPacket;
 import Content.Transport.Transport.DebrisTransport;
-import com.mygdx.game.transport.SpawnPlayer.*;
-import com.mygdx.game.transport.TransportPacket;
-import com.mygdx.game.transport.UnitType;
+import com.mygdx.game.unit.SpawnPlayer.*;
+import com.mygdx.game.unit.TransportPacket;
+import com.mygdx.game.unit.UnitType;
 
 import java.io.IOException;
 import java.util.ArrayList;

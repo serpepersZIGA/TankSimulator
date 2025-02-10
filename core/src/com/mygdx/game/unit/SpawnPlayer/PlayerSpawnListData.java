@@ -1,6 +1,4 @@
-package com.mygdx.game.transport.SpawnPlayer;
-
-import java.util.ArrayList;
+package com.mygdx.game.unit.SpawnPlayer;
 
 public class PlayerSpawnListData {
     public static PlayerSpawnData PlayerSpawnCannonFlame,PlayerSpawnCannonMortar,PlayerSpawnCannonAcid,PlayerSpawnCannonBull

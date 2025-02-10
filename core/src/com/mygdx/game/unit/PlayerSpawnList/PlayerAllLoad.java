@@ -1,11 +1,10 @@
-package com.mygdx.game.transport.PlayerSpawnList;
+package com.mygdx.game.unit.PlayerSpawnList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.mygdx.game.main.Main;
 import com.mygdx.game.menu.button.ButtonTank.ListTankPlayerAdd;
 import com.mygdx.game.menu.button.ButtonTank.TankChoice;
-import com.mygdx.game.menu.button.MapLoad;
 
 public class PlayerAllLoad {
     public static void PlayerCount(){

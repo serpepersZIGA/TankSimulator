@@ -27,15 +27,15 @@ import com.mygdx.game.object_map.ObjectMapAssets;
 import com.mygdx.game.object_map.PacketMapObject;
 import com.mygdx.game.object_map.VoidObject;
 import com.mygdx.game.object_map.component_collision_system.CollisionVoid;
-import com.mygdx.game.transport.*;
-import com.mygdx.game.transport.SpawnPlayer.*;
+import com.mygdx.game.unit.*;
+import com.mygdx.game.unit.SpawnPlayer.*;
 
 import static Content.Bull.BullRegister.PacketBull;
 import static com.mygdx.game.build.BuildRegister.PacketBuilding;
 import static com.mygdx.game.main.Main.*;
 import static com.mygdx.game.soldat.SoldatRegister.PacketSoldat;
 import static com.mygdx.game.object_map.MapObject.PacketMapObjects;
-import static com.mygdx.game.transport.TransportRegister.*;
+import static com.mygdx.game.unit.TransportRegister.*;
 
 
 public class ClientMain extends Listener{

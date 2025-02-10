@@ -1,6 +1,6 @@
 package com.mygdx.game.object_map.component_collision_system;
 
-import com.mygdx.game.transport.Transport;
+import com.mygdx.game.unit.Unit;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -13,7 +13,7 @@ public abstract class ComponentCollisionSystem {
     public ComponentCollisionSystem(int x,int y,int width,int height){
 
     }
-    public void collision(Transport tr,int ix,int iy){
+    public void collision(Unit tr, int ix, int iy){
     }
     public boolean rect_collision(int x1,int y1,int width,int height,float rotation,
                                    int x2,int y2,int width2,int height2,float rotation_2){

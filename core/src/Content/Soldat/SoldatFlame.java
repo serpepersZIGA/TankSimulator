@@ -1,12 +1,12 @@
 package Content.Soldat;
 import com.mygdx.game.main.Main;
 import com.mygdx.game.soldat.Soldat;
-import com.mygdx.game.transport.Transport;
+import com.mygdx.game.unit.Unit;
 
 import java.util.ArrayList;
 
 public class SoldatFlame extends Soldat {
-    public SoldatFlame(float x, float y, ArrayList<Transport>List){
+    public SoldatFlame(float x, float y, ArrayList<Unit>List){
         this.name = "bull";
         this.x = x;
         this.y = y;

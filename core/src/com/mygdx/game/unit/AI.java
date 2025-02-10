@@ -1,5 +1,4 @@
-package com.mygdx.game.transport;
-import com.mygdx.game.block.UpdateRegister;
+package com.mygdx.game.unit;
 import com.mygdx.game.main.Main;
 import com.mygdx.game.soldat.Soldat;
 
@@ -20,7 +19,7 @@ public class AI {
     private static boolean conf;
 
     // Метод для обновления позиции ИИ
-    public void pathAIAStar(Transport ai,Transport target,float x_ai,float y_ai){
+    public void pathAIAStar(Unit ai, Unit target, float x_ai, float y_ai){
 
         int[] target_xy = block_detected_2(target);
             int[] ai_xy = block_detected_3(x_ai, y_ai);
@@ -102,7 +101,7 @@ public class AI {
             }
         CloseBlockList.clear();
     }
-    public void pathAISoldat(Soldat ai, Transport target, float x_ai, float y_ai){
+    public void pathAISoldat(Soldat ai, Unit target, float x_ai, float y_ai){
 
         int[] target_xy = block_detected_2Soldat(target);
         int[] ai_xy = block_detected_3(x_ai, y_ai);
@@ -184,7 +183,7 @@ public class AI {
         }
         CloseBlockList.clear();
     }
-    public int[] block_detected_2(Transport tr){
+    public int[] block_detected_2(Unit tr){
         int i = (int)(tr.tower_y/Main.height_block)-1;
         int i2 = (int)(tr.tower_x/Main.width_block)-1;
         //Main.BlockList2D.get(i).get(i2).render_block = UpdateRegister.Update3;
@@ -229,7 +228,7 @@ public class AI {
         }
         return new int[]{i2, i};
     }
-    public int[] block_detected_2Soldat(Transport tr){
+    public int[] block_detected_2Soldat(Unit tr){
         int i = (int)(tr.tower_y/Main.height_block)-1;
         int i2 = (int)(tr.tower_x/Main.width_block)-1;
         try {

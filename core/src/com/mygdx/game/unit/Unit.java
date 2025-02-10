@@ -1,4 +1,4 @@
-package com.mygdx.game.transport;
+package com.mygdx.game.unit;
 
 import Content.Bull.*;
 import Content.Soldat.SoldatBull;
@@ -30,7 +30,7 @@ import static java.lang.StrictMath.sqrt;
 import static java.lang.StrictMath.atan2;
 import static java.sql.Types.NULL;
 
-public abstract class Transport{
+public abstract class Unit {
     public UnitType type_unit;
     public float x, y;
     public int  difference,difference_2,hp,max_hp,time_spawn_soldat,time_spawn_soldat_max,x_rend,y_rend,x_tower_rend,y_tower_rend, id_unit, x_tower,y_tower,
@@ -61,12 +61,12 @@ public abstract class Transport{
     public static int ai_sost;
     public ArrayList<int[]>path;
     public String teg_unit = "tank";
-    public ArrayList<Transport> allyList, enemyList,tower_obj = new ArrayList<>();
+    public ArrayList<Unit> allyList, enemyList,tower_obj = new ArrayList<>();
     public int const_x_corpus,const_y_corpus,const_x_tower,const_y_tower,const_tower_x = 7,const_tower_y = 10;
     public boolean sost_fire_bot,guidance,left_mouse,right_mouse,trigger_attack,trigger_fire;
     private boolean press_w,press_a,press_s,press_d;
     public Sprite tower_img,corpus_img;
-    public Transport(){
+    public Unit(){
 
     }
     protected final void data(){
@@ -156,7 +156,7 @@ public abstract class Transport{
             tower_obj.get(i).tower_action_client(iTr,i,this.x,this.y,this.rotation_corpus,trigger_attack,trigger_fire);
         }
     }
-    protected final void behavior_bot(ArrayList<Transport>trTarget, int i){
+    protected final void behavior_bot(ArrayList<Unit>trTarget, int i){
         review_field(i, trTarget);
         if (!this.trigger_attack) {
             if (this.time_trigger_bull_bot > 0) {
@@ -169,7 +169,7 @@ public abstract class Transport{
             motor_bot_bypass(i);
         }
     }
-    protected final void review_field(int i,ArrayList<Transport>trTarget){
+    protected final void review_field(int i,ArrayList<Unit>trTarget){
         if(trTarget.size()!= 0) {
             int[] sp = Method.detection_near_transport_xy_def(this.allyList.get(i), trTarget);
             //g = atan2(this.y - tr.get(sp[0]).y, this.x - tr.get(sp[0]).x) / 3.1415926535 * 180;
@@ -306,10 +306,10 @@ public abstract class Transport{
 
         if (this.speed > 0 && !this.press_w && !this.press_s) {
             this.speed -= this.slowing;
-            if (this.speed<Transport.speed_minimum){this.speed = 0;}
+            if (this.speed< Unit.speed_minimum){this.speed = 0;}
         } else if (this.speed < 0 && !this.press_w && !this.press_s) {
             this.speed += this.slowing;
-            if (this.speed>Transport.speed_minimum){this.speed = 0;}
+            if (this.speed> Unit.speed_minimum){this.speed = 0;}
         }
         move_xy_transport();
     }
@@ -355,7 +355,7 @@ public abstract class Transport{
 //        this.rotation_tower = metod.tower(mouse_x,mouse_y,this.x_tower_rend, this.y_tower_rend, this.rotation_tower, this.speed_tower);
 //    }
 
-    private void bot_fire(Transport obj_1, ArrayList<Transport>obj_2){
+    private void bot_fire(Unit obj_1, ArrayList<Unit>obj_2){
         guidance = reload_bot();
         if (obj_2.size() != 0) {
             int i2 = Method.detection_near_transport_i(obj_1, obj_2);
@@ -376,7 +376,7 @@ public abstract class Transport{
 
         }
     }
-    protected void bot_bull_tank_fire(Transport obj_1, ArrayList<Transport>obj_2){
+    protected void bot_bull_tank_fire(Unit obj_1, ArrayList<Unit>obj_2){
         bot_fire(obj_1,obj_2);
         if(this.sost_fire_bot && this.trigger_attack){
             SoundPlay.sound( this.sound_fire,1-((float) sqrt(pow2(this.x_rend) + pow2(this.y_rend))/200));
@@ -394,7 +394,7 @@ public abstract class Transport{
         this.rotation_tower += speed_tower;
     }
     //public void
-    protected void bot_fragmentation_bull_fire(Transport obj_1, ArrayList<Transport>obj_2){
+    protected void bot_fragmentation_bull_fire(Unit obj_1, ArrayList<Unit>obj_2){
         bot_fire(obj_1,obj_2);
         if(this.sost_fire_bot && this.trigger_attack){
             SoundPlay.sound( this.sound_fire,1-((float) sqrt(pow2(this.x_rend) + pow2(this.y_rend))/200));
@@ -411,7 +411,7 @@ public abstract class Transport{
         }
 
     }
-    protected void bot_flame_fire(Transport obj_1, ArrayList<Transport>obj_2){
+    protected void bot_flame_fire(Unit obj_1, ArrayList<Unit>obj_2){
         bot_fire(obj_1,obj_2);
         if(this.sost_fire_bot && this.trigger_attack){
             SoundPlay.sound( this.sound_fire,1-((float) sqrt(pow2(this.x_rend) + pow2(this.y_rend))/200));
@@ -427,7 +427,7 @@ public abstract class Transport{
             bull_packets(i1+1,i2+1);
         }
     }
-    protected void bot_acid_fire(Transport obj_1, ArrayList<Transport>obj_2){
+    protected void bot_acid_fire(Unit obj_1, ArrayList<Unit>obj_2){
         bot_fire(obj_1,obj_2);
         if(this.sost_fire_bot && this.trigger_attack){
             SoundPlay.sound( this.sound_fire,1-((float) sqrt(pow2(this.x_rend) + pow2(this.y_rend))/200));
@@ -504,9 +504,9 @@ public abstract class Transport{
     }
     protected void fire_player_bull_tank(){
         if(reload_bot() && this.left_mouse){
-            for (Transport transport : this.enemyList) {
-                if (sqrt(pow2(this.x - transport.x) + pow2(this.y - transport.y)) < transport.range_see_2) {
-                    transport.time_trigger_bull_bot = transport.time_trigger_bull;
+            for (Unit unit : this.enemyList) {
+                if (sqrt(pow2(this.x - unit.x) + pow2(this.y - unit.y)) < unit.range_see_2) {
+                    unit.time_trigger_bull_bot = unit.time_trigger_bull;
                 }
             }
             SoundPlay.sound( this.sound_fire,1-((float) sqrt(pow2(this.x_rend) + pow2(this.y_rend))/SoundConst));
@@ -524,7 +524,7 @@ public abstract class Transport{
     protected void fire_player_flame(){
         if(reload_bot() && this.left_mouse){
 
-            for (Transport enemy : this.enemyList) {
+            for (Unit enemy : this.enemyList) {
                 if (sqrt(pow2(this.x - enemy.x) + pow2(this.y - enemy.y)) < enemy.range_see_2) {
                     enemy.time_trigger_bull_bot = enemy.time_trigger_bull;
                 }
@@ -551,9 +551,9 @@ public abstract class Transport{
     }
     protected void fire_player_fragmentation_bull(){
         if(reload_bot() && this.left_mouse){
-            for (Transport transport : this.enemyList) {
-                if (sqrt(pow2(this.x - transport.x) + pow2(this.y - transport.y)) < transport.range_see_2) {
-                    transport.time_trigger_bull_bot = transport.time_trigger_bull;
+            for (Unit unit : this.enemyList) {
+                if (sqrt(pow2(this.x - unit.x) + pow2(this.y - unit.y)) < unit.range_see_2) {
+                    unit.time_trigger_bull_bot = unit.time_trigger_bull;
                 }
             }
             rotation_fire = this.rotation_tower+180;
@@ -574,9 +574,9 @@ public abstract class Transport{
 
     protected void fire_player_acid(){
         if(reload_bot() && this.left_mouse){
-            for (Transport transport : enemyList) {
-                if (sqrt(pow2(this.x - transport.x) + pow2(this.y - transport.y)) < transport.range_see_2) {
-                    transport.time_trigger_bull_bot = transport.time_trigger_bull;
+            for (Unit unit : enemyList) {
+                if (sqrt(pow2(this.x - unit.x) + pow2(this.y - unit.y)) < unit.range_see_2) {
+                    unit.time_trigger_bull_bot = unit.time_trigger_bull;
                 }
             }
             SoundPlay.sound( this.sound_fire,1-((float) sqrt(pow2(this.x_rend) + pow2(this.y_rend))/SoundConst));
@@ -812,7 +812,7 @@ public abstract class Transport{
         this.y -= move.move_cos(this.speed, -this.rotation_corpus);
     }
 
-    private void bypass_build(ArrayList<Building> obj_building, ArrayList<Transport> obj_tr, float g, int i3, int i2) {
+    private void bypass_build(ArrayList<Building> obj_building, ArrayList<Unit> obj_tr, float g, int i3, int i2) {
         if(obj_building.size()!= 0&& this.enemyList.size()!=0) {
             if (ai_sost == 0) {
 
@@ -842,7 +842,7 @@ public abstract class Transport{
             }
         }
     }
-    private void bypass_build_not_tower(ArrayList<Building> obj_building, ArrayList<Transport> obj_tr, float g, int i3, int i2) {
+    private void bypass_build_not_tower(ArrayList<Building> obj_building, ArrayList<Unit> obj_tr, float g, int i3, int i2) {
         if(obj_building.size()!= 0) {
             if (ai_sost == 0) {
                 if (null != findIntersection(this.tower_x, this.tower_y, obj_tr.get(i2).tower_x, obj_tr.get(i2).tower_y)) {
@@ -987,7 +987,7 @@ public abstract class Transport{
             this.speed = 0;
         }
     }
-    protected void helicopter_ii(ArrayList<Transport>obj_search, int i3){
+    protected void helicopter_ii(ArrayList<Unit>obj_search, int i3){
         if (this.enemyList.size()!= 0) {
             int[]sp = Method.detection_near_transport_xy_def(this.allyList.get(i3), obj_search);
             g = (float) (atan2(this.y - obj_search.get(sp[0]).y, this.x - obj_search.get(sp[0]).x) / 3.1415926535 * 180);
@@ -998,7 +998,7 @@ public abstract class Transport{
         }
 
     }
-    private float[] less_hp_bot(ArrayList<Transport>bot, ArrayList<Transport>obj_player, ArrayList<Transport>obj_support, int i){
+    private float[] less_hp_bot(ArrayList<Unit>bot, ArrayList<Unit>obj_player, ArrayList<Unit>obj_support, int i){
         int i2;
         if (this.hp > this.max_hp / 3 && this.medic_help == 0) {
             i2 = Method.detection_near_transport_i(bot.get(i), obj_player);
@@ -1038,7 +1038,7 @@ public abstract class Transport{
         }
 
     }
-    protected void corpus_corpus(ArrayList<Transport>obj_2){
+    protected void corpus_corpus(ArrayList<Unit>obj_2){
         boolean z;
         for(int i = 0;i<obj_2.size();i++) {
             z = rectCollision((int)this.x,(int)this.y,(int)this.corpus_width,(int)this.corpus_height,this.rotation_corpus,(int)obj_2.get(i).x,
@@ -1052,40 +1052,40 @@ public abstract class Transport{
             }
         }
     }
-    protected void corpus_corpus_def_xy(ArrayList<Transport>obj_2){
+    protected void corpus_corpus_def_xy(ArrayList<Unit>obj_2){
         boolean z;
-        for (Transport transport : obj_2) {
-            if (transport.x != this.x && transport.y != this.y) {
-                z = rectCollision((int) this.x, (int) this.y, (int) this.corpus_width, (int) this.corpus_height, this.rotation_corpus, (int) transport.x,
-                        (int) transport.y, (int) transport.corpus_width, (int) transport.corpus_height, transport.rotation_corpus);
+        for (Unit unit : obj_2) {
+            if (unit.x != this.x && unit.y != this.y) {
+                z = rectCollision((int) this.x, (int) this.y, (int) this.corpus_width, (int) this.corpus_height, this.rotation_corpus, (int) unit.x,
+                        (int) unit.y, (int) unit.corpus_width, (int) unit.corpus_height, unit.rotation_corpus);
 
-                if (z && transport.priority_paint == this.priority_paint) {
+                if (z && unit.priority_paint == this.priority_paint) {
                     SoundPlay.sound(Main.ContentSound.hit, 1f - ((float) sqrt(pow2(this.x_rend) + pow2(this.y_rend)) / SoundConst));
-                    MethodCollision(transport);
-                    physicCollision(transport);
+                    MethodCollision(unit);
+                    physicCollision(unit);
 
                 }
             }
         }
     }
-    private void physicCollision(Transport transport){
+    private void physicCollision(Unit unit){
         float x = this.x+corpus_width_2;
         float y = this.y+corpus_height_2;
         float[]xy;
         float v = 4;
-        float x_2 = transport.x+ transport.corpus_width_2;
-        float y_2 = transport.y+ transport.corpus_height_2;
+        float x_2 = unit.x+ unit.corpus_width_2;
+        float y_2 = unit.y+ unit.corpus_height_2;
         xy = Method.tower_xy(x,y,0,0,-corpus_height_2,-rotation_corpus);
         float x_1_2 = xy[0];
         float y_1_2 = xy[1];
-        xy = Method.tower_xy(x_2,y_2,0,0,-transport.corpus_height_2,-transport.rotation_corpus);
+        xy = Method.tower_xy(x_2,y_2,0,0,-unit.corpus_height_2,-unit.rotation_corpus);
         float x_2_2 = xy[0];
         float y_2_2 = xy[1];
-        if(sqrt(pow2(x_1_2 - x_2_2) + pow2(y_1_2 - y_2_2))<(transport.corpus_width_2+corpus_width_2)*1.4){
-            xy = Method.tower_xy_2(x_2,y_2,0,0,-transport.corpus_height_3, transport.corpus_width_3,-transport.rotation_corpus);
+        if(sqrt(pow2(x_1_2 - x_2_2) + pow2(y_1_2 - y_2_2))<(unit.corpus_width_2+corpus_width_2)*1.4){
+            xy = Method.tower_xy_2(x_2,y_2,0,0,-unit.corpus_height_3, unit.corpus_width_3,-unit.rotation_corpus);
             float x_2_2_1 = xy[0];
             float y_2_2_1 = xy[1];
-            xy = Method.tower_xy_2(x_2,y_2,0,0,-transport.corpus_height_3,-transport.corpus_width_3,-transport.rotation_corpus);
+            xy = Method.tower_xy_2(x_2,y_2,0,0,-unit.corpus_height_3,-unit.corpus_width_3,-unit.rotation_corpus);
             float x_2_2_2 = xy[0];
             float y_2_2_2 = xy[1];
             xy = Method.tower_xy_2(x,y,0,0,-corpus_height_3,corpus_width_3,-rotation_corpus);
@@ -1094,31 +1094,31 @@ public abstract class Transport{
             xy = Method.tower_xy_2(x,y,0,0,-corpus_height_3,-corpus_width_3,-rotation_corpus);
             float x_1_2_2 = xy[0];
             float y_1_2_2 = xy[1];
-            if(sqrt(pow2(x_2_2_1 - x_1_2) + pow2(y_2_2_1 - y_1_2))<(transport.corpus_width_2+corpus_width_2)/1.5) {
-                transport.rotation_corpus += (abs(transport.speed) + 1) * v;
+            if(sqrt(pow2(x_2_2_1 - x_1_2) + pow2(y_2_2_1 - y_1_2))<(unit.corpus_width_2+corpus_width_2)/1.5) {
+                unit.rotation_corpus += (abs(unit.speed) + 1) * v;
             }
-            if(sqrt(pow2(x_2_2_2 - x_1_2) + pow2(y_2_2_2 - y_1_2))<(transport.corpus_width_2+corpus_width_2)/1.5) {
-                transport.rotation_corpus -= (abs(transport.speed) + 1) * v;
+            if(sqrt(pow2(x_2_2_2 - x_1_2) + pow2(y_2_2_2 - y_1_2))<(unit.corpus_width_2+corpus_width_2)/1.5) {
+                unit.rotation_corpus -= (abs(unit.speed) + 1) * v;
             }
-            if(sqrt(pow2(x_1_2_1 - x_2_2) + pow2(y_1_2_1 - y_2_2))<(transport.corpus_width_2+corpus_width_2)/1.5) {
-                this.rotation_corpus += (abs(transport.speed) + 1) * v;
+            if(sqrt(pow2(x_1_2_1 - x_2_2) + pow2(y_1_2_1 - y_2_2))<(unit.corpus_width_2+corpus_width_2)/1.5) {
+                this.rotation_corpus += (abs(unit.speed) + 1) * v;
             }
-            if(sqrt(pow2(x_1_2_2 - x_2_2) + pow2(y_1_2_2 - y_2_2))<(transport.corpus_width_2+corpus_width_2)/1.5) {
-                this.rotation_corpus -= (abs(transport.speed) + 1) * v;
+            if(sqrt(pow2(x_1_2_2 - x_2_2) + pow2(y_1_2_2 - y_2_2))<(unit.corpus_width_2+corpus_width_2)/1.5) {
+                this.rotation_corpus -= (abs(unit.speed) + 1) * v;
             }
             return;
         }
         xy = Method.tower_xy(x,y,0,0,corpus_height_2,-rotation_corpus);
         float x_1_1 = xy[0];
         float y_1_1 = xy[1];
-        xy = Method.tower_xy(x_2,y_2,0,0, transport.corpus_height_2,-transport.rotation_corpus);
+        xy = Method.tower_xy(x_2,y_2,0,0, unit.corpus_height_2,-unit.rotation_corpus);
         float x_2_1 = xy[0];
         float y_2_1 = xy[1];
-        if(sqrt(pow2(x_1_1 - x_2_1) + pow2(y_1_1 - y_2_1))<(transport.corpus_width_2+corpus_width_2)*1.2){
-            xy = Method.tower_xy_2(x_2,y_2,0f,0f, transport.corpus_height_3, transport.corpus_width_3,-transport.rotation_corpus);
+        if(sqrt(pow2(x_1_1 - x_2_1) + pow2(y_1_1 - y_2_1))<(unit.corpus_width_2+corpus_width_2)*1.2){
+            xy = Method.tower_xy_2(x_2,y_2,0f,0f, unit.corpus_height_3, unit.corpus_width_3,-unit.rotation_corpus);
             float x_2_1_1 = xy[0];
             float y_2_1_1 = xy[1];
-            xy = Method.tower_xy_2(x_2,y_2,0,0, transport.corpus_height_3,-transport.corpus_width_3,-transport.rotation_corpus);
+            xy = Method.tower_xy_2(x_2,y_2,0,0, unit.corpus_height_3,-unit.corpus_width_3,-unit.rotation_corpus);
             float x_2_1_2 = xy[0];
             float y_2_1_2 = xy[1];
             xy = Method.tower_xy_2(x,y,0,0,corpus_height_3,corpus_width_3,-rotation_corpus);
@@ -1127,25 +1127,25 @@ public abstract class Transport{
             xy = Method.tower_xy_2(x,y,0,0,corpus_height_3,-corpus_width_3,-rotation_corpus);
             float x_1_1_2 = xy[0];
             float y_1_1_2 = xy[1];
-            if(sqrt(pow2(x_2_1_1 - x_1_1) + pow2(y_2_1_1 - y_1_1))<(transport.corpus_width_2+corpus_width_2)/1.2) {
-                transport.rotation_corpus -= (abs(transport.speed) + 1) * v;
+            if(sqrt(pow2(x_2_1_1 - x_1_1) + pow2(y_2_1_1 - y_1_1))<(unit.corpus_width_2+corpus_width_2)/1.2) {
+                unit.rotation_corpus -= (abs(unit.speed) + 1) * v;
             }
-            if(sqrt(pow2(x_2_1_2 - x_1_1) + pow2(y_2_1_2 - y_1_1))<(transport.corpus_width_2+corpus_width_2)/1.2) {
-                transport.rotation_corpus += (abs(transport.speed) + 1) * v;
+            if(sqrt(pow2(x_2_1_2 - x_1_1) + pow2(y_2_1_2 - y_1_1))<(unit.corpus_width_2+corpus_width_2)/1.2) {
+                unit.rotation_corpus += (abs(unit.speed) + 1) * v;
             }
-            if(sqrt(pow2(x_1_1_1 - x_2_1) + pow2(y_1_1_1 - y_2_1))<(transport.corpus_width_2+corpus_width_2)/1.2) {
-                this.rotation_corpus -= (abs(transport.speed) + 1) * v;
+            if(sqrt(pow2(x_1_1_1 - x_2_1) + pow2(y_1_1_1 - y_2_1))<(unit.corpus_width_2+corpus_width_2)/1.2) {
+                this.rotation_corpus -= (abs(unit.speed) + 1) * v;
             }
-            if(sqrt(pow2(x_1_1_2 - x_2_1) + pow2(y_1_1_2 - y_2_1))<(transport.corpus_width_2+corpus_width_2)/1.2) {
-                this.rotation_corpus += (abs(transport.speed) + 1) * v;
+            if(sqrt(pow2(x_1_1_2 - x_2_1) + pow2(y_1_1_2 - y_2_1))<(unit.corpus_width_2+corpus_width_2)/1.2) {
+                this.rotation_corpus += (abs(unit.speed) + 1) * v;
             }
             return;
         }
-        if(sqrt(pow2(x_1_1 - x_2_2) + pow2(y_1_1 - y_2_2))<(transport.corpus_width_2+corpus_width_2)*1.2){
-            xy = Method.tower_xy_2(x_2,y_2,0,0,-transport.corpus_height_3, transport.corpus_width_3,-transport.rotation_corpus);
+        if(sqrt(pow2(x_1_1 - x_2_2) + pow2(y_1_1 - y_2_2))<(unit.corpus_width_2+corpus_width_2)*1.2){
+            xy = Method.tower_xy_2(x_2,y_2,0,0,-unit.corpus_height_3, unit.corpus_width_3,-unit.rotation_corpus);
             float x_2_2_1 = xy[0];
             float y_2_2_1 = xy[1];
-            xy = Method.tower_xy_2(x_2,y_2,0,0,-transport.corpus_height_3,-transport.corpus_width_3,-transport.rotation_corpus);
+            xy = Method.tower_xy_2(x_2,y_2,0,0,-unit.corpus_height_3,-unit.corpus_width_3,-unit.rotation_corpus);
             float x_2_2_2 = xy[0];
             float y_2_2_2 = xy[1];
             xy = Method.tower_xy_2(x,y,0,0,corpus_height_3,corpus_width_3,-rotation_corpus);
@@ -1154,17 +1154,17 @@ public abstract class Transport{
             xy = Method.tower_xy_2(x,y,0,0,corpus_height_3,-corpus_width_3,-rotation_corpus);
             float x_1_1_2 = xy[0];
             float y_1_1_2 = xy[1];
-            if(sqrt(pow2(x_2_2_1 - x_1_1) + pow2(y_2_2_1 - y_1_1))<(transport.corpus_width_2+corpus_width_2)/1.2) {
-                transport.rotation_corpus -= (abs(transport.speed) + 1) * v;
+            if(sqrt(pow2(x_2_2_1 - x_1_1) + pow2(y_2_2_1 - y_1_1))<(unit.corpus_width_2+corpus_width_2)/1.2) {
+                unit.rotation_corpus -= (abs(unit.speed) + 1) * v;
             }
-            if(sqrt(pow2(x_2_2_2 - x_1_1) + pow2(y_2_2_2 - y_1_1))<(transport.corpus_width_2+corpus_width_2)/1.2) {
-                transport.rotation_corpus += (abs(transport.speed) + 1) * v;
+            if(sqrt(pow2(x_2_2_2 - x_1_1) + pow2(y_2_2_2 - y_1_1))<(unit.corpus_width_2+corpus_width_2)/1.2) {
+                unit.rotation_corpus += (abs(unit.speed) + 1) * v;
             }
-            if(sqrt(pow2(x_1_1_1 - x_2_2) + pow2(y_1_1_1 - y_2_2))<(transport.corpus_width_2+corpus_width_2)/1.2) {
-                this.rotation_corpus -= (abs(transport.speed) + 1) * v;
+            if(sqrt(pow2(x_1_1_1 - x_2_2) + pow2(y_1_1_1 - y_2_2))<(unit.corpus_width_2+corpus_width_2)/1.2) {
+                this.rotation_corpus -= (abs(unit.speed) + 1) * v;
             }
-            if(sqrt(pow2(x_1_1_2 - x_2_2) + pow2(y_1_1_2 - y_2_2))<(transport.corpus_width_2+corpus_width_2)/1.2) {
-                this.rotation_corpus += (abs(transport.speed) + 1) * v;
+            if(sqrt(pow2(x_1_1_2 - x_2_2) + pow2(y_1_1_2 - y_2_2))<(unit.corpus_width_2+corpus_width_2)/1.2) {
+                this.rotation_corpus += (abs(unit.speed) + 1) * v;
             }
         }
 
@@ -1182,7 +1182,7 @@ public abstract class Transport{
             this.t +=2;
         }
     }
-    protected void transportDeletePlayer(int i, ArrayList<Transport>obj){
+    protected void transportDeletePlayer(int i, ArrayList<Unit>obj){
         if(this.hp>0)return;
         Main.DebrisList.add(new DebrisTransport(this.x,this.y,this.rotation_corpus,this.speed,this.rotation_inert,
                 this.speed_inert, this.corpus_img,this.corpus_width,this.corpus_height,this.type_unit));
@@ -1190,7 +1190,7 @@ public abstract class Transport{
         obj.remove(i);
         EnumerationList = true;
     }
-    protected void transportDeleteBot(int i, ArrayList<Transport>obj){
+    protected void transportDeleteBot(int i, ArrayList<Unit>obj){
         if(this.hp>0)return;
         if(this.crite_life == 1){
             Main.DebrisList.add(new DebrisTransport(this.x,this.y,this.rotation_corpus,this.speed,this.rotation_inert,this.speed_inert,
@@ -1204,7 +1204,7 @@ public abstract class Transport{
         this.hp = this.max_hp/2;
 
     }
-    protected void debrisDelete(int i, ArrayList<Transport>obj){
+    protected void debrisDelete(int i, ArrayList<Unit>obj){
         if(this.hp<0){
             obj.remove(i);
             EnumerationList = true;
@@ -1312,34 +1312,34 @@ public abstract class Transport{
             }
         }
     }
-    private void MethodCollision(Transport transport){
-        if(this.x< transport.x) {
+    private void MethodCollision(Unit unit){
+        if(this.x< unit.x) {
             this.x -= 2;
-            transport.x += 2;
-            this.speed_inert += transport.speed*0.5;
-            transport.speed_inert += this.speed*0.5;
+            unit.x += 2;
+            this.speed_inert += unit.speed*0.5;
+            unit.speed_inert += this.speed*0.5;
             this.speed *= -0.8;
-            transport.speed *= -0.8;
-            this.rotation_inert = transport.rotation_corpus;
-            transport.rotation_inert = this.rotation_corpus;
+            unit.speed *= -0.8;
+            this.rotation_inert = unit.rotation_corpus;
+            unit.rotation_inert = this.rotation_corpus;
         }
-        else if(this.x> transport.x) {
+        else if(this.x> unit.x) {
             this.x += 2;
-            transport.x -= 2;
-            this.speed_inert += transport.speed*0.5;
-            transport.speed_inert += this.speed*0.5;
+            unit.x -= 2;
+            this.speed_inert += unit.speed*0.5;
+            unit.speed_inert += this.speed*0.5;
             this.speed *= -0.5;
-            transport.speed *= -0.7;
-            this.rotation_inert = transport.rotation_corpus;
-            transport.rotation_inert = this.rotation_corpus;
+            unit.speed *= -0.7;
+            this.rotation_inert = unit.rotation_corpus;
+            unit.rotation_inert = this.rotation_corpus;
         }
-        if(this.y< transport.y) {
+        if(this.y< unit.y) {
             this.y -= 2;
-            transport.y += 2;
+            unit.y += 2;
         }
-        else if(this.y> transport.y) {
+        else if(this.y> unit.y) {
             this.y += 2;
-            transport.y -= 2;
+            unit.y -= 2;
         }
     }
     private void MethodCollision(int x, int y){
@@ -1391,12 +1391,12 @@ public abstract class Transport{
             }
         }
     }
-    protected void hill_bot(ArrayList<Transport>obj){
-        for (Transport transport : obj) {
-            if (sqrt(pow2(this.x - transport.x) + pow2(this.y - transport.y)) < 230 && transport.max_hp > transport.hp) {
-                transport.hp += this.hill;
-                if(transport.hp >= transport.max_hp -20 && transport.crite_life == 1){
-                    transport.crite_life = 0;
+    protected void hill_bot(ArrayList<Unit>obj){
+        for (Unit unit : obj) {
+            if (sqrt(pow2(this.x - unit.x) + pow2(this.y - unit.y)) < 230 && unit.max_hp > unit.hp) {
+                unit.hp += this.hill;
+                if(unit.hp >= unit.max_hp -20 && unit.crite_life == 1){
+                    unit.crite_life = 0;
                 }
             }
         }

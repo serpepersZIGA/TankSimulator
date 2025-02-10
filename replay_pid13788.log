@@ -106,7 +106,7 @@ instanceKlass javax/sound/sampled/Control$Type
 instanceKlass com/mygdx/game/metod/sound
 instanceKlass sun/reflect/generics/tree/ArrayTypeSignature
 instanceKlass sun/reflect/generics/tree/IntSignature
-instanceKlass com/mygdx/game/transport/debris_packet
+instanceKlass com/mygdx/game/unit/debris_packet
 instanceKlass com/mygdx/game/soldat/soldat_packet
 instanceKlass com/mygdx/game/bull/bull_packet
 instanceKlass com/esotericsoftware/kryo/NotNull
@@ -116,7 +116,7 @@ instanceKlass sun/reflect/generics/reflectiveObjects/LazyReflectiveObjectGenerat
 instanceKlass sun/reflect/generics/tree/TypeVariableSignature
 instanceKlass sun/reflect/generics/reflectiveObjects/ParameterizedTypeImpl
 instanceKlass java/lang/reflect/ParameterizedType
-instanceKlass com/mygdx/game/transport/transport_packet
+instanceKlass com/mygdx/game/unit/transport_packet
 instanceKlass sun/reflect/generics/visitor/Reifier
 instanceKlass sun/reflect/generics/visitor/TypeTreeVisitor
 instanceKlass sun/reflect/generics/factory/CoreReflectionFactory
@@ -362,8 +362,8 @@ instanceKlass com/esotericsoftware/kryonet/Listener
 instanceKlass com/mygdx/game/main/Packet_client
 instanceKlass com/mygdx/game/main/Packet_server
 instanceKlass com/mygdx/game/soldat/soldat_register
-instanceKlass com/mygdx/game/transport/transport_register
-instanceKlass com/mygdx/game/transport/AI
+instanceKlass com/mygdx/game/unit/transport_register
+instanceKlass com/mygdx/game/unit/AI
 instanceKlass com/mygdx/game/metod/Option
 instanceKlass com/mygdx/game/particle/particle
 instanceKlass com/mygdx/game/particle/flame_spawn
@@ -439,7 +439,7 @@ instanceKlass sun/awt/AWTAccessor$ToolkitAccessor
 instanceKlass java/awt/Toolkit
 instanceKlass java/awt/geom/RectangularShape
 instanceKlass com/mygdx/game/building/Build
-instanceKlass com/mygdx/game/transport/Transport
+instanceKlass com/mygdx/game/unit/Transport
 instanceKlass java/lang/Math$RandomNumberGeneratorHolder
 instanceKlass com/mygdx/game/metod/rand
 instanceKlass com/mygdx/game/block/update_block
@@ -1577,7 +1577,7 @@ instanceKlass java/util/stream/Collector$Characteristics
 instanceKlass java/util/stream/StreamShape
 instanceKlass java/util/stream/StreamOpFlag$Type
 instanceKlass java/util/stream/StreamOpFlag
-instanceKlass com/mygdx/game/transport/unit_type
+instanceKlass com/mygdx/game/unit/unit_type
 instanceKlass com/badlogic/gdx/graphics/Mesh$VertexDataType
 instanceKlass com/badlogic/gdx/graphics/TextureData$TextureDataType
 instanceKlass com/badlogic/gdx/graphics/Texture$TextureWrap

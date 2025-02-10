@@ -33,21 +33,21 @@ import com.mygdx.game.particle.*;
 import com.mygdx.game.soldat.Soldat;
 import com.mygdx.game.soldat.SoldatRegister;
 import Data.DataSound;
-import com.mygdx.game.transport.*;
-import com.mygdx.game.transport.PlayerSpawnList.PlayerAllLoad;
-import com.mygdx.game.transport.SpawnPlayer.PlayerSpawnData;
-import com.mygdx.game.transport.SpawnPlayer.PlayerSpawnListData;
+import com.mygdx.game.unit.*;
+import com.mygdx.game.unit.PlayerSpawnList.PlayerAllLoad;
+import com.mygdx.game.unit.SpawnPlayer.PlayerSpawnData;
+import com.mygdx.game.unit.SpawnPlayer.PlayerSpawnListData;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-import static com.mygdx.game.transport.SpawnPlayer.PlayerSpawnListData.PlayerSpawnCannonVoid;
+import static com.mygdx.game.unit.SpawnPlayer.PlayerSpawnListData.PlayerSpawnCannonVoid;
 
 
 public class Main extends ApplicationAdapter {
-	public static ArrayList<Transport> PlayerList = new ArrayList<>();
-	public static ArrayList<Transport> EnemyList = new ArrayList<>();
+	public static ArrayList<Unit> PlayerList = new ArrayList<>();
+	public static ArrayList<Unit> EnemyList = new ArrayList<>();
 	public static ArrayList<Building> BuildingList = new ArrayList<>();
 	public static ArrayList<Bullet> BulletList = new ArrayList<>();
 	public static LinkedList<Particle> FlameStaticList = new LinkedList<>();
@@ -58,7 +58,7 @@ public class Main extends ApplicationAdapter {
 	public static LinkedList<Particle> FlameParticleList = new LinkedList<>();
 	public static LinkedList<Particle> LiquidList = new LinkedList<>();
 	public static LinkedList<Particle> FlameSpawnList = new LinkedList<>();
-	public static ArrayList<Transport> DebrisList = new ArrayList<>();
+	public static ArrayList<Unit> DebrisList = new ArrayList<>();
 
 	public static DataSound ContentSound;
 	public static ArrayList<ArrayList<Block>> AirList = new ArrayList<>();

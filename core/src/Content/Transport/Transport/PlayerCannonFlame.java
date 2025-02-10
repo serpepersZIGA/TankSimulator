@@ -3,13 +3,13 @@ package Content.Transport.Transport;
 import Content.Transport.Tower.TowerMortarPlayer;
 import com.mygdx.game.method.RenderMethod;
 import com.mygdx.game.main.Main;
-import com.mygdx.game.transport.Transport;
-import com.mygdx.game.transport.UnitType;
+import com.mygdx.game.unit.Unit;
+import com.mygdx.game.unit.UnitType;
 
 import java.util.ArrayList;
 
-public class PlayerCannonFlame extends Transport {
-    public PlayerCannonFlame(float x, float y, ArrayList<Transport> tr, boolean host){
+public class PlayerCannonFlame extends Unit {
+    public PlayerCannonFlame(float x, float y, ArrayList<Unit> tr, boolean host){
         type_unit = UnitType.PlayerFlameT1;
         this.x = x;this.y = y;
         this.host = host;
@@ -56,7 +56,7 @@ public class PlayerCannonFlame extends Transport {
         this.tower_y_const = (int) (corpus_height/2)-(height_tower/2)+7;
         center_render();
     }
-    public PlayerCannonFlame(float x, float y, ArrayList<Transport> tr, boolean host,byte team){
+    public PlayerCannonFlame(float x, float y, ArrayList<Unit> tr, boolean host, byte team){
         type_unit = UnitType.PlayerFlameT1;
         this.x = x;this.y = y;
         this.host = host;

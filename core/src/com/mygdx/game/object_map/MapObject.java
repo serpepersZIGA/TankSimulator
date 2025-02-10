@@ -4,11 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.mygdx.game.block.Block;
 import com.mygdx.game.main.Main;
 import com.mygdx.game.method.RenderMethod;
-import com.mygdx.game.object_map.component_collision_system.CollisionBreak;
-import com.mygdx.game.object_map.component_collision_system.CollisionVoid;
 import com.mygdx.game.object_map.component_collision_system.ComponentCollisionSystem;
-import com.mygdx.game.transport.DebrisPacket;
-import com.mygdx.game.transport.Transport;
 
 import java.util.ArrayList;
 

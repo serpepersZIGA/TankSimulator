@@ -1,4 +1,4 @@
-package com.mygdx.game.transport;
+package com.mygdx.game.unit;
 
 import Content.Transport.Transport.*;
 import com.mygdx.game.main.Main;
@@ -9,7 +9,7 @@ public class TransportRegister {
     public static ArrayList<TransportPacket> PacketPlayer = new ArrayList<>();
     public static ArrayList<TransportPacket> PacketEnemy = new ArrayList<>();
     public static ArrayList<DebrisPacket> PacketDebris = new ArrayList<>();
-    public static Transport PlayerCannonFlame, PlayerCannonMortar, PlayerCannonBullTank, PlayerCannonAcid,
+    public static Unit PlayerCannonFlame, PlayerCannonMortar, PlayerCannonBullTank, PlayerCannonAcid,
             PanzerMortarT1, PanzerFlameT1, PanzerAcidT1, PanzerT1, TrackRemountT1, TrackSoldatT1, Helicopter_t1;
     public TransportRegister() {
         PlayerCannonFlame = new PlayerCannonFlame(0,0, Main.PlayerList,false);

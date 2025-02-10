@@ -3,12 +3,12 @@ package Content.Transport.Transport;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.mygdx.game.method.RenderMethod;
 import com.mygdx.game.main.Main;
-import com.mygdx.game.transport.Transport;
-import com.mygdx.game.transport.UnitType;
+import com.mygdx.game.unit.Unit;
+import com.mygdx.game.unit.UnitType;
 
 import static com.mygdx.game.main.Main.ContentImage;
 
-public class DebrisTransport extends Transport {
+public class DebrisTransport extends Unit {
 
     public DebrisTransport(float x, float y, float rotation, float speed, float inert_rotation,
                            float inert_speed, Sprite corpus, float width, float height, UnitType type){

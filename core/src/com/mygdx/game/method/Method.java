@@ -2,7 +2,7 @@ package com.mygdx.game.method;
 
 import com.mygdx.game.build.Building;
 import com.mygdx.game.soldat.Soldat;
-import com.mygdx.game.transport.Transport;
+import com.mygdx.game.unit.Unit;
 
 import java.util.ArrayList;
 
@@ -52,7 +52,7 @@ public class Method {
         return tower(x, y, Keyboard.MouseX, Keyboard.MouseY, rotation_tower, speed_tower);
 
     }
-    public static int detection_near_transport_i(Transport objBot, ArrayList<Transport> obj) {
+    public static int detection_near_transport_i(Unit objBot, ArrayList<Unit> obj) {
         int ind = 0;
         int radius = 0;
         System.out.println();
@@ -66,7 +66,7 @@ public class Method {
         }
         return ind;
     }
-    public static int[] detection_near_transport_xy_def(Transport objBot, ArrayList<Transport> obj) {
+    public static int[] detection_near_transport_xy_def(Unit objBot, ArrayList<Unit> obj) {
         int ind = 0;
         int radius = 0;
         double g;
@@ -81,7 +81,7 @@ public class Method {
         }
         return new int[]{ind,radius};
     }
-    public static int[] detection_near_transport_i_def(ArrayList<Transport> obj_bot, int i, ArrayList<Transport> obj) {
+    public static int[] detection_near_transport_i_def(ArrayList<Unit> obj_bot, int i, ArrayList<Unit> obj) {
         int ind = 0;
         int radius = 0;
         double g;
@@ -97,7 +97,7 @@ public class Method {
         return new int[]{ind,radius};
     }
 
-    public static int[] detection_near_soldat_transport_i_def(ArrayList<Soldat> obj_bot, int i, ArrayList<Transport> obj) {
+    public static int[] detection_near_soldat_transport_i_def(ArrayList<Soldat> obj_bot, int i, ArrayList<Unit> obj) {
         int ind = 0;
         int radius = 0;
         double g;
@@ -113,7 +113,7 @@ public class Method {
         return new int[]{ind,radius};
     }
 
-    public static int detection_near_soldat_transport(ArrayList<Soldat> obj_bot, int i, ArrayList<Transport> obj) {
+    public static int detection_near_soldat_transport(ArrayList<Soldat> obj_bot, int i, ArrayList<Unit> obj) {
         int ind = 0;
         int radius = 0;
         for (int i2 = 0; i2 < obj.size(); i2++) {

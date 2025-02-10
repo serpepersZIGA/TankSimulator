@@ -90,8 +90,8 @@ instanceKlass com/badlogic/gdx/graphics/g2d/TextureRegion
 instanceKlass com/mygdx/game/metod/render_metod
 instanceKlass com/mygdx/game/bull/bull_register
 instanceKlass com/mygdx/game/main/action_game_host
-instanceKlass com/mygdx/game/transport/transport_register
-instanceKlass com/mygdx/game/transport/AI
+instanceKlass com/mygdx/game/unit/transport_register
+instanceKlass com/mygdx/game/unit/AI
 instanceKlass com/mygdx/game/particle/flame_spawn
 instanceKlass java/awt/geom/AreaIterator
 instanceKlass sun/awt/geom/Edge
@@ -162,7 +162,7 @@ instanceKlass sun/awt/AWTAccessor$ToolkitAccessor
 instanceKlass java/awt/Toolkit
 instanceKlass com/mygdx/game/building/Build
 instanceKlass java/awt/geom/RectangularShape
-instanceKlass com/mygdx/game/transport/Transport
+instanceKlass com/mygdx/game/unit/Transport
 instanceKlass java/lang/Math$RandomNumberGeneratorHolder
 instanceKlass com/mygdx/game/metod/rand
 instanceKlass java/awt/Shape
@@ -483,7 +483,7 @@ instanceKlass sun/reflect/generics/reflectiveObjects/LazyReflectiveObjectGenerat
 instanceKlass sun/reflect/generics/tree/TypeVariableSignature
 instanceKlass sun/reflect/generics/reflectiveObjects/ParameterizedTypeImpl
 instanceKlass java/lang/reflect/ParameterizedType
-instanceKlass com/mygdx/game/transport/transport_packet
+instanceKlass com/mygdx/game/unit/transport_packet
 instanceKlass sun/reflect/generics/visitor/Reifier
 instanceKlass sun/reflect/generics/visitor/TypeTreeVisitor
 instanceKlass sun/reflect/generics/factory/CoreReflectionFactory

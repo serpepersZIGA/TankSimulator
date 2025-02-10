@@ -4,13 +4,13 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.mygdx.game.main.Main;
 import com.mygdx.game.method.RenderMethod;
-import com.mygdx.game.transport.Transport;
+import com.mygdx.game.unit.Unit;
 
 import java.util.ArrayList;
 
-public class TowerFlamePlayer extends Transport {
+public class TowerFlamePlayer extends Unit {
     public TowerFlamePlayer(float x_const, float y_const, int difference, int difference_2, float reload_max, float speed_rotation, float damage, float penetration,
-                            float t_damage, int ind_unit, byte height, byte team, Sprite str, ArrayList<Transport> spisok, Sound sound){
+                            float t_damage, int ind_unit, byte height, byte team, Sprite str, ArrayList<Unit> spisok, Sound sound){
         this.tower_x_const = x_const;
         this.tower_y_const = y_const;
         this.allyList = spisok;

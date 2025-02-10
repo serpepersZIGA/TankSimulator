@@ -2,13 +2,13 @@ package Content.Transport.Transport;
 
 import com.mygdx.game.main.Main;
 import com.mygdx.game.method.RenderMethod;
-import com.mygdx.game.transport.Transport;
-import com.mygdx.game.transport.UnitType;
+import com.mygdx.game.unit.Unit;
+import com.mygdx.game.unit.UnitType;
 
 import java.util.ArrayList;
 
-public class TrackSoldatT1 extends Transport {
-    public TrackSoldatT1(float x, float y, ArrayList<Transport> tr) {
+public class TrackSoldatT1 extends Unit {
+    public TrackSoldatT1(float x, float y, ArrayList<Unit> tr) {
         this.type_unit = UnitType.TrackSoldatT1;
         this.x = x;
         this.y = y;

@@ -8,7 +8,7 @@ import Content.Particle.Acid;
 import Content.Particle.FlameSpawn;
 import Content.Particle.Bang;
 import com.mygdx.game.soldat.Soldat;
-import com.mygdx.game.transport.Transport;
+import com.mygdx.game.unit.Unit;
 
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
@@ -169,7 +169,7 @@ public abstract class Bullet implements Serializable {
             spawn_acid();
         }
     }
-    protected final void corpus_bull_mortar(ArrayList<Transport> obj_2){
+    protected final void corpus_bull_mortar(ArrayList<Unit> obj_2){
         for(i = 0;i<obj_2.size();i++) {
             if(this.type_team != obj_2.get(i).team) {
 
@@ -185,7 +185,7 @@ public abstract class Bullet implements Serializable {
             }
         }
     }
-    protected final void corpus_bull(ArrayList<Transport> obj_2){
+    protected final void corpus_bull(ArrayList<Unit> obj_2){
         for(i = 0;i<obj_2.size();i++) {
             if(this.type_team != obj_2.get(i).team) {
             z = rect_bull((int)obj_2.get(i).x, (int)obj_2.get(i).y,(int)obj_2.get(i).corpus_width,(int)obj_2.get(i).corpus_height,(int)this.x,(int)this.y,
@@ -200,7 +200,7 @@ public abstract class Bullet implements Serializable {
             }
         }
     }
-    protected final void corpus_bull_temperature(ArrayList<Transport> obj_2){
+    protected final void corpus_bull_temperature(ArrayList<Unit> obj_2){
         for(i = 0;i<obj_2.size();i++) {
             if(this.type_team != obj_2.get(i).team) {
                 z = rect_bull((int) obj_2.get(i).x, (int) obj_2.get(i).y, (int) (obj_2.get(i).corpus_width), (int) (obj_2.get(i).corpus_height), (int) this.x, (int) this.y,
@@ -215,10 +215,10 @@ public abstract class Bullet implements Serializable {
             }
         }
     }
-    protected final void armor_damage(ArrayList<Transport>tr, int i){
+    protected final void armor_damage(ArrayList<Unit>tr, int i){
         tr.get(i).hp -=this.damage-((this.damage/100*(tr.get(i).armor-this.penetration)));
     }
-    protected final void metod_temperature(ArrayList<Transport>obj, int i2){
+    protected final void metod_temperature(ArrayList<Unit>obj, int i2){
          obj.get(i2).t += this.t_damage;
          this.clear_sost = 1;
     }

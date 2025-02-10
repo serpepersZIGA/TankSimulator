@@ -1,7 +1,7 @@
-package com.mygdx.game.transport;
+package com.mygdx.game.unit;
 
-public class TransportOption extends Transport{
-    public TransportOption(Transport tr){
+public class UnitOption extends Unit {
+    public UnitOption(Unit tr){
         this.speed_inert = tr.speed_inert;this.speed = tr.speed;
         this.max_speed = tr.max_speed;this.min_speed = tr.min_speed;
         this.max_hp = tr.max_hp;

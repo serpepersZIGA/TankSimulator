@@ -10,7 +10,7 @@ import com.mygdx.game.method.RenderMethod;
 import com.mygdx.game.method.Method;
 import com.mygdx.game.method.rand;
 import Content.Particle.Blood;
-import com.mygdx.game.transport.Transport;
+import com.mygdx.game.unit.Unit;
 import com.mygdx.game.method.move;
 
 import java.awt.geom.AffineTransform;
@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import static Content.Bull.BullRegister.PacketBull;
 import static com.mygdx.game.main.Main.*;
 import static com.mygdx.game.method.pow2.pow2;
-import static com.mygdx.game.transport.Transport.ai_sost;
+import static com.mygdx.game.unit.Unit.ai_sost;
 import static java.lang.StrictMath.*;
 
 public abstract class Soldat implements Serializable {
@@ -34,7 +34,7 @@ public abstract class Soldat implements Serializable {
     public ArrayList<int[]>path = new ArrayList<>();
     protected float g;
     public Sprite soldat_image;
-    public ArrayList<Transport>allyList,enemyList;
+    public ArrayList<Unit>allyList,enemyList;
     public float SpeedCollision;
     public void data(){
         if(allyList == EnemyList){
@@ -310,8 +310,8 @@ public abstract class Soldat implements Serializable {
             move();
         }
     }
-    public void hustle(ArrayList<Transport>transport){
-        for (Transport value : transport) {
+    public void hustle(ArrayList<Unit> unit){
+        for (Unit value : unit) {
             boolean z = rect_bull((int) value.x, (int) value.y, (int) value.corpus_width, (int) value.corpus_height,
                     (int) this.x, (int) this.y, this.size, value.rotation_corpus);
             if (z) {
@@ -324,8 +324,8 @@ public abstract class Soldat implements Serializable {
         this.x_rend = (int)xy[0];
         this.y_rend = (int)xy[1];
     }
-    public void collision_transport(ArrayList<Transport>transport){
-        for (Transport value : transport) {
+    public void collision_transport(ArrayList<Unit> unit){
+        for (Unit value : unit) {
             boolean z = rect_bull((int) value.x, (int) value.y, (int) value.corpus_width, (int) value.corpus_height,
                     (int) this.x, (int) this.y, this.size, value.rotation_corpus);
             if (z) {

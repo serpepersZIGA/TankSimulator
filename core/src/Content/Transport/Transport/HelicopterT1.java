@@ -4,11 +4,11 @@ import com.mygdx.game.method.RenderMethod;
 
 import java.util.ArrayList;
 import com.mygdx.game.main.Main;
-import com.mygdx.game.transport.Transport;
-import com.mygdx.game.transport.UnitType;
+import com.mygdx.game.unit.Unit;
+import com.mygdx.game.unit.UnitType;
 
-public class HelicopterT1 extends Transport {
-    public HelicopterT1(float x, float y, ArrayList<Transport>tr){
+public class HelicopterT1 extends Unit {
+    public HelicopterT1(float x, float y, ArrayList<Unit>tr){
         this.type_unit = UnitType.HelicopterT1;
         this.corpus_img = Main.ContentImage.helicopter_enemy_t1;
         this.tower_img = Main.ContentImage.helicopter_blade;

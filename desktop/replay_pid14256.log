@@ -406,7 +406,7 @@ instanceKlass org/gradle/api/internal/artifacts/ivyservice/modulecache/ModuleCom
 instanceKlass org/gradle/api/internal/artifacts/ivyservice/ivyresolve/strategy/AbstractVersionSelector
 instanceKlass org/gradle/api/internal/artifacts/dependencies/DefaultResolvedVersionConstraint
 instanceKlass  @bci org/gradle/api/internal/artifacts/ivyservice/resolveengine/graph/builder/ResolveState resolveVersionConstraint (Lorg/gradle/api/artifacts/VersionConstraint;)Lorg/gradle/api/internal/artifacts/ResolvedVersionConstraint; 6 <appendix> member <vmtarget> ; # org/gradle/api/internal/artifacts/ivyservice/resolveengine/graph/builder/ResolveState$$Lambda$874+0x000000080139b6e8
-instanceKlass org/gradle/internal/resource/transport/DefaultExternalResourceRepository
+instanceKlass org/gradle/internal/resource/unit/DefaultExternalResourceRepository
 instanceKlass org/gradle/internal/resource/transfer/ProgressLoggingExternalResourceLister$1
 instanceKlass org/gradle/internal/resource/ExternalResourceListBuildOperationType$Result
 instanceKlass org/gradle/internal/resource/transfer/ProgressLoggingExternalResourceAccessor$1
@@ -418,8 +418,8 @@ instanceKlass org/gradle/internal/resource/transfer/DefaultExternalResourceConne
 instanceKlass org/gradle/internal/resource/transfer/DefaultExternalResourceConnector
 instanceKlass org/apache/http/HttpEntityEnclosingRequest
 instanceKlass org/apache/http/HttpEntity
-instanceKlass org/gradle/internal/resource/transport/http/HttpResourceUploader
-instanceKlass org/gradle/internal/resource/transport/http/HttpResourceLister
+instanceKlass org/gradle/internal/resource/unit/http/HttpResourceUploader
+instanceKlass org/gradle/internal/resource/unit/http/HttpResourceLister
 instanceKlass org/gradle/internal/resource/transfer/ExternalResourceReadResponse
 instanceKlass org/gradle/internal/resource/transfer/AbstractExternalResourceAccessor
 instanceKlass org/apache/http/protocol/HttpContext
@@ -434,18 +434,18 @@ instanceKlass org/apache/commons/logging/impl/SLF4JLocationAwareLog
 instanceKlass org/apache/commons/logging/Log
 instanceKlass org/apache/commons/logging/LogFactory
 instanceKlass org/apache/http/conn/ssl/DefaultHostnameVerifier
-instanceKlass org/gradle/internal/resource/transport/http/DefaultHttpSettings$Builder
-instanceKlass org/gradle/internal/resource/transport/http/DefaultHttpSettings$2$2
+instanceKlass org/gradle/internal/resource/unit/http/DefaultHttpSettings$Builder
+instanceKlass org/gradle/internal/resource/unit/http/DefaultHttpSettings$2$2
 instanceKlass javax/net/ssl/X509TrustManager
 instanceKlass javax/net/ssl/TrustManager
-instanceKlass org/gradle/internal/resource/transport/http/DefaultHttpSettings$2$1
-instanceKlass org/gradle/internal/resource/transport/http/DefaultHttpSettings$2
-instanceKlass org/gradle/internal/resource/transport/http/DefaultHttpSettings$1
-instanceKlass org/gradle/internal/resource/transport/http/HttpProxySettings
-instanceKlass org/gradle/internal/resource/transport/http/HttpTimeoutSettings
+instanceKlass org/gradle/internal/resource/unit/http/DefaultHttpSettings$2$1
+instanceKlass org/gradle/internal/resource/unit/http/DefaultHttpSettings$2
+instanceKlass org/gradle/internal/resource/unit/http/DefaultHttpSettings$1
+instanceKlass org/gradle/internal/resource/unit/http/HttpProxySettings
+instanceKlass org/gradle/internal/resource/unit/http/HttpTimeoutSettings
 instanceKlass javax/net/ssl/HostnameVerifier
-instanceKlass org/gradle/internal/resource/transport/http/DefaultHttpSettings
-instanceKlass org/gradle/api/internal/artifacts/repositories/transport/RepositoryTransportFactory$DefaultResourceConnectorSpecification
+instanceKlass org/gradle/internal/resource/unit/http/DefaultHttpSettings
+instanceKlass org/gradle/api/internal/artifacts/repositories/unit/RepositoryTransportFactory$DefaultResourceConnectorSpecification
 instanceKlass org/gradle/api/internal/artifacts/ivyservice/ivyresolve/FilteredModuleComponentRepository
 instanceKlass  @bci org/gradle/api/internal/artifacts/repositories/DefaultMavenArtifactRepository createRepositoryDescriptor ()Lorg/gradle/api/internal/artifacts/repositories/RepositoryContentDescriptorInternal; 5 <appendix> member <vmtarget> ; # org/gradle/api/internal/artifacts/repositories/DefaultMavenArtifactRepository$$Lambda$873+0x0000000801390ff8
 instanceKlass org/gradle/api/internal/artifacts/repositories/DefaultRepositoryContentDescriptor
@@ -477,10 +477,10 @@ instanceKlass org/gradle/api/internal/artifacts/repositories/AbstractArtifactRep
 instanceKlass org/gradle/internal/resource/transfer/CacheAwareExternalResourceAccessor$ResourceFileStore
 instanceKlass org/gradle/internal/resource/ExternalResource$ContentAndMetadataAction
 instanceKlass org/gradle/internal/resource/transfer/DefaultCacheAwareExternalResourceAccessor
-instanceKlass org/gradle/internal/resource/transport/file/FileTransport$FileCacheAwareExternalResourceAccessor
+instanceKlass org/gradle/internal/resource/unit/file/FileTransport$FileCacheAwareExternalResourceAccessor
 instanceKlass org/gradle/api/internal/artifacts/ivyservice/resolutionstrategy/DefaultExternalResourceCachePolicy
 instanceKlass org/gradle/internal/resource/transfer/CacheAwareExternalResourceAccessor
-instanceKlass org/gradle/internal/resource/transport/AbstractRepositoryTransport
+instanceKlass org/gradle/internal/resource/unit/AbstractRepositoryTransport
 instanceKlass  @bci org/gradle/internal/verifier/HttpRedirectVerifierFactory create (Ljava/net/URI;ZLjava/lang/Runnable;Ljava/util/function/Consumer;)Lorg/gradle/internal/verifier/HttpRedirectVerifier; 40 <appendix> member <vmtarget> ; # org/gradle/internal/verifier/HttpRedirectVerifierFactory$$Lambda$871+0x0000000801387740
 instanceKlass org/gradle/internal/verifier/HttpRedirectVerifierFactory
 instanceKlass  @bci org/gradle/api/internal/artifacts/repositories/DefaultUrlArtifactRepository createRedirectVerifier ()Lorg/gradle/internal/verifier/HttpRedirectVerifier; 18 <appendix> member <vmtarget> ; # org/gradle/api/internal/artifacts/repositories/DefaultUrlArtifactRepository$$Lambda$870+0x000000080138dfd8
@@ -2430,7 +2430,7 @@ instanceKlass  @bci org/gradle/api/internal/artifacts/repositories/DefaultBaseRe
 # instanceKlass java/lang/invoke/LambdaForm$DMH+0x00000008011b8000
 instanceKlass org/gradle/api/internal/artifacts/repositories/DefaultBaseRepositoryFactory$NamedMavenRepositoryDescriber
 instanceKlass org/gradle/api/internal/DefaultNamedDomainObjectCollection$ObjectBackedElementInfo
-instanceKlass  @bci org/gradle/api/internal/artifacts/repositories/DefaultMavenArtifactRepository <init> (Lorg/gradle/api/Transformer;Lorg/gradle/api/internal/file/FileResolver;Lorg/gradle/api/internal/artifacts/repositories/transport/RepositoryTransportFactory;Lorg/gradle/internal/resource/local/LocallyAvailableResourceFinder;Lorg/gradle/internal/instantiation/InstantiatorFactory;Lorg/gradle/internal/resource/local/FileStore;Lorg/gradle/api/internal/artifacts/ivyservice/ivyresolve/parser/MetaDataParser;Lorg/gradle/api/internal/artifacts/ivyservice/ivyresolve/parser/GradleModuleMetadataParser;Lorg/gradle/api/artifacts/repositories/AuthenticationContainer;Lorg/gradle/internal/resource/local/FileStore;Lorg/gradle/internal/resource/local/FileResourceRepository;Lorg/gradle/api/internal/artifacts/repositories/metadata/MavenMutableModuleMetadataFactory;Lorg/gradle/internal/isolation/IsolatableFactory;Lorg/gradle/api/model/ObjectFactory;Lorg/gradle/api/internal/artifacts/repositories/DefaultUrlArtifactRepository$Factory;Lorg/gra ; # org/gradle/api/internal/artifacts/repositories/DefaultMavenArtifactRepository$$Lambda$480+0x00000008011b2230
+instanceKlass  @bci org/gradle/api/internal/artifacts/repositories/DefaultMavenArtifactRepository <init> (Lorg/gradle/api/Transformer;Lorg/gradle/api/internal/file/FileResolver;Lorg/gradle/api/internal/artifacts/repositories/unit/RepositoryTransportFactory;Lorg/gradle/internal/resource/local/LocallyAvailableResourceFinder;Lorg/gradle/internal/instantiation/InstantiatorFactory;Lorg/gradle/internal/resource/local/FileStore;Lorg/gradle/api/internal/artifacts/ivyservice/ivyresolve/parser/MetaDataParser;Lorg/gradle/api/internal/artifacts/ivyservice/ivyresolve/parser/GradleModuleMetadataParser;Lorg/gradle/api/artifacts/repositories/AuthenticationContainer;Lorg/gradle/internal/resource/local/FileStore;Lorg/gradle/internal/resource/local/FileResourceRepository;Lorg/gradle/api/internal/artifacts/repositories/metadata/MavenMutableModuleMetadataFactory;Lorg/gradle/internal/isolation/IsolatableFactory;Lorg/gradle/api/model/ObjectFactory;Lorg/gradle/api/internal/artifacts/repositories/DefaultUrlArtifactRepository$Factory;Lorg/gra ; # org/gradle/api/internal/artifacts/repositories/DefaultMavenArtifactRepository$$Lambda$480+0x00000008011b2230
 instanceKlass  @bci org/gradle/api/internal/artifacts/repositories/AbstractArtifactRepository <init> (Lorg/gradle/api/model/ObjectFactory;)V 19 <appendix> member <vmtarget> ; # org/gradle/api/internal/artifacts/repositories/AbstractArtifactRepository$$Lambda$479+0x00000008011b2020
 instanceKlass com/google/common/base/Suppliers$MemoizingSupplier
 instanceKlass com/google/common/base/Suppliers$NonSerializableMemoizingSupplier
@@ -3220,7 +3220,7 @@ instanceKlass org/gradle/api/internal/resources/DefaultResourceResolver
 instanceKlass org/gradle/api/internal/resources/ResourceResolver
 instanceKlass org/gradle/api/resources/TextResourceFactory
 instanceKlass org/gradle/api/internal/resources/DefaultResourceHandler$Factory$FactoryImpl
-instanceKlass  @bci org/gradle/api/internal/artifacts/DependencyManagementBuildScopeServices createTextUrlResourceLoaderFactory (Lorg/gradle/api/internal/artifacts/ivyservice/modulecache/FileStoreAndIndexProvider;Lorg/gradle/api/internal/artifacts/repositories/transport/RepositoryTransportFactory;Lorg/gradle/internal/file/RelativeFilePathResolver;)Lorg/gradle/internal/resource/TextUriResourceLoader$Factory; 24 <appendix> member <vmtarget> ; # org/gradle/api/internal/artifacts/DependencyManagementBuildScopeServices$$Lambda$423+0x000000080101ebe0
+instanceKlass  @bci org/gradle/api/internal/artifacts/DependencyManagementBuildScopeServices createTextUrlResourceLoaderFactory (Lorg/gradle/api/internal/artifacts/ivyservice/modulecache/FileStoreAndIndexProvider;Lorg/gradle/api/internal/artifacts/repositories/unit/RepositoryTransportFactory;Lorg/gradle/internal/file/RelativeFilePathResolver;)Lorg/gradle/internal/resource/TextUriResourceLoader$Factory; 24 <appendix> member <vmtarget> ; # org/gradle/api/internal/artifacts/DependencyManagementBuildScopeServices$$Lambda$423+0x000000080101ebe0
 instanceKlass org/gradle/internal/extensibility/ExtensionsStorage$ExtensionHolder
 instanceKlass org/gradle/api/plugins/ExtensionsSchema$ExtensionSchema
 instanceKlass org/gradle/api/NamedDomainObjectCollectionSchema$NamedDomainObjectSchema
@@ -4480,8 +4480,8 @@ instanceKlass org/gradle/api/internal/changedetection/state/SplitFileHasher
 # instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000800f9ac00
 instanceKlass org/gradle/api/internal/artifacts/ivyservice/resolutionstrategy/ExternalResourceCachePolicy
 instanceKlass org/gradle/internal/resource/connector/ResourceConnectorSpecification
-instanceKlass org/gradle/api/internal/artifacts/repositories/transport/RepositoryTransport
-instanceKlass  @bci org/gradle/api/internal/artifacts/DependencyManagementBuildScopeServices createRepositoryTransportFactory (Lorg/gradle/api/internal/file/temp/TemporaryFileProvider;Lorg/gradle/api/internal/artifacts/ivyservice/modulecache/FileStoreAndIndexProvider;Lorg/gradle/util/internal/BuildCommencedTimeProvider;Lorg/gradle/api/internal/artifacts/ivyservice/ArtifactCachesProvider;Ljava/util/List;Lorg/gradle/internal/operations/BuildOperationExecutor;Lorg/gradle/cache/internal/ProducerGuard;Lorg/gradle/internal/resource/local/FileResourceRepository;Lorg/gradle/internal/hash/ChecksumService;Lorg/gradle/api/internal/artifacts/ivyservice/ivyresolve/StartParameterResolutionOverride;Lorg/gradle/internal/event/ListenerManager;)Lorg/gradle/api/internal/artifacts/repositories/transport/RepositoryTransportFactory; 19 <appendix> member <vmtarget> ; # org/gradle/api/internal/artifacts/DependencyManagementBuildScopeServices$$Lambda$250+0x0000000800f95a20
+instanceKlass org/gradle/api/internal/artifacts/repositories/unit/RepositoryTransport
+instanceKlass  @bci org/gradle/api/internal/artifacts/DependencyManagementBuildScopeServices createRepositoryTransportFactory (Lorg/gradle/api/internal/file/temp/TemporaryFileProvider;Lorg/gradle/api/internal/artifacts/ivyservice/modulecache/FileStoreAndIndexProvider;Lorg/gradle/util/internal/BuildCommencedTimeProvider;Lorg/gradle/api/internal/artifacts/ivyservice/ArtifactCachesProvider;Ljava/util/List;Lorg/gradle/internal/operations/BuildOperationExecutor;Lorg/gradle/cache/internal/ProducerGuard;Lorg/gradle/internal/resource/local/FileResourceRepository;Lorg/gradle/internal/hash/ChecksumService;Lorg/gradle/api/internal/artifacts/ivyservice/ivyresolve/StartParameterResolutionOverride;Lorg/gradle/internal/event/ListenerManager;)Lorg/gradle/api/internal/artifacts/repositories/unit/RepositoryTransportFactory; 19 <appendix> member <vmtarget> ; # org/gradle/api/internal/artifacts/DependencyManagementBuildScopeServices$$Lambda$250+0x0000000800f95a20
 # instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000800f9a800
 # instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000800f9a400
 # instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000800f9a000
@@ -4961,23 +4961,23 @@ instanceKlass org/gradle/internal/component/model/ExcludeMetadata
 instanceKlass org/gradle/api/internal/artifacts/ivyservice/moduleconverter/dependencies/DefaultExcludeRuleConverter
 instanceKlass  @bci org/gradle/internal/model/CalculatedValueContainerFactory <init> (Lorg/gradle/internal/resources/ProjectLeaseRegistry;Lorg/gradle/internal/service/ServiceRegistry;)V 16 <appendix> member <vmtarget> ; # org/gradle/internal/model/CalculatedValueContainerFactory$$Lambda$216+0x0000000800f22fa0
 instanceKlass org/gradle/api/internal/tasks/NodeExecutionContext
-instanceKlass org/gradle/internal/resource/transport/sftp/SftpConnectorFactory
+instanceKlass org/gradle/internal/resource/unit/sftp/SftpConnectorFactory
 instanceKlass com/jcraft/jsch/HostKeyRepository
 instanceKlass com/jcraft/jsch/Logger
-instanceKlass org/gradle/internal/resource/transport/sftp/LockableSftpClient
-instanceKlass org/gradle/internal/resource/transport/sftp/SftpClientFactory$SftpClientCreator
-instanceKlass org/gradle/internal/resource/transport/aws/s3/S3ConnectorFactory
-instanceKlass org/gradle/internal/resource/transport/gcp/gcs/GcsConnectorFactory
-instanceKlass org/gradle/internal/resource/transport/file/FileConnectorFactory
+instanceKlass org/gradle/internal/resource/unit/sftp/LockableSftpClient
+instanceKlass org/gradle/internal/resource/unit/sftp/SftpClientFactory$SftpClientCreator
+instanceKlass org/gradle/internal/resource/unit/aws/s3/S3ConnectorFactory
+instanceKlass org/gradle/internal/resource/unit/gcp/gcs/GcsConnectorFactory
+instanceKlass org/gradle/internal/resource/unit/file/FileConnectorFactory
 instanceKlass org/gradle/internal/resource/transfer/ExternalResourceConnector
 instanceKlass org/gradle/internal/resource/transfer/ExternalResourceAccessor
 instanceKlass org/gradle/internal/resource/transfer/ExternalResourceLister
 instanceKlass org/gradle/internal/resource/transfer/ExternalResourceUploader
-instanceKlass org/gradle/internal/resource/transport/http/HttpConnectorFactory
-instanceKlass  @bci org/gradle/internal/resource/transport/http/HttpClientHelper$Factory createFactory (Lorg/gradle/api/internal/DocumentationRegistry;)Lorg/gradle/internal/resource/transport/http/HttpClientHelper$Factory; 1 <appendix> member <vmtarget> ; # org/gradle/internal/resource/transport/http/HttpClientHelper$Factory$$Lambda$215+0x0000000800f2ef88
-instanceKlass org/gradle/internal/resource/transport/http/HttpClientHelper
-instanceKlass org/gradle/internal/resource/transport/http/HttpSettings
-instanceKlass org/gradle/internal/resource/transport/http/DefaultSslContextFactory
+instanceKlass org/gradle/internal/resource/unit/http/HttpConnectorFactory
+instanceKlass  @bci org/gradle/internal/resource/unit/http/HttpClientHelper$Factory createFactory (Lorg/gradle/api/internal/DocumentationRegistry;)Lorg/gradle/internal/resource/unit/http/HttpClientHelper$Factory; 1 <appendix> member <vmtarget> ; # org/gradle/internal/resource/unit/http/HttpClientHelper$Factory$$Lambda$215+0x0000000800f2ef88
+instanceKlass org/gradle/internal/resource/unit/http/HttpClientHelper
+instanceKlass org/gradle/internal/resource/unit/http/HttpSettings
+instanceKlass org/gradle/internal/resource/unit/http/DefaultSslContextFactory
 instanceKlass org/gradle/composite/internal/CompositeProjectComponentArtifactMetadataSerializer
 instanceKlass org/gradle/composite/internal/CompositeProjectComponentArtifactMetadata
 instanceKlass org/gradle/api/internal/artifacts/ivyservice/resolveengine/result/ResolvedComponentResultSerializer
@@ -5857,7 +5857,7 @@ instanceKlass org/gradle/vcs/internal/services/VersionControlServices$VersionCon
 instanceKlass org/gradle/tooling/provider/model/ToolingModelBuilder
 instanceKlass org/gradle/language/cpp/internal/tooling/ToolingNativeServices$ToolingModelRegistration
 instanceKlass org/gradle/authentication/aws/AwsImAuthentication
-instanceKlass org/gradle/internal/resource/transport/aws/s3/S3ResourcesPluginServiceRegistry$AuthenticationSchemeAction
+instanceKlass org/gradle/internal/resource/unit/aws/s3/S3ResourcesPluginServiceRegistry$AuthenticationSchemeAction
 instanceKlass org/gradle/nativeplatform/toolchain/internal/metadata/CompilerMetaDataProvider
 instanceKlass org/gradle/nativeplatform/toolchain/internal/metadata/CompilerMetaDataProviderFactory
 instanceKlass org/gradle/nativeplatform/internal/resolve/LibraryBinaryLocator
@@ -5947,7 +5947,7 @@ instanceKlass org/gradle/internal/resource/cached/DefaultExternalResourceFileSto
 instanceKlass org/gradle/internal/resource/local/GroupedAndNamedUniqueFileStore
 instanceKlass org/gradle/api/internal/filestore/DefaultArtifactIdentifierFileStore$Factory
 instanceKlass org/gradle/internal/verifier/HttpRedirectVerifier
-instanceKlass org/gradle/api/internal/artifacts/repositories/transport/RepositoryTransportFactory
+instanceKlass org/gradle/api/internal/artifacts/repositories/unit/RepositoryTransportFactory
 instanceKlass org/gradle/internal/resource/cached/AbstractCachedIndex
 instanceKlass org/gradle/api/internal/artifacts/ivyservice/modulecache/ModuleRepositoryCacheProvider
 instanceKlass org/gradle/api/internal/artifacts/ivyservice/modulecache/ModuleSourcesSerializer
@@ -6000,7 +6000,7 @@ instanceKlass org/gradle/internal/authentication/AuthenticationInternal
 instanceKlass org/gradle/authentication/http/BasicAuthentication
 instanceKlass org/gradle/authentication/Authentication
 instanceKlass org/gradle/internal/authentication/DefaultAuthenticationSchemeRegistry
-instanceKlass org/gradle/internal/resource/transport/http/HttpResourcesPluginServiceRegistry$AuthenticationSchemeAction
+instanceKlass org/gradle/internal/resource/unit/http/HttpResourcesPluginServiceRegistry$AuthenticationSchemeAction
 instanceKlass kotlin/jvm/functions/Function2
 instanceKlass kotlin/Function
 instanceKlass org/gradle/kotlin/dsl/provider/KotlinScriptEvaluator
@@ -8110,10 +8110,10 @@ instanceKlass org/gradle/api/BuildableComponentSpec
 instanceKlass org/gradle/platform/base/ComponentSpec
 instanceKlass org/gradle/model/ModelElement
 instanceKlass org/gradle/api/Buildable
-instanceKlass org/gradle/internal/resource/transport/sftp/SftpClientFactory
-instanceKlass org/gradle/internal/resource/transport/sftp/SftpResourcesPluginServiceRegistry$GlobalScopeServices
-instanceKlass org/gradle/internal/resource/transport/aws/s3/S3ResourcesPluginServiceRegistry$GlobalScopeServices
-instanceKlass org/gradle/internal/resource/transport/gcp/gcs/GcsResourcesPluginServiceRegistry$GlobalScopeServices
+instanceKlass org/gradle/internal/resource/unit/sftp/SftpClientFactory
+instanceKlass org/gradle/internal/resource/unit/sftp/SftpResourcesPluginServiceRegistry$GlobalScopeServices
+instanceKlass org/gradle/internal/resource/unit/aws/s3/S3ResourcesPluginServiceRegistry$GlobalScopeServices
+instanceKlass org/gradle/internal/resource/unit/gcp/gcs/GcsResourcesPluginServiceRegistry$GlobalScopeServices
 instanceKlass org/gradle/nativeplatform/TargetMachineBuilder
 instanceKlass org/gradle/nativeplatform/TargetMachine
 instanceKlass org/gradle/nativeplatform/internal/DefaultTargetMachineFactory
@@ -8170,10 +8170,10 @@ instanceKlass org/gradle/internal/resource/local/FileResourceRepository
 instanceKlass org/gradle/internal/resource/ExternalResourceRepository
 instanceKlass org/gradle/api/internal/artifacts/ImmutableModuleIdentifierFactory
 instanceKlass org/gradle/api/internal/artifacts/DependencyManagementGlobalScopeServices
-instanceKlass org/gradle/internal/resource/transport/http/HttpClientHelper$Factory
+instanceKlass org/gradle/internal/resource/unit/http/HttpClientHelper$Factory
 instanceKlass org/gradle/internal/resource/connector/ResourceConnectorFactory
-instanceKlass org/gradle/internal/resource/transport/http/SslContextFactory
-instanceKlass org/gradle/internal/resource/transport/http/HttpResourcesPluginServiceRegistry$GlobalScopeServices
+instanceKlass org/gradle/internal/resource/unit/http/SslContextFactory
+instanceKlass org/gradle/internal/resource/unit/http/HttpResourcesPluginServiceRegistry$GlobalScopeServices
 instanceKlass org/gradle/kotlin/dsl/support/ImplicitImports
 instanceKlass org/gradle/kotlin/dsl/support/GlobalServices
 instanceKlass org/gradle/internal/building/event/BuildEventServices$1
@@ -9733,7 +9733,7 @@ instanceKlass java/io/IOException
 instanceKlass java/lang/ReflectiveOperationException
 instanceKlass java/lang/RuntimeException
 ciInstanceKlass java/lang/Exception 1 1 40 10 7 12 1 1 1 10 12 1 10 12 1 10 12 1 10 12 1 100 1 1 1 1 5 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-instanceKlass org/gradle/internal/resource/transport/http/HttpErrorStatusCodeException
+instanceKlass org/gradle/internal/resource/unit/http/HttpErrorStatusCodeException
 instanceKlass org/gradle/internal/execution/fingerprint/InputFingerprinter$InputFingerprintingException
 instanceKlass org/gradle/api/tasks/StopExecutionException
 instanceKlass org/gradle/internal/component/NoMatchingCapabilitiesException

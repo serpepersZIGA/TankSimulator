@@ -2,8 +2,6 @@ package com.mygdx.game.block;
 
 import com.mygdx.game.main.Main;
 import com.mygdx.game.object_map.MapObject;
-import com.mygdx.game.object_map.VoidObject;
-import com.mygdx.game.transport.Transport;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;

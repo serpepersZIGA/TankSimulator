@@ -3,13 +3,13 @@ package Content.Transport.Tower;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.mygdx.game.method.RenderMethod;
-import com.mygdx.game.transport.Transport;
+import com.mygdx.game.unit.Unit;
 
 import java.util.ArrayList;
 
-public class TowerBullTankEnemy extends Transport {
+public class TowerBullTankEnemy extends Unit {
     public TowerBullTankEnemy(float x_const, float y_const, int difference, int difference_2, float reload_max, float speed_rotation, float damage, float penetration,
-                              int ind_unit, byte height, byte team, Sprite tower_image, ArrayList<Transport> List, Sound sound){
+                              int ind_unit, byte height, byte team, Sprite tower_image, ArrayList<Unit> List, Sound sound){
         this.tower_x_const = x_const;
         this.tower_y_const = y_const;
         this.allyList = List;

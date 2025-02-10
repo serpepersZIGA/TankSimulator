@@ -1,11 +1,8 @@
 package com.mygdx.game.object_map.component_collision_system;
 
 import com.mygdx.game.main.Main;
-import com.mygdx.game.main.ServerMain;
-import com.mygdx.game.object_map.MapObject;
 import com.mygdx.game.object_map.PacketMapObject;
-import com.mygdx.game.object_map.VoidObject;
-import com.mygdx.game.transport.Transport;
+import com.mygdx.game.unit.Unit;
 
 public class CollisionBreak extends ComponentCollisionSystem{
     public int x,y,width,height;
@@ -16,7 +13,7 @@ public class CollisionBreak extends ComponentCollisionSystem{
         this.height = height;
     }
     @Override
-    public void collision(Transport tr,int ix,int iy) {
+    public void collision(Unit tr, int ix, int iy) {
         if(rect_collision(x,y,width,height,0,
                 (int)tr.x,(int)tr.y,(int)tr.corpus_width,(int)tr.corpus_height,tr.rotation_corpus)){
             tr.speed /= 5;

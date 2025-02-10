@@ -1,8 +1,5 @@
 package com.mygdx.game.main;
 
-import com.mygdx.game.soldat.Soldat;
-import com.mygdx.game.transport.Transport;
-
 import java.util.ArrayList;
 
 public class Packet_client {

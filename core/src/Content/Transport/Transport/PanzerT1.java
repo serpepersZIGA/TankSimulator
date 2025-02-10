@@ -6,11 +6,11 @@ import com.mygdx.game.method.RenderMethod;
 
 import java.util.ArrayList;
 import com.mygdx.game.main.Main;
-import com.mygdx.game.transport.Transport;
-import com.mygdx.game.transport.UnitType;
+import com.mygdx.game.unit.Unit;
+import com.mygdx.game.unit.UnitType;
 
-public class PanzerT1 extends Transport {
-    public PanzerT1(float x, float y, ArrayList<Transport> tr,byte team){
+public class PanzerT1 extends Unit {
+    public PanzerT1(float x, float y, ArrayList<Unit> tr, byte team){
         this.type_unit = UnitType.PanzerT1;
         this.x = x;this.y = y;
         this.speed_inert = 0;this.speed = 0;

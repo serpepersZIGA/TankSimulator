@@ -3,13 +3,13 @@ package Content.Transport.Transport;
 import Content.Transport.Tower.TowerBullTankPlayer;
 import com.mygdx.game.method.RenderMethod;
 import com.mygdx.game.main.Main;
-import com.mygdx.game.transport.Transport;
-import com.mygdx.game.transport.UnitType;
+import com.mygdx.game.unit.Unit;
+import com.mygdx.game.unit.UnitType;
 
 import java.util.ArrayList;
 
-public class PlayerCannonMortar extends Transport {
-    public PlayerCannonMortar(float x, float y, ArrayList<Transport> tr, boolean host){
+public class PlayerCannonMortar extends Unit {
+    public PlayerCannonMortar(float x, float y, ArrayList<Unit> tr, boolean host){
         this.type_unit = UnitType.PlayerMortarT1;
         this.x = x;this.y = y;
         this.host = host;
@@ -58,7 +58,7 @@ public class PlayerCannonMortar extends Transport {
 
 
     }
-    public PlayerCannonMortar(float x, float y, ArrayList<Transport> tr, boolean host,byte team){
+    public PlayerCannonMortar(float x, float y, ArrayList<Unit> tr, boolean host, byte team){
         this.type_unit = UnitType.PlayerMortarT1;
         this.x = x;this.y = y;
         this.host = host;

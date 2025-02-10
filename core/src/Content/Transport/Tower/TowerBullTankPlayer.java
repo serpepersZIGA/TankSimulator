@@ -4,13 +4,13 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.mygdx.game.main.Main;
 import com.mygdx.game.method.RenderMethod;
-import com.mygdx.game.transport.Transport;
+import com.mygdx.game.unit.Unit;
 
 import java.util.ArrayList;
 
-public class TowerBullTankPlayer extends Transport {
+public class TowerBullTankPlayer extends Unit {
     public TowerBullTankPlayer(float x_const, float y_const, int difference, int difference_2, float reload_max, float speed_rotation, float damage, float penetration,
-                               int ind_unit, byte height, byte team, Sprite str, ArrayList<Transport> spisok, Sound sound){
+                               int ind_unit, byte height, byte team, Sprite str, ArrayList<Unit> spisok, Sound sound){
         this.tower_x_const = x_const;
         this.tower_y_const = y_const;
         this.allyList = spisok;

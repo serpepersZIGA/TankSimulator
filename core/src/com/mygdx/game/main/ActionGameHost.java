@@ -9,16 +9,16 @@ import com.mygdx.game.build.BuildPacket;
 import com.mygdx.game.method.CycleTimeDay;
 import com.mygdx.game.method.Keyboard;
 import com.mygdx.game.object_map.MapObject;
-import com.mygdx.game.transport.DebrisPacket;
-import com.mygdx.game.transport.Transport;
-import com.mygdx.game.transport.TransportPacket;
+import com.mygdx.game.unit.DebrisPacket;
+import com.mygdx.game.unit.Unit;
+import com.mygdx.game.unit.TransportPacket;
 
 import static Content.Bull.BullRegister.PacketBull;
 import static com.mygdx.game.build.BuildRegister.PacketBuilding;
 import static com.mygdx.game.main.Main.*;
 import static com.mygdx.game.main.ServerMain.Server;
 import static com.mygdx.game.soldat.SoldatRegister.PacketSoldat;
-import static com.mygdx.game.transport.TransportRegister.*;
+import static com.mygdx.game.unit.TransportRegister.*;
 
 public class ActionGameHost extends com.mygdx.game.main.ActionGame {
     private int i;
@@ -75,7 +75,8 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
         //boolean[]mouse_e = new metod.mouse_control().mouse_event();
         //Main.player_obj.get(1).all_action_client(Main.left_mouse_client, Main.right_mouse_client, Main.mouse_x_client,
                 //Main.mouse_y_client, Main.press_w_client, Main.press_a_client, Main.press_s_client, Main.press_d_client);
-        if(Transport.ai_sost != 0){Transport.ai_sost-=1;}
+        if(Unit.ai_sost != 0){
+            Unit.ai_sost-=1;}
         if(flame_spawn_time > 0){flame_spawn_time-=1;}
         Batch.begin();
         Render.begin(ShapeRenderer.ShapeType.Filled);
@@ -148,7 +149,8 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
         Render.end();
         Batch.end();
         server_packet();
-        if(Transport.ai_sost == 0){Transport.ai_sost=400;}
+        if(Unit.ai_sost == 0){
+            Unit.ai_sost=400;}
         if(flame_spawn_time <= 0){flame_spawn_time=flame_spawn_time_max;}
         CycleDayNight.WorkTime();
     }

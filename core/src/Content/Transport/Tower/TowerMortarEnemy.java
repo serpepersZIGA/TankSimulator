@@ -3,13 +3,13 @@ package Content.Transport.Tower;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.mygdx.game.method.RenderMethod;
-import com.mygdx.game.transport.Transport;
+import com.mygdx.game.unit.Unit;
 
 import java.util.ArrayList;
 
-public class TowerMortarEnemy extends Transport {
+public class TowerMortarEnemy extends Unit {
     public TowerMortarEnemy(float x_const, float y_const, int difference, int difference_2, float reload_max, float speed_rotation,float damage, float penetration,
-                            float damage_fragment, float penetration_fragment, int ind_unit, byte height, byte team, Sprite str, ArrayList<Transport> spisok
+                            float damage_fragment, float penetration_fragment, int ind_unit, byte height, byte team, Sprite str, ArrayList<Unit> spisok
     , Sound sound){
 
         this.tower_x_const = x_const;
