@@ -13,6 +13,7 @@ import Content.Particle.FlameSpawn;
 import Content.Particle.Bang;
 import com.mygdx.game.soldat.*;
 import com.mygdx.game.unit.Controller.Controller;
+import com.mygdx.game.unit.Fire.Fire;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -36,8 +37,9 @@ public abstract class Unit {
     public float x, y;
     public int  difference,difference_2,hp,max_hp,time_spawn_soldat,time_spawn_soldat_max,x_rend,y_rend,x_tower_rend,y_tower_rend, id_unit, x_tower,y_tower,
     time_max_sound_motor = 20,time_sound_motor = time_max_sound_motor,nConnect;
-    protected Sound sound_fire;
-    private float fire_x,fire_y;
+    public Sound sound_fire;
+    public float fire_x;
+    public float fire_y;
     public float max_speed=4, min_speed=-4,damage,penetration,damage_fragment,penetration_fragment,t,t_damage,armor,reload_max,acceleration=0.2f,speed,speed_inert, rotation_inert, rotation_tower, speed_tower=0.2f, speed_rotation=0.2f
             , rotation_corpus,tower_x,tower_y
             , tower_x_const, tower_y_const, tower_width_2, tower_height_2,reload,corpus_width,corpus_height,corpus_width_2,corpus_height_2,
@@ -70,6 +72,7 @@ public abstract class Unit {
     public boolean press_s;
     public boolean press_d;
     public Sprite tower_img,corpus_img;
+    public Fire fire;
     public Controller control;
     public Unit(){
 
@@ -218,9 +221,11 @@ public abstract class Unit {
         //bypass_build(Main.build,this.x_relocation,this.y_relocation,this.rotation_relocation,g_right,g_left,i);
 
     }
-    public final void tower_ii(int i){
+    public final void tower_ii(){
         if (this.trigger_attack) {
-            tower_bot_enemy(i);
+            int i2 = Method.detection_near_transport_i(this, this.enemyList);
+            this.TargetX = this.enemyList.get(i2).tower_x;
+            this.TargetY = this.enemyList.get(i2).tower_y;
         }
         else{
             if(this.rotation_tower>this.rotation_corpus+180){this.rotation_tower -= this.speed_tower;}
@@ -235,39 +240,6 @@ public abstract class Unit {
             if(this.rotation_tower>this.rotation_corpus+180){this.rotation_tower -= this.speed_tower;}
             if(this.rotation_tower<this.rotation_corpus+180){this.rotation_tower += this.speed_tower;}
         }
-    }
-    public final void client_control(){
-        for(i = 0;i<Clients.size();i++){
-            if(Clients.get(i).IDClient==nConnect){
-                this.left_mouse = Clients.get(i).left_mouse;
-                this.right_mouse = Clients.get(i).right_mouse;
-                this.press_w = Clients.get(i).press_w;
-                this.press_a = Clients.get(i).press_a;
-                this.press_s = Clients.get(i).press_s;
-                this.press_d = Clients.get(i).press_d;
-                rotation_tower = Clients.get(i).rotation_tower_client;
-                if (tower_obj.size() < Clients.get(i).rot_tower.size()) {
-                    for (int i2 = 0; i2 < tower_obj.size(); i2++) {
-                        Clients.get(i).rot_tower.size();
-                        tower_obj.get(i2).rotation_tower = Clients.get(i).rot_tower.get(i2);
-                    }
-                } else {
-                    for (int i2 = 0; i2 < Clients.get(i).rot_tower.size(); i2++) {
-                        Clients.get(i).rot_tower.size();
-                        tower_obj.get(i2).rotation_tower = Clients.get(i).rot_tower.get(i2);
-                    }
-
-                }
-
-
-            }
-        }
-//        this.left_mouse = Main.LeftMouseClient;
-//        this.right_mouse = Main.RightMouseClient;
-//        this.press_w = Main.PressWClient;
-//        this.press_a = Main.PressAClient;
-//        this.press_s = Main.PressSClient;
-//        this.press_d = Main.PressDClient;
     }
     protected final void MotorControl(){
         this.time_sound_motor -= 1;
@@ -309,25 +281,15 @@ public abstract class Unit {
             if (this.speed> Unit.speed_minimum){this.speed = 0;}
         }
         move_xy_transport();
+        press_w = false;
+        press_a = false;
+        press_s = false;
+        press_d = false;
     }
     protected final void move_xy_transport(){
         float rotation_corpus2 = (float) (-this.rotation_corpus*3.1415/180);
         this.x += move.move_sin2(this.speed, rotation_corpus2);
         this.y += move.move_cos2(this.speed, rotation_corpus2);
-    }
-    protected final void move_xy_transport_bot(){
-        float rotation_corpus2 = (float) (-this.rotation_corpus*3.1415/180);
-        this.x -= move.move_sin2(this.speed, rotation_corpus2);
-        this.y -= move.move_cos2(this.speed, rotation_corpus2);
-    }
-    protected final void tower_bot_enemy(int i) {
-        if(this.enemyList.size() != 0) {
-
-             int i2 = Method.detection_near_transport_i(this.allyList.get(i), this.enemyList);
-             this.TargetX = this.enemyList.get(i2).tower_x;
-             this.TargetY = this.enemyList.get(i2).tower_y;
-
-        }
     }
     protected final void tower_bot() {
         if(this.enemyList.size() != 0) {
@@ -369,74 +331,17 @@ public abstract class Unit {
 
         }
     }
-    protected void bot_bull_tank_fire(Unit obj_1, ArrayList<Unit>obj_2){
-        bot_fire(obj_1,obj_2);
-        if(this.sost_fire_bot && this.trigger_attack){
-            SoundPlay.sound( this.sound_fire,1-((float) sqrt(pow2(this.x_rend) + pow2(this.y_rend))/200));
-            this.fire_x = (float) (this.tower_x+this.tower_width_2+((this.tower_height_2+this.y_tower) *sin(-this.rotation_tower*3.1415926535/180)));
-            this.fire_y = (float) (this.tower_y+this.tower_height_2+((this.tower_height_2+this.y_tower) *cos(-this.rotation_tower*3.1415926535/180)));
-            Main.BulletList.add(new BullTank(this.fire_x,this.fire_y,-this.rotation_tower,this.damage,this.penetration,this.team,this.height));
-            PacketBull.add(new BullPacket());
-            int i1 = PacketBull.size()-1;
-            int i2 = BulletList.size()-1;
-            bull_packets(i1,i2);
 
-        }
-    }
     protected void blade_helicopter(){
         this.rotation_tower += speed_tower;
     }
     //public void
-    public void bot_fragmentation_bull_fire(Unit obj_1, ArrayList<Unit> obj_2){
-        bot_fire(obj_1,obj_2);
+    public void FireBotControl(){
         if(this.sost_fire_bot && this.trigger_attack){
-            SoundPlay.sound( this.sound_fire,1-((float) sqrt(pow2(this.x_rend) + pow2(this.y_rend))/200));
-            this.fire_x = (float) (this.tower_x+this.tower_width_2+((this.tower_height_2+this.y_tower) *sin(-this.rotation_tower*3.1415926535/180)));
-            this.fire_y = (float) (this.tower_y+this.tower_height_2+((this.tower_height_2+this.y_tower) *cos(-this.rotation_tower*3.1415926535/180)));
-            Main.BulletList.add(new BullMortar(this.fire_x,this.fire_y,-this.rotation_tower+180,this.damage,this.penetration,this.damage_fragment,
-                    this.penetration_fragment,this.team,this.height));
-            PacketBull.add(new BullPacket());
-            int i1 = PacketBull.size()-1;
-            int i2 = BulletList.size()-1;
-            bull_packets(i1,i2);
-
-
-        }
-
-    }
-    protected void bot_flame_fire(Unit obj_1, ArrayList<Unit>obj_2){
-        bot_fire(obj_1,obj_2);
-        if(this.sost_fire_bot && this.trigger_attack){
-            SoundPlay.sound( this.sound_fire,1-((float) sqrt(pow2(this.x_rend) + pow2(this.y_rend))/200));
-            this.fire_x = (float) (this.tower_x+this.tower_width_2+((this.tower_height_2+this.y_tower) *sin(-this.rotation_tower*3.1415926535/180)));
-            this.fire_y = (float) (this.tower_y+this.tower_height_2+((this.tower_height_2+this.y_tower) *cos(-this.rotation_tower*3.1415926535/180)));
-            Main.BulletList.add(new BullFlame(this.fire_x,this.fire_y,-this.rotation_tower+ -10+rand.rand(20),this.damage,this.t_damage,this.penetration,this.team,this.height));
-            Main.BulletList.add(new BullFlame(this.fire_x,this.fire_y,-this.rotation_tower+ -10+rand.rand(20),this.damage,this.t_damage,this.penetration,this.team,this.height));
-            PacketBull.add(new BullPacket());
-            PacketBull.add(new BullPacket());
-            int i1 = PacketBull.size()-2;
-            int i2 = BulletList.size()-2;
-            bull_packets(i1,i2);
-            bull_packets(i1+1,i2+1);
+            fire.FireIteration(this);
         }
     }
-    protected void bot_acid_fire(Unit obj_1, ArrayList<Unit>obj_2){
-        bot_fire(obj_1,obj_2);
-        if(this.sost_fire_bot && this.trigger_attack){
-            SoundPlay.sound( this.sound_fire,1-((float) sqrt(pow2(this.x_rend) + pow2(this.y_rend))/200));
-            this.fire_x = (float) (this.tower_x+this.tower_width_2+((this.tower_height_2+this.y_tower) *sin(-this.rotation_tower*3.1415926535/180)));
-            this.fire_y = (float) (this.tower_y+this.tower_height_2+((this.tower_height_2+this.y_tower) *cos(-this.rotation_tower*3.1415926535/180)));
-            Main.BulletList.add(new BullAcid(this.fire_x,this.fire_y, -this.rotation_tower+ -10+rand.rand(20),  this.damage, this.penetration,this.team,this.height));
-            Main.BulletList.add(new BullAcid(this.fire_x,this.fire_y, -this.rotation_tower+ -10+rand.rand(20),  this.damage, this.penetration,this.team,this.height));
-            PacketBull.add(new BullPacket());
-            PacketBull.add(new BullPacket());
-            int i1 = PacketBull.size()-2;
-            int i2 = BulletList.size()-2;
-            bull_packets(i1,i2);
-            bull_packets(i1+1,i2+1);
-        }
-    }
-    private void bull_packets(int i1,int i2){
+    public void bull_packets(int i1, int i2){
         PacketBull.get(i1).x = this.fire_x;
         PacketBull.get(i1).y = this.fire_y;
         PacketBull.get(i1).rotation = BulletList.get(i2).rotation;
@@ -463,11 +368,11 @@ public abstract class Unit {
         //System.out.println(xy[0]+"ss"+xy[1]);
     }
     protected boolean reload_bot(){
-        if(this.reload > 0){
-            this.reload -= 1;
-            return false;
+        if(this.reload < 0){
+            return true;
         }
-        return true;
+        this.reload -= 1;
+        return false;
 
     }
     protected void indicator_hp(){
@@ -495,95 +400,10 @@ public abstract class Unit {
         Render.setColor(Option.reload_2_r_indicator, Option.reload_2_g_indicator, Option.reload_2_b_indicator,1);
         Render.rect((this.x_rend- Option.const_reload_x_zoom),(this.y_rend- Option.const_reload_y_zoom),(int)(green_len_reload* Main.Zoom), Option.size_y_indicator_zoom);
     }
-    protected void fire_player_bull_tank(){
+    public void FireControlPlayer(Unit unit){
         if(reload_bot() && this.left_mouse){
-            for (Unit unit : this.enemyList) {
-                if (sqrt(pow2(this.x - unit.x) + pow2(this.y - unit.y)) < unit.range_see_2) {
-                    unit.time_trigger_bull_bot = unit.time_trigger_bull;
-                }
-            }
-            SoundPlay.sound( this.sound_fire,1-((float) sqrt(pow2(this.x_rend) + pow2(this.y_rend))/SoundConst));
-            this.fire_x = (float) (this.tower_x+this.tower_width_2+((this.tower_height_2+this.y_tower) *sin(-this.rotation_tower*3.1415926535/180)));
-            this.fire_y = (float) (this.tower_y+this.tower_height_2+((this.tower_height_2+this.y_tower) *cos(-this.rotation_tower*3.1415926535/180)));
-            this.reload = this.reload_max;
-            Main.BulletList.add(new BullTank(this.fire_x,this.fire_y,
-                    -this.rotation_tower,this.damage,this.penetration,this.team,(byte)1));
-            PacketBull.add(new BullPacket());
-            int i1 = PacketBull.size()-1;
-            int i2 = BulletList.size()-1;
-            bull_packets(i1,i2);
-        }
-    }
-    protected void fire_player_flame(){
-        if(reload_bot() && this.left_mouse){
-
-            for (Unit enemy : this.enemyList) {
-                if (sqrt(pow2(this.x - enemy.x) + pow2(this.y - enemy.y)) < enemy.range_see_2) {
-                    enemy.time_trigger_bull_bot = enemy.time_trigger_bull;
-                }
-            }
-            try {
-                SoundPlay.sound(this.sound_fire, 1-((float) sqrt(pow2(this.x_rend) + pow2(this.y_rend))/SoundConst));
-            }catch (NoClassDefFoundError e){
-                e.printStackTrace();
-            }
-            this.reload = this.reload_max;
-            this.fire_x = (float) (this.tower_x+this.tower_width_2+((this.tower_height_2+this.y_tower) *sin(-this.rotation_tower*3.1415926535/180)));
-            this.fire_y = (float) (this.tower_y+this.tower_height_2+((this.tower_height_2+this.y_tower) *cos(-this.rotation_tower*3.1415926535/180)));
-            Main.BulletList.add(new BullFlame(this.fire_x,this.fire_y,
-                    -this.rotation_tower+ -10+rand.rand(20),this.damage,this.t_damage,this.penetration,this.team,(byte)1));
-            Main.BulletList.add(new BullFlame(this.fire_x,this.fire_y,
-                    -this.rotation_tower+ -10+rand.rand(20),this.damage,this.t_damage,this.penetration,this.team,(byte)1));
-            PacketBull.add(new BullPacket());
-            PacketBull.add(new BullPacket());
-            int i1 = PacketBull.size()-2;
-            int i2 = BulletList.size()-2;
-            bull_packets(i1,i2);
-            bull_packets(i1+1,i2+1);
-        }
-    }
-    protected void fire_player_fragmentation_bull(){
-        if(reload_bot() && this.left_mouse){
-            for (Unit unit : this.enemyList) {
-                if (sqrt(pow2(this.x - unit.x) + pow2(this.y - unit.y)) < unit.range_see_2) {
-                    unit.time_trigger_bull_bot = unit.time_trigger_bull;
-                }
-            }
-            rotation_fire = this.rotation_tower+180;
-            SoundPlay.sound( this.sound_fire,1-((float) sqrt(pow2(this.x_rend) + pow2(this.y_rend))/SoundConst));
-            this.reload = this.reload_max;
-            this.fire_x = (float) (this.tower_x+this.tower_width_2+((this.tower_height_2+this.y_tower) *sin(-this.rotation_tower*3.1415926535/180)));
-            this.fire_y = (float) (this.tower_y+this.tower_height_2+((this.tower_height_2+this.y_tower) *cos(-this.rotation_tower*3.1415926535/180)));
-            Main.BulletList.add(new BullMortar(this.fire_x,this.fire_y,
-                    -rotation_fire,this.damage,this.penetration,this.damage_fragment,this.penetration_fragment,this.team,(byte)1));
-            PacketBull.add(new BullPacket());
-            int i1 = PacketBull.size()-1;
-            int i2 = BulletList.size()-1;
-            bull_packets(i1,i2);
-
-
-        }
-    }
-
-    protected void fire_player_acid(){
-        if(reload_bot() && this.left_mouse){
-            for (Unit unit : enemyList) {
-                if (sqrt(pow2(this.x - unit.x) + pow2(this.y - unit.y)) < unit.range_see_2) {
-                    unit.time_trigger_bull_bot = unit.time_trigger_bull;
-                }
-            }
-            SoundPlay.sound( this.sound_fire,1-((float) sqrt(pow2(this.x_rend) + pow2(this.y_rend))/SoundConst));
-            this.reload = this.reload_max;
-            this.fire_x = (float) (this.tower_x+this.tower_width_2+((this.tower_height_2+this.y_tower) *sin(-this.rotation_tower*3.1415926535/180)));
-            this.fire_y = (float) (this.tower_y+this.tower_height_2+((this.tower_height_2+this.y_tower) *cos(-this.rotation_tower*3.1415926535/180)));
-            Main.BulletList.add(new BullAcid(this.fire_x,this.fire_y,-this.rotation_tower+ -10+rand.rand(20), this.damage,this.penetration,this.team,(byte)1));
-            Main.BulletList.add(new BullAcid(this.fire_x,this.fire_y,-this.rotation_tower+ -10+rand.rand(20), this.damage,this.penetration,this.team,(byte)1));
-            PacketBull.add(new BullPacket());
-            PacketBull.add(new BullPacket());
-            int i1 = PacketBull.size()-2;
-            int i2 = BulletList.size()-2;
-            bull_packets(i1,i2);
-            bull_packets(i1+1,i2+1);
+            fire.FireIteration(unit);
+            reload = reload_max;
         }
     }
 
@@ -751,9 +571,9 @@ public abstract class Unit {
             this.rotation_corpus = 89;
         }
         if (g > this.rotation_corpus) {
-                this.rotation_corpus += this.speed_rotation;
+            press_a = true;
         } else if (g < this.rotation_corpus) {
-            this.rotation_corpus -= this.speed_rotation;
+            press_d = true;
         }
         if (abs(g-rotation_corpus)<20 && this.crite_life == 0){
             this.trigger_drive = 1;

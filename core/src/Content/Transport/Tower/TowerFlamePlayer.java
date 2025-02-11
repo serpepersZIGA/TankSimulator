@@ -4,6 +4,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.mygdx.game.main.Main;
 import com.mygdx.game.method.RenderMethod;
+import com.mygdx.game.unit.Fire.FireRegister;
 import com.mygdx.game.unit.Unit;
 
 import java.util.ArrayList;
@@ -28,6 +29,7 @@ public class TowerFlamePlayer extends Unit {
         this.team = team;
         this.difference = difference;
         this.difference_2 = difference_2;
+        fire = FireRegister.FireFlame;
         data_tower();
         this.width_tower = 15;
         this.height_tower = 20;
@@ -43,7 +45,6 @@ public class TowerFlamePlayer extends Unit {
         this.left_mouse = sost_fire_bot;
         tower_xy_2();
         TowerControl();
-        fire_player_flame();
         center_render_tower();
         RenderMethod.transorm_img(this.x_tower_rend,this.y_tower_rend,this.width_tower_zoom,this.height_tower_zoom,this.rotation_tower,this.tower_img,const_x_tower,const_y_tower);
 
@@ -54,7 +55,6 @@ public class TowerFlamePlayer extends Unit {
         this.rotation_corpus = rotation;
         this.left_mouse = sost_fire_bot;
         tower_xy_2();
-        fire_player_flame();
         center_render_tower();
         RenderMethod.transorm_img(this.x_tower_rend,this.y_tower_rend,this.width_tower_zoom,this.height_tower_zoom,this.rotation_tower,this.tower_img,const_x_tower,const_y_tower);
 

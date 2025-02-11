@@ -5,6 +5,7 @@ import com.mygdx.game.method.RenderMethod;
 
 import java.util.ArrayList;
 import com.mygdx.game.main.Main;
+import com.mygdx.game.unit.Fire.FireRegister;
 import com.mygdx.game.unit.Unit;
 import com.mygdx.game.unit.UnitType;
 
@@ -40,6 +41,7 @@ public class PlayerCannonAcid extends Unit {
         this.speed_tower = 1;this.speed_rotation = 3;
         this.sound_fire = Main.ContentSound.acid_attack;
         data();
+        fire = FireRegister.FireAcid;
         this.tower_obj.add(new TowerFlamePlayer(18,55,52,-12,2,2,12,5,2,this.id_unit,this.height,
                 this.team,Main.ContentImage.tower_player_auxiliary_1,this.allyList,Main.ContentSound.flame_attack));
         this.tower_obj.add(new TowerFlamePlayer(18,55,52,-12,2,2,12,5,2,this.id_unit,this.height,
@@ -53,8 +55,8 @@ public class PlayerCannonAcid extends Unit {
     }
     public void all_action(int i) {
         super.all_action(i);
+        Main.RegisterControl.controllerPlayer.ControllerIteration(Main.PlayerList.get(i),i);
         super.MotorControl();
-        super.fire_player_acid();
         super.build_corpus(i);
         super.corpus_corpus(this.enemyList);
         super.corpus_corpus_def_xy(this.allyList);
@@ -72,9 +74,8 @@ public class PlayerCannonAcid extends Unit {
     @Override
     public void all_action_client(int i) {
         super.all_action_client(i);
-        super.client_control();
+        Main.RegisterControl.controllerPlayer.ControllerIterationClientAnHost(Main.PlayerList.get(i));
         super.MotorControl();
-        super.fire_player_acid();
         super.build_corpus(i);
         super.corpus_corpus(this.enemyList);
         super.corpus_corpus_def_xy(this.allyList);
@@ -99,7 +100,6 @@ public class PlayerCannonAcid extends Unit {
         tower_iteration_client_2(i);
         RenderMethod.transorm_img(this.x_tower_rend, this.y_tower_rend,this.width_tower_zoom,this.height_tower_zoom,this.rotation_tower,this.tower_img,const_x_tower,const_y_tower
         );
-        Main.PacketClient.rotation_tower_client = rotation_tower;
     }
     public void all_action_client_2(int i) {
         super.all_action_client_2(i);

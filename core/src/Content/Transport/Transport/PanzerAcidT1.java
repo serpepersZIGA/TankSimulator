@@ -7,6 +7,7 @@ import com.mygdx.game.method.rand;
 
 import java.util.ArrayList;
 import com.mygdx.game.main.Main;
+import com.mygdx.game.unit.Fire.FireRegister;
 import com.mygdx.game.unit.Unit;
 import com.mygdx.game.unit.UnitType;
 
@@ -45,6 +46,7 @@ public class PanzerAcidT1 extends Unit {
         this.height_tower = 55;
         this.speed_tower = 1;this.speed_rotation = 1;
         this.sound_fire = Main.ContentSound.acid_attack;
+        fire = FireRegister.FireAcid;
         data();
 //        this.tower_obj.add(new tower_flame_enemy(18,55,52,-12,4,2,65,12,2, this.id_unit,
 //                (byte)1,(byte)2,Main.content_base.tower_player_auxiliart_1,this.spisok, Main.sa.get(0).flame_attack));
@@ -63,9 +65,6 @@ public class PanzerAcidT1 extends Unit {
     }
     public void all_action(int i) {
         super.all_action(i);
-        super.behavior_bot(this.enemyList, i);
-        super.bot_acid_fire(allyList.get(i), enemyList);
-        super.tower_ii(i);
         super.build_corpus(i);
         super.corpus_corpus_def_xy(this.allyList);
         super.tower_xy();

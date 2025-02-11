@@ -3,6 +3,7 @@ package Content.Transport.Tower;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.mygdx.game.method.RenderMethod;
+import com.mygdx.game.unit.Fire.FireRegister;
 import com.mygdx.game.unit.Unit;
 
 import java.util.ArrayList;
@@ -29,6 +30,7 @@ public class TowerFlameEnemy extends Unit {
         this.difference_2 = difference_2;
         this.width_tower = 15;
         this.height_tower = 20;
+        fire = FireRegister.FireFlame;
         data_tower();
         x_tower =7;
         y_tower =10;
@@ -46,7 +48,6 @@ public class TowerFlameEnemy extends Unit {
         //this.left_mouse = sost_fire_bot;
         tower_xy_2();
         tower_ii_2();
-        bot_flame_fire(allyList.get(i).tower_obj.get(iTower), this.enemyList);
         center_render_tower();
         RenderMethod.transorm_img(this.x_tower_rend,this.y_tower_rend,this.width_tower_zoom,this.height_tower_zoom,this.rotation_tower,this.tower_img,const_x_tower,const_y_tower);
 

@@ -128,20 +128,5 @@ public class ActionGameClient extends com.mygdx.game.main.ActionGame {
         if(flame_spawn_time < 0){flame_spawn_time=flame_spawn_time_max;}
         Render.end();
         Batch.end();
-        client_packet();
-    }
-    public static void client_packet(){
-        PacketClient.press_w = Keyboard.PressW;
-        PacketClient.press_a = Keyboard.PressA;
-        PacketClient.press_s = Keyboard.PressS;
-        PacketClient.press_d = Keyboard.PressD;
-        PacketClient.left_mouse = Keyboard.LeftMouse;
-        PacketClient.right_mouse = Keyboard.RightMouse;
-        PacketClient.mouse_x = Keyboard.MouseX;
-        PacketClient.mouse_y = Keyboard.MouseY;
-        PacketClient.IDClient = Main.IDClient;
-        Client.sendUDP(PacketClient);
-        PacketClient.rot_tower.clear();
-
     }
 }

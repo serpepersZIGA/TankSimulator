@@ -3,6 +3,7 @@ package Content.Transport.Transport;
 import Content.Transport.Tower.TowerMortarPlayer;
 import com.mygdx.game.method.RenderMethod;
 import com.mygdx.game.main.Main;
+import com.mygdx.game.unit.Fire.FireRegister;
 import com.mygdx.game.unit.Unit;
 import com.mygdx.game.unit.UnitType;
 
@@ -88,6 +89,7 @@ public class PlayerCannonFlame extends Unit {
         this.height_tower = 55;
         this.speed_tower = 1;this.speed_rotation = 1;
         this.sound_fire = Main.ContentSound.flame_attack;
+        fire = FireRegister.FireFlame;
         data();
         this.tower_obj.add(new TowerMortarPlayer(18,55,52,-12,40,2,
                 65,12,15,15, this.id_unit,
@@ -108,13 +110,10 @@ public class PlayerCannonFlame extends Unit {
         super.all_action(i);
         Main.RegisterControl.controllerPlayer.ControllerIteration(Main.PlayerList.get(i),i);
         super.MotorControl();
-        super.fire_player_flame();
         super.build_corpus(i);
         super.corpus_corpus(this.enemyList);
         super.tower_xy();
         super.TowerControl();
-        Main.RC.x = this.tower_x;
-        Main.RC.y = this.tower_y;
         center_render();
         RenderMethod.transorm_img(this.x_rend, this.y_rend,this.corpus_width_zoom,this.corpus_height_zoom,this.rotation_corpus,this.corpus_img,const_x_corpus,const_y_corpus);
         tower_iteration(i);
@@ -125,9 +124,8 @@ public class PlayerCannonFlame extends Unit {
     @Override
     public void all_action_client(int i) {
         super.all_action_client(i);
-        super.client_control();
+        Main.RegisterControl.controllerPlayer.ControllerIterationClientAnHost(Main.PlayerList.get(i));
         super.MotorControl();
-        super.fire_player_flame();
         super.build_corpus(i);
         super.corpus_corpus(this.enemyList);
         super.corpus_corpus_def_xy(this.allyList);
@@ -142,17 +140,15 @@ public class PlayerCannonFlame extends Unit {
     @Override
     public void all_action_client_1(int i) {
         super.all_action_client_1(i);
+        Main.RegisterControl.controllerPlayer.ControllerIterationClientAnClient(Main.PlayerList.get(i));
         move_xy_transport();
         super.tower_xy();
         super.TowerControl();
-        Main.RC.x = this.tower_x;
-        Main.RC.y = this.tower_y;
         center_render();
         RenderMethod.transorm_img(this.x_rend, this.y_rend,this.corpus_width_zoom,this.corpus_height_zoom,this.rotation_corpus,this.corpus_img,const_x_corpus,const_y_corpus);
         tower_iteration_client_2(i);
         RenderMethod.transorm_img(this.x_tower_rend, this.y_tower_rend,this.width_tower_zoom,this.height_tower_zoom,this.rotation_tower,this.tower_img,const_x_tower,const_y_tower
         );
-        Main.PacketClient.rotation_tower_client = rotation_tower;
 
     }
     public void all_action_client_2(int i) {

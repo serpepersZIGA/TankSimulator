@@ -34,7 +34,9 @@ import com.mygdx.game.soldat.Soldat;
 import com.mygdx.game.soldat.SoldatRegister;
 import Data.DataSound;
 import com.mygdx.game.unit.*;
+import com.mygdx.game.unit.Controller.ControllerBot;
 import com.mygdx.game.unit.Controller.RegisterController;
+import com.mygdx.game.unit.Fire.FireRegister;
 import com.mygdx.game.unit.PlayerSpawnList.PlayerAllLoad;
 import com.mygdx.game.unit.SpawnPlayer.PlayerSpawnData;
 import com.mygdx.game.unit.SpawnPlayer.PlayerSpawnListData;
@@ -108,6 +110,7 @@ public class Main extends ApplicationAdapter {
 	public static CycleTimeDay CycleDayNight;
 	public static int flame_spawn_time,flame_spawn_time_max = 20;
 	public static RegisterController RegisterControl;
+	public static FireRegister FireRegister;
 
 
 
@@ -129,6 +132,7 @@ public class Main extends ApplicationAdapter {
 		MapScan.MapInput("Map/maps/MapBase.mapt");
 		MapAllLoad.MapCount();
 		EnemyList.add(new PanzerFlameT1(2200,2000,Main.EnemyList,(byte)2));
+		EnemyList.get(0).control = Main.RegisterControl.controllerBot;
 		LiquidList.add(new Acid(200,200));
 		LiquidList.add(new Blood(200,200));
 		FlameSpawnList.add(new FlameSpawn(200,200));
@@ -203,6 +207,7 @@ public class Main extends ApplicationAdapter {
 		ContentImage = new DataImage();
 		ContentSound = new DataSound();
 		new PlayerSpawnListData();
+		FireRegister = new FireRegister();
 		RegisterControl = new RegisterController();
 		CycleDayNight = new CycleTimeDay(5,5,3,3,0.4f,0.9f);
 		BuildingRegister = new UpdateBuildingRegister();

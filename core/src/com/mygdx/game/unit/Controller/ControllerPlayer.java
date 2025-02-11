@@ -1,10 +1,16 @@
 package com.mygdx.game.unit.Controller;
 
+import com.mygdx.game.main.Main;
+import com.mygdx.game.main.Packet_client;
 import com.mygdx.game.method.Keyboard;
 import com.mygdx.game.unit.Unit;
 
+import static com.mygdx.game.main.ClientMain.Client;
+import static com.mygdx.game.main.Main.Clients;
+import static com.mygdx.game.main.Main.PacketClient;
+
 public class ControllerPlayer extends Controller {
-    public void ControllerIteration(Unit unit){
+    public void ControllerIteration(Unit unit,int i){
         unit.left_mouse = Keyboard.LeftMouse;
         unit.right_mouse = Keyboard.RightMouse;
         unit.press_w = Keyboard.PressW;
@@ -13,16 +19,49 @@ public class ControllerPlayer extends Controller {
         unit.press_d = Keyboard.PressD;
         unit.TargetX = Keyboard.MouseX;
         unit.TargetY = Keyboard.MouseY;
+        Main.RC.x = unit.tower_x;
+        Main.RC.y = unit.tower_y;
+        unit.FireControlPlayer(unit);
         for(Unit Tower : unit.tower_obj){
+            Tower.left_mouse = Keyboard.RightMouse;
             Tower.TargetX = Keyboard.MouseX;
             Tower.TargetY = Keyboard.MouseY;
+            Tower.FireControlPlayer(Tower);
         }
 
     }
     public void ControllerIterationClientAnHost(Unit unit){
-
+        for(Packet_client pack : Clients){
+            if(pack != null & pack.IDClient==unit.nConnect){
+                unit.left_mouse = pack.left_mouse;
+                unit.right_mouse = pack.right_mouse;
+                unit.press_w = pack.press_w;
+                unit.press_a = pack.press_a;
+                unit.press_s = pack.press_s;
+                unit.press_d = pack.press_d;
+                unit.FireControlPlayer(unit);
+                for (Unit Tower : unit.tower_obj) {
+                    Tower.TargetX = pack.TargetX;
+                    Tower.TargetY = pack.TargetY;
+                }
+            }
+        }
     }
     public void ControllerIterationClientAnClient(Unit unit){
+        Main.RC.x = unit.tower_x;
+        Main.RC.y = unit.tower_y;
+        PacketClient.press_w = Keyboard.PressW;
+        PacketClient.press_a = Keyboard.PressA;
+        PacketClient.press_s = Keyboard.PressS;
+        PacketClient.press_d = Keyboard.PressD;
+        PacketClient.left_mouse = Keyboard.LeftMouse;
+        PacketClient.right_mouse = Keyboard.RightMouse;
+        PacketClient.mouse_x = Keyboard.MouseX;
+        PacketClient.mouse_y = Keyboard.MouseY;
+        PacketClient.IDClient = Main.IDClient;
+        PacketClient.TargetX = unit.TargetX;
+        PacketClient.TargetY = unit.TargetY;
+        Client.sendUDP(PacketClient);
 
     }
 }
