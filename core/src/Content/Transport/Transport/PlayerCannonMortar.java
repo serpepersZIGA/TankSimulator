@@ -60,7 +60,7 @@ public class PlayerCannonMortar extends Unit {
     }
     public void all_action(int i) {
         super.all_action(i);
-        Main.RegisterControl.controllerPlayer.ControllerIteration(this,i);
+        control.ControllerIteration(this,i);
         super.MotorControl();
         super.build_corpus(i);
         super.corpus_corpus(this.enemyList);
@@ -75,7 +75,7 @@ public class PlayerCannonMortar extends Unit {
     }
     @Override
     public void all_action_client(int i) {
-        Main.RegisterControl.controllerPlayer.ControllerIterationClientAnHost(Main.PlayerList.get(i));
+        control.ControllerIterationClientAnHost(this);
         super.MotorControl();
         super.build_corpus(i);
         super.corpus_corpus(this.enemyList);
@@ -91,7 +91,7 @@ public class PlayerCannonMortar extends Unit {
     @Override
     public void all_action_client_1(int i) {
         super.all_action_client_1(i);
-        Main.RegisterControl.controllerPlayer.ControllerIterationClientAnClient(Main.PlayerList.get(i));
+        control.ControllerIterationClientAnClient(this);
         move_xy_transport();
         super.tower_xy();
         super.TowerControl();

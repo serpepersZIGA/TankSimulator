@@ -10,53 +10,6 @@ import com.mygdx.game.unit.UnitType;
 import java.util.ArrayList;
 
 public class PlayerCannonFlame extends Unit {
-    public PlayerCannonFlame(float x, float y, ArrayList<Unit> tr, boolean host){
-        type_unit = UnitType.PlayerFlameT1;
-        this.x = x;this.y = y;
-        this.host = host;
-        this.speed_inert = 0;this.speed = 0;
-        this.max_speed = 4;this.min_speed = -4;
-        this.max_hp = 1200;
-        this.damage = 10;
-        this.allyList = tr;
-        this.armor = 50;
-        this.penetration = 5;
-        this.acceleration = 0.2f;
-        this.team = 1;
-        this.reload_max = 2;
-        this.height = 1;
-        this.tower_img = Main.ContentImage.tower_player;
-        this.corpus_img = Main.ContentImage.corpus_player;
-        this.t = 0;
-        this.t_damage = 1;
-//        this.x_tower = 15;
-//        this.y_tower = 20;
-
-        //this.tower_x_const = 6;
-        //this.tower_y_const = 35;
-
-
-        this.corpus_width = 50;
-        this.corpus_height = 129;
-        this.width_tower = 35;
-        this.height_tower = 55;
-        this.speed_tower = 1;this.speed_rotation = 1;
-        this.sound_fire = Main.ContentSound.flame_attack;
-        data();
-        this.tower_obj.add(new TowerMortarPlayer(18,55,52,-12,40,2,
-                65,12,15,15, this.id_unit,
-                (byte)1,this.team,Main.ContentImage.tower_player_auxiliary_1,this.allyList, Main.ContentSound.cannon));
-        this.tower_obj.add(new TowerMortarPlayer(18,55,52,12,40,2,
-                65,12,15,15, this.id_unit,
-                (byte)1,this.team,Main.ContentImage.tower_player_auxiliary_1,this.allyList, Main.ContentSound.cannon));
-
-        this.difference = 18;
-        const_tower_x = (int)(width_tower/2);
-        const_tower_y = 21;
-        this.tower_x_const = (int) (corpus_width/2)-(width_tower/2);
-        this.tower_y_const = (int) (corpus_height/2)-(height_tower/2)+7;
-        center_render();
-    }
     public PlayerCannonFlame(float x, float y, ArrayList<Unit> tr, boolean host, byte team){
         type_unit = UnitType.PlayerFlameT1;
         this.x = x;this.y = y;
@@ -108,7 +61,7 @@ public class PlayerCannonFlame extends Unit {
     }
     public void all_action(int i) {
         super.all_action(i);
-        Main.RegisterControl.controllerPlayer.ControllerIteration(Main.PlayerList.get(i),i);
+        control.ControllerIteration(Main.PlayerList.get(i),i);
         super.MotorControl();
         super.build_corpus(i);
         super.corpus_corpus(this.enemyList);
@@ -124,7 +77,7 @@ public class PlayerCannonFlame extends Unit {
     @Override
     public void all_action_client(int i) {
         super.all_action_client(i);
-        Main.RegisterControl.controllerPlayer.ControllerIterationClientAnHost(Main.PlayerList.get(i));
+        control.ControllerIterationClientAnHost(Main.PlayerList.get(i));
         super.MotorControl();
         super.build_corpus(i);
         super.corpus_corpus(this.enemyList);
@@ -140,7 +93,7 @@ public class PlayerCannonFlame extends Unit {
     @Override
     public void all_action_client_1(int i) {
         super.all_action_client_1(i);
-        Main.RegisterControl.controllerPlayer.ControllerIterationClientAnClient(Main.PlayerList.get(i));
+        control.ControllerIterationClientAnClient(Main.PlayerList.get(i));
         move_xy_transport();
         super.tower_xy();
         super.TowerControl();
@@ -153,6 +106,7 @@ public class PlayerCannonFlame extends Unit {
     }
     public void all_action_client_2(int i) {
         super.all_action_client_2(i);
+        control.ControllerIterationClientAnClient(this);
         super.tower_xy();
         center_render();
         move_xy_transport();

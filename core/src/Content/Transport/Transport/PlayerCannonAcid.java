@@ -55,7 +55,7 @@ public class PlayerCannonAcid extends Unit {
     }
     public void all_action(int i) {
         super.all_action(i);
-        Main.RegisterControl.controllerPlayer.ControllerIteration(Main.PlayerList.get(i),i);
+        control.ControllerIteration(Main.PlayerList.get(i),i);
         super.MotorControl();
         super.build_corpus(i);
         super.corpus_corpus(this.enemyList);
@@ -74,7 +74,7 @@ public class PlayerCannonAcid extends Unit {
     @Override
     public void all_action_client(int i) {
         super.all_action_client(i);
-        Main.RegisterControl.controllerPlayer.ControllerIterationClientAnHost(Main.PlayerList.get(i));
+        control.ControllerIterationClientAnHost(Main.PlayerList.get(i));
         super.MotorControl();
         super.build_corpus(i);
         super.corpus_corpus(this.enemyList);
@@ -90,11 +90,10 @@ public class PlayerCannonAcid extends Unit {
     @Override
     public void all_action_client_1(int i) {
         super.all_action_client_1(i);
+        control.ControllerIterationClientAnClient(this);
         move_xy_transport();
         super.tower_xy();
         super.TowerControl();
-        Main.RC.x = this.tower_x;
-        Main.RC.y = this.tower_y;
         center_render();
         RenderMethod.transorm_img(this.x_rend, this.y_rend,this.corpus_width_zoom,this.corpus_height_zoom,this.rotation_corpus,this.corpus_img,const_x_corpus,const_y_corpus);
         tower_iteration_client_2(i);
