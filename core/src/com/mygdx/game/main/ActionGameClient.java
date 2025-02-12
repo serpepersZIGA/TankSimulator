@@ -7,6 +7,8 @@ import com.mygdx.game.method.Keyboard;
 
 import static com.mygdx.game.main.Main.*;
 import static com.mygdx.game.main.ClientMain.Client;
+import static com.mygdx.game.soldat.SoldatRegister.PacketSoldat;
+import static com.mygdx.game.unit.TransportRegister.*;
 
 
 public class ActionGameClient extends com.mygdx.game.main.ActionGame {

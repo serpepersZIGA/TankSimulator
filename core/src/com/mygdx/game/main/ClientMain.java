@@ -104,6 +104,37 @@ public class ClientMain extends Listener{
     public void received(Connection c, Object p) {
         Main.IDClient = c.getID();
         if(p instanceof PackerServer) {
+            PacketBull = ((PackerServer) p).bull;
+            i = BulletList.size();
+            for (BullPacket pack : PacketBull) {
+                switch (pack.type) {
+                    case 1:
+                        BulletList.add(new BullFlame(pack.x,pack.y,
+                                pack.rotation, 0.0F, 0.0F, 0,pack.team,pack.height));
+                        break;
+                    case 2:
+                        BulletList.add(new BullFragment(pack.x, pack.y,
+                                0.0F, 0.0f, pack.height));break;
+
+                    case 3:
+                        BulletList.add(new BullMortar(pack.x, pack.y,
+                                pack.rotation, 0.0f, 0f, 0f, 0f,pack.team
+                                ,pack.height));break;
+                    case 4:
+                        BulletList.add(new BullAcid(pack.x,pack.y,
+                                pack.rotation, 0.0f, 0.0f,pack.team
+                                , pack.height));break;
+                    case 5:
+                        BulletList.add(new BullTank(pack.x, pack.y,
+                                pack.rotation, 0.0f, 0.0f, pack.team
+                                , pack.height));break;
+                }
+                try {
+                    bull_data(pack);
+                }catch (IndexOutOfBoundsException e){
+                    e.printStackTrace();
+                }
+            }
             CycleTimeDay.lightTotal = ((PackerServer) p).TotalLight;
             PacketPlayer = ((PackerServer) p).player;
             if (PacketPlayer.size() == PlayerList.size()) {
@@ -127,6 +158,7 @@ public class ClientMain extends Listener{
                             PlayerList.add(new PlayerCannonAcid(0, 0, PlayerList, PacketPlayer.get(i).host,(byte)1));
                             break;
                     }
+                    PlayerList.get(PlayerList.size()-1).control = RegisterControl.controllerPlayer;
                     player_data(i);
                 }
                 KeyboardObj.zoom_const();
@@ -185,37 +217,10 @@ public class ClientMain extends Listener{
                 }
                 KeyboardObj.zoom_const();
             }
-            PacketBull = ((PackerServer) p).bull;
-            i = BulletList.size();
-            for (int i2 = 0; i2 < PacketBull.size(); i2++) {
-                switch (PacketBull.get(i2).type) {
-                    case 1:
-                        BulletList.add(new BullFlame(PacketBull.get(i2).x, PacketBull.get(i2).y,
-                            PacketBull.get(i2).rotation, 0.0F, 0.0F, 0, PacketBull.get(i2).team, PacketBull.get(i2).height));
-                        break;
-                    case 2:
-                        BulletList.add(new BullFragment(PacketBull.get(i2).x, PacketBull.get(i2).y,
-                                0.0F, 0.0f, PacketBull.get(i2).height));break;
-
-                    case 3:
-                        BulletList.add(new BullMortar(PacketBull.get(i2).x, PacketBull.get(i2).y,
-                                PacketBull.get(i2).rotation, 0.0f, 0f, 0f, 0f, PacketBull.get(i2).team
-                                , PacketBull.get(i2).height));break;
-                    case 4:
-                        BulletList.add(new BullAcid(PacketBull.get(i2).x, PacketBull.get(i2).y,
-                                PacketBull.get(i2).rotation, 0.0f, 0.0f, PacketBull.get(i2).team
-                                , PacketBull.get(i2).height));break;
-                    case 5:
-                        BulletList.add(new BullTank(PacketBull.get(i2).x, PacketBull.get(i2).y,
-                                PacketBull.get(i2).rotation, 0.0f, 0.0f, PacketBull.get(i2).team
-                                , PacketBull.get(i2).height));break;
-                }
-                try {
-                    bull_data(i2);
-                }catch (IndexOutOfBoundsException e){
-                    e.printStackTrace();
-                }
-            }
+            PacketPlayer.clear();
+            PacketEnemy.clear();
+            PacketDebris.clear();
+            PacketSoldat.clear();
         }
         else if(p instanceof PacketBuildingServer){
             PacketBuilding = ((PacketBuildingServer) p).BuildPack;
@@ -247,14 +252,14 @@ public class ClientMain extends Listener{
             BlockList2D.get(iy).get(ix).objMap = new VoidObject();
         }
     }
-    private void bull_data(int i){
-        BulletList.get(this.i).x = PacketBull.get(i).x;
-        BulletList.get(this.i).y = PacketBull.get(i).y;
-        BulletList.get(this.i).rotation = PacketBull.get(i).rotation;
-        BulletList.get(this.i).time = PacketBull.get(i).time;
-        BulletList.get(this.i).height = PacketBull.get(i).height;
-        BulletList.get(this.i).type = PacketBull.get(i).type;
-        BulletList.get(this.i).type_team = PacketBull.get(i).team;
+    private void bull_data(BullPacket pack){
+        BulletList.get(this.i).x = pack.x;
+        BulletList.get(this.i).y = pack.y;
+        BulletList.get(this.i).rotation = pack.rotation;
+        BulletList.get(this.i).time = pack.time;
+        BulletList.get(this.i).height = pack.height;
+        BulletList.get(this.i).type = pack.type;
+        BulletList.get(this.i).type_team = pack.team;
         this.i += 1;
     }
 
@@ -269,12 +274,11 @@ public class ClientMain extends Listener{
         PlayerList.get(i).speed = PacketPlayer.get(i).speed;
         PlayerList.get(i).host = PacketPlayer.get(i).host;
         PlayerList.get(i).nConnect = PacketPlayer.get(i).IDClient;
-        if(PacketPlayer.get(i).IDClient!=IDClient || PacketPlayer.get(i).host) {
-            PlayerList.get(i).rotation_tower = PacketPlayer.get(i).rotation_tower;
-            for (int i2 = 0; i2< PacketPlayer.get(i).rotation_tower_2.size(); i2++) {
-                PlayerList.get(i).tower_obj.get(i2).rotation_tower = PacketPlayer.get(i).rotation_tower_2.get(i2);
-            }
+        PlayerList.get(i).rotation_tower = PacketPlayer.get(i).rotation_tower;
+        for (int i2 = 0; i2< PacketPlayer.get(i).rotation_tower_2.size(); i2++) {
+            PlayerList.get(i).tower_obj.get(i2).rotation_tower = PacketPlayer.get(i).rotation_tower_2.get(i2);
         }
+
     }
     private void enemy_data(int i){
         EnemyList.get(i).type_unit = PacketEnemy.get(i).name;

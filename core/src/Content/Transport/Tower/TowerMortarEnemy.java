@@ -60,7 +60,6 @@ public class TowerMortarEnemy extends Unit {
         this.trigger_attack = sost;
         this.trigger_fire = sost_2;
         tower_xy_2();
-        tower_ii_2();
         center_render_tower();
         RenderMethod.transorm_img(this.x_tower_rend,this.y_tower_rend,this.width_tower_zoom,this.height_tower_zoom,this.rotation_tower,this.tower_img,const_x_tower,const_y_tower);
 

@@ -221,24 +221,20 @@ public abstract class Unit {
         //bypass_build(Main.build,this.x_relocation,this.y_relocation,this.rotation_relocation,g_right,g_left,i);
 
     }
-    public final void tower_ii(){
+    public final void tower_ii() {
         if (this.trigger_attack) {
-            int i2 = Method.detection_near_transport_i(this, this.enemyList);
-            this.TargetX = this.enemyList.get(i2).tower_x;
-            this.TargetY = this.enemyList.get(i2).tower_y;
-        }
-        else{
-            if(this.rotation_tower>this.rotation_corpus+180){this.rotation_tower -= this.speed_tower;}
-            if(this.rotation_tower<this.rotation_corpus+180){this.rotation_tower += this.speed_tower;}
-        }
-    }
-    public void tower_ii_2(){
-        if (this.trigger_attack) {
-            tower_bot();
-        }
-        else{
-            if(this.rotation_tower>this.rotation_corpus+180){this.rotation_tower -= this.speed_tower;}
-            if(this.rotation_tower<this.rotation_corpus+180){this.rotation_tower += this.speed_tower;}
+            if(this.enemyList.size() != 0) {
+                int i2 = Method.detection_near_transport_i(this, this.enemyList);
+                this.TargetX = this.enemyList.get(i2).tower_x;
+                this.TargetY = this.enemyList.get(i2).tower_y;
+            }
+        } else {
+            if (this.rotation_tower > this.rotation_corpus + 180) {
+                this.rotation_tower -= this.speed_tower;
+            }
+            if (this.rotation_tower < this.rotation_corpus + 180) {
+                this.rotation_tower += this.speed_tower;
+            }
         }
     }
     protected final void MotorControl(){
@@ -291,26 +287,20 @@ public abstract class Unit {
         this.x += move.move_sin2(this.speed, rotation_corpus2);
         this.y += move.move_cos2(this.speed, rotation_corpus2);
     }
-    protected final void tower_bot() {
-        if(this.enemyList.size() != 0) {
-            try{
-                this.rotation_tower = Method.tower(this.tower_x, this.tower_y,this.TargetX,this.TargetY, this.rotation_tower, this.speed_tower);}
-            catch(Exception ignored){
-
-            }
-        }
-    }
-    protected void TowerControl() {
+    public void TowerControlPlayer() {
         this.rotation_tower = Method.tower(this.x_tower_rend+this.tower_width_2,this.y_tower_rend+this.tower_height_2,TargetX,TargetY, this.rotation_tower, this.speed_tower);
     }
-    protected void TowerControlClient() {
+    public void TowerControlPlayerClient() {
+        this.rotation_tower = Method.tower(RC.width_2,RC.height_2,TargetX,TargetY, this.rotation_tower, this.speed_tower);
+    }
+    public void TowerControlBot() {
         this.rotation_tower = Method.tower(this.tower_x,this.tower_y,TargetX,TargetY, this.rotation_tower, this.speed_tower);
     }
 //    public void tower_player_client(double mouse_x,double mouse_y) {
 //        this.rotation_tower = metod.tower(mouse_x,mouse_y,this.x_tower_rend, this.y_tower_rend, this.rotation_tower, this.speed_tower);
 //    }
 
-    private void bot_fire(Unit obj_1, ArrayList<Unit>obj_2){
+    public void bot_fire(Unit obj_1, ArrayList<Unit>obj_2){
         guidance = reload_bot();
         if (obj_2.size() != 0) {
             int i2 = Method.detection_near_transport_i(obj_1, obj_2);
@@ -339,6 +329,7 @@ public abstract class Unit {
     public void FireBotControl(){
         if(this.sost_fire_bot && this.trigger_attack){
             fire.FireIteration(this);
+            reload = reload_max;
         }
     }
     public void bull_packets(int i1, int i2){
@@ -368,11 +359,11 @@ public abstract class Unit {
         //System.out.println(xy[0]+"ss"+xy[1]);
     }
     protected boolean reload_bot(){
-        if(this.reload < 0){
-            return true;
+        if(this.reload > 0){
+            this.reload -= 1;
+            return false;
         }
-        this.reload -= 1;
-        return false;
+        return true;
 
     }
     protected void indicator_hp(){
@@ -400,9 +391,9 @@ public abstract class Unit {
         Render.setColor(Option.reload_2_r_indicator, Option.reload_2_g_indicator, Option.reload_2_b_indicator,1);
         Render.rect((this.x_rend- Option.const_reload_x_zoom),(this.y_rend- Option.const_reload_y_zoom),(int)(green_len_reload* Main.Zoom), Option.size_y_indicator_zoom);
     }
-    public void FireControlPlayer(Unit unit){
-        if(reload_bot() && this.left_mouse){
-            fire.FireIteration(unit);
+    public void FireControlPlayer(){
+        if(this.reload_bot() && this.left_mouse){
+            fire.FireIteration(this);
             reload = reload_max;
         }
     }

@@ -7,6 +7,4 @@ public class Packet_client {
     public boolean right_mouse,left_mouse;
     public int mouse_x,mouse_y,IDClient;
     public float TargetX,TargetY;
-
-    public ArrayList<Float>rot_tower = new ArrayList<>();
 }

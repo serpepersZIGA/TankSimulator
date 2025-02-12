@@ -8,6 +8,7 @@ import com.mygdx.game.unit.Unit;
 import static com.mygdx.game.main.ClientMain.Client;
 import static com.mygdx.game.main.Main.Clients;
 import static com.mygdx.game.main.Main.PacketClient;
+import static com.mygdx.game.unit.TransportRegister.PacketPlayer;
 
 public class ControllerPlayer extends Controller {
     public void ControllerIteration(Unit unit,int i){
@@ -21,30 +22,40 @@ public class ControllerPlayer extends Controller {
         unit.TargetY = Keyboard.MouseY;
         Main.RC.x = unit.tower_x;
         Main.RC.y = unit.tower_y;
-        unit.FireControlPlayer(unit);
+        unit.TowerControlPlayer();
+        unit.FireControlPlayer();
         for(Unit Tower : unit.tower_obj){
             Tower.left_mouse = Keyboard.RightMouse;
             Tower.TargetX = Keyboard.MouseX;
             Tower.TargetY = Keyboard.MouseY;
-            Tower.FireControlPlayer(Tower);
+            Tower.TowerControlPlayer();
+            Tower.FireControlPlayer();
         }
 
     }
     public void ControllerIterationClientAnHost(Unit unit){
         for(Packet_client pack : Clients){
-            if(pack != null & pack.IDClient==unit.nConnect){
+            if (pack != null & pack.IDClient == unit.nConnect) {
                 unit.left_mouse = pack.left_mouse;
                 unit.right_mouse = pack.right_mouse;
                 unit.press_w = pack.press_w;
                 unit.press_a = pack.press_a;
                 unit.press_s = pack.press_s;
                 unit.press_d = pack.press_d;
-                unit.FireControlPlayer(unit);
+                unit.TargetX = pack.mouse_x;
+                unit.TargetY = pack.mouse_y;
+                unit.TowerControlPlayerClient();
+                unit.FireControlPlayer();
                 for (Unit Tower : unit.tower_obj) {
-                    Tower.TargetX = pack.TargetX;
-                    Tower.TargetY = pack.TargetY;
+                    Tower.left_mouse = pack.right_mouse;
+                    Tower.TargetX = pack.mouse_x;
+                    Tower.TargetY = pack.mouse_y;
+                    Tower.TowerControlPlayerClient();
+                    Tower.FireControlPlayer();
                 }
+                return;
             }
+
         }
     }
     public void ControllerIterationClientAnClient(Unit unit){
@@ -59,8 +70,8 @@ public class ControllerPlayer extends Controller {
         PacketClient.mouse_x = Keyboard.MouseX;
         PacketClient.mouse_y = Keyboard.MouseY;
         PacketClient.IDClient = Main.IDClient;
-        PacketClient.TargetX = unit.TargetX;
-        PacketClient.TargetY = unit.TargetY;
+//        PacketClient.TargetX = unit.TargetX;
+//        PacketClient.TargetY = unit.TargetY;
         Client.sendUDP(PacketClient);
 
     }

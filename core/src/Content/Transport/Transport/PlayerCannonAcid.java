@@ -61,7 +61,7 @@ public class PlayerCannonAcid extends Unit {
         super.corpus_corpus(this.enemyList);
         super.corpus_corpus_def_xy(this.allyList);
         super.tower_xy();
-        super.TowerControl();
+        super.TowerControlPlayer();
         Main.RC.x = this.tower_x;
         Main.RC.y = this.tower_y;
         center_render();
@@ -93,7 +93,7 @@ public class PlayerCannonAcid extends Unit {
         control.ControllerIterationClientAnClient(this);
         move_xy_transport();
         super.tower_xy();
-        super.TowerControl();
+        super.TowerControlPlayer();
         center_render();
         RenderMethod.transorm_img(this.x_rend, this.y_rend,this.corpus_width_zoom,this.corpus_height_zoom,this.rotation_corpus,this.corpus_img,const_x_corpus,const_y_corpus);
         tower_iteration_client_2(i);

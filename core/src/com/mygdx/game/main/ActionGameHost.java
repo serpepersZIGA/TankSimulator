@@ -114,7 +114,7 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
             Main.EnemyList.get(i).all_action(i);
         }
         for(i = 0; i< PlayerList.size(); i++) {
-            packet_player_server();
+            packet_player_server(i);
             if(PlayerList.get(i).host) {
                 Main.PlayerList.get(i).all_action(i);
             }
@@ -153,6 +153,7 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
             Unit.ai_sost=400;}
         if(flame_spawn_time <= 0){flame_spawn_time=flame_spawn_time_max;}
         CycleDayNight.WorkTime();
+        Clients.clear();
     }
     private void server_packet() {
         if(EnumerationList){
@@ -161,8 +162,8 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
                 packet_enemy_server();
             }
             PacketPlayer.clear();
-            for (i = 0; i < Main.PlayerList.size(); i++) {
-                packet_player_server();
+            for (i = 0; i < PlayerList.size(); i++) {
+                packet_player_server(i);
             }
             EnumerationList = false;
         }
@@ -174,7 +175,6 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
         PacketServer.building = PacketBuilding;
         PacketServer.mapObject = MapObject.PacketMapObjects;
         PacketServer.TotalLight = CycleTimeDay.lightTotal;
-
         Server.sendToAllUDP(PacketServer);
         MapObject.PacketMapObjects.clear();
         PacketPlayer.clear();
@@ -184,24 +184,24 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
         PacketDebris.clear();
         PacketBuilding.clear();
     }
-    private void packet_player_server(){
+    private void packet_player_server(int i){
+        Unit unit = PlayerList.get(i);
         PacketPlayer.add(new TransportPacket());
-        PacketPlayer.get(i).name = PlayerList.get(i).type_unit;
-        PacketPlayer.get(i).x = PlayerList.get(i).x;
-        PacketPlayer.get(i).y = PlayerList.get(i).y;
-        PacketPlayer.get(i).rotation_corpus = PlayerList.get(i).rotation_corpus;
-        PacketPlayer.get(i).rotation_tower = PlayerList.get(i).rotation_tower;
-        PacketPlayer.get(i).reload = PlayerList.get(i).reload;
-        PacketPlayer.get(i).hp = PlayerList.get(i).hp;
-        PacketPlayer.get(i).team = PlayerList.get(i).team;
-        PacketPlayer.get(i).speed = PlayerList.get(i).speed;
-        PacketPlayer.get(i).host = PlayerList.get(i).host;
-        PacketPlayer.get(i).IDClient = PlayerList.get(i).nConnect;
-
-        for (int i2 = 0; i2< PlayerList.get(i).tower_obj.size(); i2++) {
-            PacketPlayer.get(i).rotation_tower_2.add(PlayerList.get(i).tower_obj.get(i2).rotation_tower);
+        TransportPacket pack = PacketPlayer.get(i);
+        pack.name = unit.type_unit;
+        pack.x = unit.x;
+        pack.y = unit.y;
+        pack.rotation_corpus = unit.rotation_corpus;
+        pack.rotation_tower = unit.rotation_tower;
+        pack.reload = unit.reload;
+        pack.hp = unit.hp;
+        pack.team = unit.team;
+        pack.speed = unit.speed;
+        pack.host = unit.host;
+        pack.IDClient = unit.nConnect;
+        for (Unit Tower : unit.tower_obj){
+            pack.rotation_tower_2.add(Tower.rotation_tower);
         }
-
     }
     private void packet_enemy_server(){
         PacketEnemy.add(new TransportPacket());
