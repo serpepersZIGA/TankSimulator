@@ -232,6 +232,7 @@ public class ClientMain extends Listener{
             objMapList = ((PacketBuildingServer) p).ObjectMapPack;
             for (int iy = 0;iy< objMapList.size();iy++) {
                 for (int ix = 0; ix < objMapList.get(iy).size(); ix++) {
+                    //System.out.println(ix+" "+iy);
                     object_create(ix,iy, objMapList.get(iy).get(ix).objectAssets, objMapList.get(iy).get(ix).x,
                     objMapList.get(iy).get(ix).y,objMapList.get(iy).get(ix).width, objMapList.get(iy).get(ix).height,
                     objMapList.get(iy).get(ix).lighting,objMapList.get(iy).get(ix).distance_lighting);
@@ -243,13 +244,16 @@ public class ClientMain extends Listener{
     }
     public void object_create(int ix, int iy, ObjectMapAssets assets,int x,int y,int width,int height,
         boolean light,float distance_lighting) {
-        if(width != 0) {
-        Sprite asset = ObjectLoad.ImageLoad(assets);
-        BlockList2D.get(iy).get(ix).objMap = new MapObject(x-ix* width_block, y-iy* height_block, asset, width, height, 0, ix, iy, new CollisionVoid()
-                , light, distance_lighting, assets);
-        }
-        else{
-            BlockList2D.get(iy).get(ix).objMap = new VoidObject();
+        try{
+            if (width != 0) {
+                Sprite asset = ObjectLoad.ImageLoad(assets);
+                BlockList2D.get(iy).get(ix).objMap = new MapObject(x - ix * width_block, y - iy * height_block, asset, width, height, 0, ix, iy, new CollisionVoid()
+                        , light, distance_lighting, assets);
+            } else {
+                BlockList2D.get(iy).get(ix).objMap = new VoidObject();
+            }
+        }catch (IndexOutOfBoundsException e){
+            e.printStackTrace();
         }
     }
     private void bull_data(BullPacket pack){

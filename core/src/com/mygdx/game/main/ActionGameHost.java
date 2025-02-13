@@ -153,7 +153,6 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
             Unit.ai_sost=400;}
         if(flame_spawn_time <= 0){flame_spawn_time=flame_spawn_time_max;}
         CycleDayNight.WorkTime();
-        Clients.clear();
     }
     private void server_packet() {
         if(EnumerationList){

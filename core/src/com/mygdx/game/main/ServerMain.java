@@ -1,6 +1,7 @@
 package com.mygdx.game.main;
 import Content.Bull.*;
 import Content.Particle.*;
+import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
@@ -101,6 +102,7 @@ public class ServerMain extends Listener {
                 PacketObjectMapServer(ix,iy,PacketBuildingServer.ObjectMapPack.get(iy));
             }
         }
+        PacketBuildingServer.ObjectMapPack.clear();
         PacketBuildingServer.FlameLight = CycleTimeDay.lightFlame;
         Server.sendToAllTCP(PacketBuildingServer);
         ZoomConstTransport();
@@ -129,12 +131,21 @@ public class ServerMain extends Listener {
     //Используется когда клиент отправляет пакет серверу
     public void received(Connection c, Object p){
         if(p instanceof Packet_client) {
+            for (Packet_client pack : Clients) {
+                if(pack.IDClient == ((Packet_client) p).IDClient){
+                    Clients.remove(pack);
+                    Clients.add((Packet_client)p);
+                    return;
+                }
+            }
             Clients.add((Packet_client) p);
         }
         else if(p instanceof PlayerSpawnData){
             nConnect += 1;
+            EnumerationList = true;
             if(!p.equals(new SpawnPlayerVoid())) {
                 int i2 = Main.PlayerList.size();
+                System.out.println(Main.PlayerList.size()+"player");
                 ((PlayerSpawnData) p).SpawnPlayer(false);
                 PlayerList.get(i2).nConnect = nConnect;
             }
