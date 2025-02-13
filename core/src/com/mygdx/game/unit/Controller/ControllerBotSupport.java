@@ -2,8 +2,8 @@ package com.mygdx.game.unit.Controller;
 
 import com.mygdx.game.unit.Unit;
 
-public class ControllerBot extends Controller{
-    public void ControllerIteration(Unit unit,int i){
+public class ControllerBotSupport {
+    public void ControllerIteration(Unit unit, int i){
         unit.behavior_bot(unit.enemyList,i);
         unit.bot_fire(unit,unit.enemyList);
         unit.FireBotControl();

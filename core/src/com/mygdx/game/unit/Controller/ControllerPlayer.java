@@ -35,7 +35,7 @@ public class ControllerPlayer extends Controller {
     }
     public void ControllerIterationClientAnHost(Unit unit){
         for(Packet_client pack : Clients){
-            if(pack != null ) {
+            if(pack != null) {
                 if (pack.IDClient == unit.nConnect) {
                     unit.left_mouse = pack.left_mouse;
                     unit.right_mouse = pack.right_mouse;

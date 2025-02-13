@@ -102,9 +102,10 @@ public class ServerMain extends Listener {
                 PacketObjectMapServer(ix,iy,PacketBuildingServer.ObjectMapPack.get(iy));
             }
         }
-        PacketBuildingServer.ObjectMapPack.clear();
         PacketBuildingServer.FlameLight = CycleTimeDay.lightFlame;
         Server.sendToAllTCP(PacketBuildingServer);
+        PacketBuildingServer.ObjectMapPack.clear();
+        PacketBuildingServer.BuildPack.clear();
         ZoomConstTransport();
         KeyboardObj.zoom_const();
 
