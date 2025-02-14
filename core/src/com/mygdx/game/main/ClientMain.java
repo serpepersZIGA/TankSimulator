@@ -330,7 +330,7 @@ public class ClientMain extends Listener{
                 EnemyList.add(new TrackRemountT1(0, 0, EnemyList,(byte)2));
                 break;
             case TrackSoldatT1:
-                EnemyList.add(new TrackSoldatT1(0, 0, EnemyList));
+                EnemyList.add(new TrackSoldatT1(0, 0, EnemyList,(byte)2));
                 break;
         }
     }

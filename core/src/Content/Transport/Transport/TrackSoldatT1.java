@@ -2,13 +2,14 @@ package Content.Transport.Transport;
 
 import com.mygdx.game.main.Main;
 import com.mygdx.game.method.RenderMethod;
+import com.mygdx.game.unit.Controller.RegisterController;
 import com.mygdx.game.unit.Unit;
 import com.mygdx.game.unit.UnitType;
 
 import java.util.ArrayList;
 
 public class TrackSoldatT1 extends Unit {
-    public TrackSoldatT1(float x, float y, ArrayList<Unit> tr) {
+    public TrackSoldatT1(float x, float y, ArrayList<Unit> tr,byte team) {
         this.type_unit = UnitType.TrackSoldatT1;
         this.x = x;
         this.y = y;
@@ -41,7 +42,9 @@ public class TrackSoldatT1 extends Unit {
         this.corpus_img = Main.ContentImage.track_enemy_1lvl;
         this.corpus_width = 50;
         this.corpus_height = 129;
+        this.control = Main.RegisterControl.controllerSoldatTransport;
         this.host = true;
+        this.team = team;
 
 
         this.speed_tower = 1;
@@ -50,7 +53,8 @@ public class TrackSoldatT1 extends Unit {
     }
     public void all_action(int i){
         super.all_action(i);
-        super.behavior_bot(this.enemyList, i);
+        control.ControllerIteration(this,i);
+        super.MotorControl();
         super.build_corpus(i);
         super.corpus_corpus_def_xy(Main.EnemyList);
         super.spawn_soldat(Main.SoldatList);
