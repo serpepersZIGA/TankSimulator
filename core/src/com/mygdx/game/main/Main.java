@@ -133,6 +133,8 @@ public class Main extends ApplicationAdapter {
 		MapAllLoad.MapCount();
 		EnemyList.add(new PanzerFlameT1(2200,2000,Main.EnemyList,(byte)2));
 		EnemyList.get(0).control = Main.RegisterControl.controllerBot;
+		EnemyList.add(new TrackRemountT1(2700,2000,Main.EnemyList,(byte)2));
+		EnemyList.get(1).control = Main.RegisterControl.controllerBotSupport;
 		LiquidList.add(new Acid(200,200));
 		LiquidList.add(new Blood(200,200));
 		FlameSpawnList.add(new FlameSpawn(200,200));

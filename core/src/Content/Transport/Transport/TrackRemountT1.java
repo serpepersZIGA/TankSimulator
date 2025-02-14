@@ -4,11 +4,14 @@ import com.mygdx.game.method.RenderMethod;
 
 import java.util.ArrayList;
 import com.mygdx.game.main.Main;
+import com.mygdx.game.unit.Controller.RegisterController;
 import com.mygdx.game.unit.Unit;
 import com.mygdx.game.unit.UnitType;
 
+import static com.mygdx.game.main.Main.RegisterControl;
+
 public class TrackRemountT1 extends Unit {
-    public TrackRemountT1(float x, float y, ArrayList<Unit> tr){
+    public TrackRemountT1(float x, float y, ArrayList<Unit> tr,byte team){
         this.type_unit = UnitType.TrackRemountT1;
         this.x = x;this.y = y;
         this.speed_inert = 0;this.speed = 0;
@@ -29,7 +32,7 @@ public class TrackRemountT1 extends Unit {
         this.height = 1;
         this.behavior = 3;
         this.reload_max = 180;
-        this.team = 2;
+        this.team = team;
         this.t = 0;
         this.crite_life = 0;
         this.hill = 2;
@@ -43,13 +46,15 @@ public class TrackRemountT1 extends Unit {
         this.difference = 18;
         this.distance_target = 200;
         this.distance_target_2 = 80;
+        control = RegisterControl.controllerBotSupport;
 
         this.speed_tower = 1;this.speed_rotation = 1;
         data();
     }
     public void all_action(int i){
         super.all_action(i);
-        super.bypass_hiller(i);
+        control.ControllerIteration(this,i);
+        super.MotorControl();
         super.build_corpus(i);
         super.hill_bot(Main.EnemyList);
         tower_xy();

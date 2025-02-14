@@ -22,7 +22,7 @@ public class TransportRegister {
         PanzerAcidT1 = new PanzerAcidT1(0,0, Main.EnemyList,(byte)2);
         PanzerT1 = new PanzerT1(0,0, Main.EnemyList,(byte)2);
 
-        TrackRemountT1 = new TrackRemountT1(0,0, Main.EnemyList);
+        TrackRemountT1 = new TrackRemountT1(0,0, Main.EnemyList,(byte)2);
         TrackSoldatT1 = new TrackSoldatT1(0,0, Main.EnemyList);
         Helicopter_t1 = new HelicopterT1(0,0, Main.EnemyList);
 
