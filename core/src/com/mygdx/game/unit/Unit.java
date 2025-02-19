@@ -5,6 +5,7 @@ import Content.Soldat.SoldatBull;
 import Content.Soldat.SoldatFlame;
 import Content.Transport.Transport.DebrisTransport;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.mygdx.game.build.Building;
 import com.mygdx.game.main.Main;
@@ -48,7 +49,7 @@ public abstract class Unit {
     public static float speed_minimum = 0.5f;
     public int time_max_relocation = 300,time_relocation = 0;
     public float x_relocation,y_relocation,rotation_relocation,priority_paint = 0,ai_x_const = 24f,ai_y_const = 62f;
-    public int range_see=800,range_see_2 = (int)(range_see*1.5),time_trigger_bull_bot,time_trigger_bull = 700;
+    public int range_see=2000,range_see_2 = (int)(range_see*1.5),time_trigger_bull_bot,time_trigger_bull = 700;
 
     public byte behavior,behavior_buffer, medic_help, crite_life, team,height = 1,trigger_drive;
     private float g;
@@ -245,8 +246,8 @@ public abstract class Unit {
                 this.time_sound_motor = this.time_max_sound_motor;
 
             }
-            if (this.min_speed < this.speed) {
-                this.speed -= this.acceleration;
+            if (this.max_speed > this.speed) {
+                this.speed += this.acceleration;
             }
         }
         if (this.press_s) {
@@ -254,8 +255,8 @@ public abstract class Unit {
                 SoundPlay.sound(Main.ContentSound.motor, 1);
                 this.time_sound_motor = this.time_max_sound_motor;
             }
-            if(this.max_speed > this.speed) {
-                this.speed += this.acceleration;
+            if(this.min_speed < this.speed) {
+                this.speed -= this.acceleration;
             }
 
         }
@@ -284,8 +285,8 @@ public abstract class Unit {
     }
     protected final void move_xy_transport(){
         float rotation_corpus2 = (float) (-this.rotation_corpus*3.1415/180);
-        this.x += move.move_sin2(this.speed, rotation_corpus2);
-        this.y += move.move_cos2(this.speed, rotation_corpus2);
+        this.x -= move.move_sin2(this.speed, rotation_corpus2);
+        this.y -= move.move_cos2(this.speed, rotation_corpus2);
     }
     public void TowerControlPlayer() {
         this.rotation_tower = Method.tower(this.x_tower_rend+this.tower_width_2,this.y_tower_rend+this.tower_height_2,TargetX,TargetY, this.rotation_tower, this.speed_tower);
@@ -345,10 +346,10 @@ public abstract class Unit {
 
             float[] list = less_hp_bot(allyList, enemyList, allyList,i);
             if(list[1] == 1) {
-                bypass_build(Main.BuildingList, this.enemyList,list[0], i,(int)list[2]);
+                bypass_build(this.enemyList,list[0], i,(int)list[2]);
             }
             else if(list[1] == 2){
-                bypass_build(Main.BuildingList, this.allyList,list[0], i,(int)list[2]);
+                bypass_build(this.allyList,list[0], i,(int)list[2]);
             }
             speed_balance();
         }
@@ -573,30 +574,28 @@ public abstract class Unit {
     private void motor_bot_base() {
         this.time_sound_motor -= 1;
         if (this.trigger_drive == 1 && this.crite_life == 0) {
-            if (this.speed < this.max_speed) {
-                press_w = true;
-                if (this.time_sound_motor < 0) {
-                    SoundPlay.sound(Main.ContentSound.motor, 1f-((float) sqrt(pow2(this.x_rend) + pow2((float)this.y_rend))/SoundConst));
-                    this.time_sound_motor = this.time_max_sound_motor;
-                }
+            press_w = true;
+            if (this.time_sound_motor < 0) {
+                SoundPlay.sound(Main.ContentSound.motor, 1f-((float) sqrt(pow2(this.x_rend) + pow2((float)this.y_rend))/SoundConst));
+                this.time_sound_motor = this.time_max_sound_motor;
+
             }
         }
     }
 
-    private void bypass_build(ArrayList<Building> obj_building, ArrayList<Unit> obj_tr, float g, int i3, int i2) {
-        if(obj_building.size()!= 0&& this.enemyList.size()!=0) {
+    private void bypass_build(ArrayList<Unit> obj_tr, float g, int i3, int i2) {
+        if(this.enemyList.size()!=0) {
             if (ai_sost == 0) {
-
                 if (null != findIntersection(this.tower_x, this.tower_y, obj_tr.get(i2).tower_x, obj_tr.get(i2).tower_y)) {
                     path.clear();
-                    float[] xy = Method.tower_xy_2(this.x, this.y, this.ai_x_const, this.ai_y_const, 0, 0, -this.rotation_corpus);
-                    Ai.pathAIAStar(this.allyList.get(i3), obj_tr.get(i2), xy[0], xy[1]);
+                    Ai.pathAIAStar(this.allyList.get(i3), obj_tr.get(i2),this.tower_x,this.tower_y);
                     trigger_fire = false;
                 } else {
                     path.clear();
                     trigger_fire = true;
                 }
-            }if(path.size() > 0) {
+            }
+        if(path.size() > 0) {
                 float []xy = Method.tower_xy_2(this.x,this.y,this.ai_x_const,this.ai_y_const,0,0,-this.rotation_corpus);
                 this.g = (float) sqrt(pow2((xy[0] - BlockList2D.get(path.get(0)[1]).get(path.get(0)[0]).x_center)) + pow2(xy[1] - BlockList2D.get(path.get(0)[1]).get(path.get(0)[0]).y_center));
                 float gr = (float) ((atan2(xy[1] - BlockList2D.get(path.get(0)[1]).get(path.get(0)[0]).y_center,xy[0] - BlockList2D.get(path.get(0)[1]).get(path.get(0)[0]).x_center)/3.1415926535*180)-90);
@@ -613,58 +612,24 @@ public abstract class Unit {
             }
         }
     }
-    private void bypass_build_not_tower(ArrayList<Building> obj_building, ArrayList<Unit> obj_tr, float g, int i3, int i2) {
-        if(obj_building.size()!= 0) {
-            if (ai_sost == 0) {
-                if (null != findIntersection(this.tower_x, this.tower_y, obj_tr.get(i2).tower_x, obj_tr.get(i2).tower_y)) {
-                    path.clear();
-                    float[] xy = Method.tower_xy_2(this.x, this.y, this.ai_x_const, this.ai_y_const, 0, 0, -this.rotation_corpus);
-                    Ai.pathAIAStar(this.allyList.get(i3), obj_tr.get(i2), xy[0], xy[1]);
-                    trigger_fire = false;
-                } else {
-                    path.clear();
-                    trigger_fire = true;
-                }
-            }
-            if(path.size() > 0) {
-                float []xy = Method.tower_xy_2(this.x,this.y,this.ai_x_const,this.ai_y_const,0,0,-this.rotation_corpus);
-                this.g = (float) sqrt(pow2((xy[0] - BlockList2D.get(path.get(0)[1]).get(path.get(0)[0]).x_center)) + pow2(xy[1] - BlockList2D.get(path.get(0)[1]).get(path.get(0)[0]).y_center));
-                float gr = (float) ((atan2(xy[1] - BlockList2D.get(path.get(0)[1]).get(path.get(0)[0]).y_center,xy[0] - BlockList2D.get(path.get(0)[1]).get(path.get(0)[0]).x_center)/3.1415926535*180)-90);
-                rotation_bot(gr);
-                motor_bot_base();
-                if(this.g< 70){
-                    path.remove(0);
-                }
-            }
-            else{
-                float rad = (float) sqrt(pow2((x - obj_tr.get(i2).x)) + pow2(y - obj_tr.get(i2).y));
-                rotation_bot(g);
-                motor_bot_base(rad,this.behavior);
-            }
-        }
-    }
     protected float[] findIntersection(float x0, float y0, float dx, float dy) {
         //float xy_r = (float) atan2(y0-dy, x0-dx);
-        float x = x0/width_block;
-        float y = y0/height_block;
-        dx = dx/width_block;
-        dy = dy/height_block;
+        float x = dx/width_block-1;
+        float y = dy/height_block-1;
+        dx = x0/width_block-1;
+        dy = y0/height_block-1;
         float xy_r = (float)(atan2(y-dy, x-dx));
-        float speed_x = (float) cos(xy_r)/2;
-        float speed_y = (float) sin(xy_r)/2;
-//        System.out.println(x+" g "+y);
-//        System.out.println(dx+" h "+dy);
-//        System.out.println(xy_r);
+        float speed_x = (float) cos(xy_r);
+        float speed_y = (float) sin(xy_r);
         if (y > dy) {
             if (x > dx) {
                 while (x > dx && y > dy) {
                     x -= speed_x;
                     y -= speed_y;
-                    //System.out.println(x+" "+y+" "+speed_x+" "+speed_y+" "+dx+" "+dy+" "+" "+xy_r+" w");
-                    //double[]xy = Main.rc.get(0).render_obj(x0,y0);
-//                    System.out.println(x+" z "+y);
-//                    System.out.println(dx+" vo "+dy);
                     if (BlockList2D.get((int)y).get((int)x).passability) {
+                        float[]xy = Main.RC.render_objZoom((x)*height_block,(y)*height_block);
+                        float[]xy2 = Main.RC.render_objZoom((dx)*height_block,(dy)*height_block);
+                        Render.line(xy[0],xy[1],xy2[0],xy2[1]);
                         return new float[]{x, y};
                     }
 
@@ -673,9 +638,10 @@ public abstract class Unit {
                 while (x < dx && y > dy) {
                     x -= speed_x;
                     y -= speed_y;
-                    //System.out.println(x+" "+y+" "+speed_x+" "+speed_y+" "+dx+" "+dy+" "+" "+xy_r+" s");
-                    //double[]xy = Main.rc.get(0).render_obj(x0,y0);
                     if (BlockList2D.get((int)y).get((int)x).passability) {
+                        float[]xy = Main.RC.render_objZoom((x)*height_block,(y)*height_block);
+                        float[]xy2 = Main.RC.render_objZoom((dx)*height_block,(dy)*height_block);
+                        Render.line(xy[0],xy[1],xy2[0],xy2[1]);
                         return new float[]{x, y};
                     }
                 }
@@ -683,21 +649,24 @@ public abstract class Unit {
             else{
                 while (y > dy) {
                     y -= speed_y;
-                    //System.out.println(x+" "+y+" "+speed_x+" "+speed_y+" "+dx+" "+dy+" "+" "+xy_r+" s");
-                    //double[]xy = Main.rc.get(0).render_obj(x0,y0);
                     if (BlockList2D.get((int)y).get((int)x).passability) {
+                        float[]xy = Main.RC.render_objZoom((x)*height_block,(y)*height_block);
+                        float[]xy2 = Main.RC.render_objZoom((dx)*height_block,(dy)*height_block);
+                        Render.line(xy[0],xy[1],xy2[0],xy2[1]);
                         return new float[]{x, y};
                     }
                 }
             }
+            return null;
         } else if(y < dy){
             if (x > dx) {
                 while (x > dx && y < dy) {
                     x -= speed_x;
                     y -= speed_y;
-                    //System.out.println(x+" "+y+" "+speed_x+" "+speed_y+" "+dx+" "+dy+" "+" "+xy_r+" x");
-                    //double[]xy = Main.rc.get(0).render_obj(x0,y0);
                     if (BlockList2D.get((int)y).get((int)x).passability) {
+                        float[]xy = Main.RC.render_objZoom((x)*height_block,(y)*height_block);
+                        float[]xy2 = Main.RC.render_objZoom((dx)*height_block,(dy)*height_block);
+                        Render.line(xy[0],xy[1],xy2[0],xy2[1]);
                         return new float[]{x, y};
                     }
                 }
@@ -705,10 +674,10 @@ public abstract class Unit {
                 while (x < dx && y < dy) {
                     x -= speed_x;
                     y -= speed_y;
-
-                    // System.out.println(x+" "+y+" "+speed_x+" "+speed_y+" "+dx+" "+dy+" "+" "+xy_r+" z");
-                    //double[]xy = Main.rc.get(0).render_obj(x0,y0);
                     if (BlockList2D.get((int)y).get((int)x).passability) {
+                        float[]xy = Main.RC.render_objZoom((x)*height_block,(y)*height_block);
+                        float[]xy2 = Main.RC.render_objZoom((dx)*height_block,(dy)*height_block);
+                        Render.line(xy[0],xy[1],xy2[0],xy2[1]);
                         return new float[]{x, y};
                     }
                 }
@@ -716,38 +685,40 @@ public abstract class Unit {
             else {
                 while (y < dy) {
                     y -= speed_y;
-                    //System.out.println(x+" "+y+" "+speed_x+" "+speed_y+" "+dx+" "+dy+" "+" "+xy_r+" s");
-                    //double[]xy = Main.rc.get(0).render_obj(x0,y0);
                     if (BlockList2D.get((int)y).get((int)x).passability) {
+                        float[]xy = Main.RC.render_objZoom((x)*height_block,(y)*height_block);
+                        float[]xy2 = Main.RC.render_objZoom((dx)*height_block,(dy)*height_block);
+                        Render.line(xy[0],xy[1],xy2[0],xy2[1]);
                         return new float[]{x, y};
                     }
                 }
             }
+            return null;
         }
         else {
             if (x > dx) {
                 while (x > dx) {
                     x -= speed_x;
-                    //System.out.println(x+" "+y+" "+speed_x+" "+speed_y+" "+dx+" "+dy+" "+" "+xy_r+" x");
-                    //double[]xy = Main.rc.get(0).render_obj(x0,y0);
                     if (BlockList2D.get((int)y).get((int)x).passability) {
+                        float[]xy = Main.RC.render_objZoom((x)*height_block,(y)*height_block);
+                        float[]xy2 = Main.RC.render_objZoom((dx)*height_block,(dy)*height_block);
+                        Render.line(xy[0],xy[1],xy2[0],xy2[1]);
                         return new float[]{x, y};
                     }
                 }
             } else if (x < dx){
                 while (x < dx) {
                     x -= speed_x;
-
-
-                    // System.out.println(x+" "+y+" "+speed_x+" "+speed_y+" "+dx+" "+dy+" "+" "+xy_r+" z");
-                    //double[]xy = Main.rc.get(0).render_obj(x0,y0);
                     if (BlockList2D.get((int)y).get((int)x).passability) {
+                        float[]xy = Main.RC.render_objZoom((x)*height_block,(y)*height_block);
+                        float[]xy2 = Main.RC.render_objZoom((dx)*height_block,(dy)*height_block);
+                        Render.line(xy[0],xy[1],xy2[0],xy2[1]);
                         return new float[]{x, y};
                     }
                 }
             }
+            return null;
         }
-        return null;
 
     }
 
@@ -1015,44 +986,6 @@ public abstract class Unit {
         //System.out.println("Прямоугольники пересекаются. Результат: " + intersection);
         return !area1.isEmpty();
     }
-    private boolean rect_1_collision(int x1,int y1,int width,int height,double rotation,Area area2){
-
-        Rectangle rect1 = new Rectangle(x1,y1,width,height); // Прямоугольник 1
-
-        // Создаем аффинное преобразование для поворота
-        AffineTransform transform1 = new AffineTransform();
-        transform1.rotate(Math.toRadians(rotation), rect1.getCenterX(), rect1.getCenterY());
-        // Преобразование прямоугольников с учетом поворота
-        Area area1 = new Area(rect1);
-        area1.transform(transform1);
-
-
-        // Вычисление пересечения двух преобразованных прямоугольников
-        area1.intersect(area2);
-
-        // Проверка наличия пересечения
-        if (!area1.isEmpty()) {
-            //Rectangle intersection = area1.getBounds();
-            //System.out.println("Прямоугольники пересекаются. Результат: " + intersection);
-            return true;
-
-        }
-        return false;
-    }
-//    protected void build_corpus(ArrayList<Building> building){
-//        for (Building value : building) {
-//            for (int j = 0; j < value.area_list.size(); j++) {
-//                boolean z = rect_1_collision((int) this.x, (int) this.y, (int) this.corpus_width, (int) this.corpus_height, this.rotation_corpus,
-//                        value.area_list.get(j));
-//                if (z) {
-//                    if (this.speed > 2 || this.speed < -2) {
-//                        SoundPlay.sound(Main.ContentSound.get(0).break_wooden, 1-((float) sqrt(pow2(this.x_rend) + pow2(this.y_rend))/SoundConst));
-//                    }
-//                    metod_1(value.xy_area_list.get(j));
-//                }
-//            }
-//        }
-//    }
     private static boolean z = false;
     private static int render_x_max,render_x_min,render_y_max,render_y_min;
     protected void build_corpus(int i){
@@ -1166,6 +1099,7 @@ public abstract class Unit {
         for (Unit unit : obj) {
             if (sqrt(pow2(this.x - unit.x) + pow2(this.y - unit.y)) < 230 && unit.max_hp > unit.hp) {
                 unit.hp += this.hill;
+                unit.green_len = ((float) unit.hp / unit.max_hp) * Option.size_x_indicator;
                 if(unit.hp >= unit.max_hp -20 && unit.crite_life == 1){
                     unit.crite_life = 0;
                 }
@@ -1177,7 +1111,7 @@ public abstract class Unit {
             int[] sp = Method.detection_near_transport_i_def(this.allyList, i,this.allyList);
             g = (float) (atan2(this.y - this.allyList.get(sp[0]).y, this.x - this.allyList.get(sp[0]).x) / 3.1415926535 * 180);
             g -= 90;
-            bypass_build_not_tower(BuildingList, allyList,g,i,sp[0]);
+            bypass_build(allyList,g,i,sp[0]);
         }
         speed_balance();
     }

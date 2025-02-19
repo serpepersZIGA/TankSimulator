@@ -71,7 +71,7 @@ public class ControllerPlayer extends Controller {
         PacketClient.right_mouse = Keyboard.RightMouse;
         PacketClient.mouse_x = Keyboard.MouseX;
         PacketClient.mouse_y = Keyboard.MouseY;
-        PacketClient.IDClient = Main.IDClient;
+        PacketClient.IDClient = unit.nConnect;
         Client.sendUDP(PacketClient);
 
     }

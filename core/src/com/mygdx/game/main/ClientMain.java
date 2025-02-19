@@ -16,6 +16,7 @@ import com.mygdx.game.block.Block;
 import com.mygdx.game.build.BuildPacket;
 import com.mygdx.game.build.BuildType;
 import com.mygdx.game.build.PacketBuildingServer;
+import com.mygdx.game.bull.Bullet;
 import com.mygdx.game.method.CycleTimeDay;
 import com.mygdx.game.object_map.ObjectLoad;
 import com.mygdx.game.method.SoundPlay;
@@ -42,7 +43,6 @@ public class ClientMain extends Listener{
     public static Client Client;
     static int udpPort = 27950, tcpPort = 27950;
     public static String IP = "127.0.0.1";
-    public static int IDClient;
     private int i;
     public void create() {
         System.out.println("Подключаемся к серверу");
@@ -129,11 +129,6 @@ public class ClientMain extends Listener{
                                 pack.rotation, 0.0f, 0.0f, pack.team
                                 , pack.height));break;
                 }
-                try {
-                    bull_data(pack);
-                }catch (IndexOutOfBoundsException e){
-                    e.printStackTrace();
-                }
             }
             CycleTimeDay.lightTotal = ((PackerServer) p).TotalLight;
             PacketPlayer = ((PackerServer) p).player;
@@ -192,8 +187,8 @@ public class ClientMain extends Listener{
 
 
             PacketMapObjects = ((PackerServer) p).mapObject;
-            for (int i = 0; i < PacketMapObjects.size(); i++) {
-                BlockList2D.get(PacketMapObjects.get(i).iy).get(PacketMapObjects.get(i).ix).objMap
+            for (PacketMapObject packetMapObject : PacketMapObjects) {
+                BlockList2D.get(packetMapObject.iy).get(packetMapObject.ix).objMap
                         = new VoidObject();
                 KeyboardObj.zoom_const();
             }
@@ -217,6 +212,8 @@ public class ClientMain extends Listener{
                 }
                 KeyboardObj.zoom_const();
             }
+            PacketMapObjects.clear();
+            PacketBull.clear();
             PacketPlayer.clear();
             PacketEnemy.clear();
             PacketDebris.clear();
@@ -257,13 +254,14 @@ public class ClientMain extends Listener{
         }
     }
     private void bull_data(BullPacket pack){
-        BulletList.get(this.i).x = pack.x;
-        BulletList.get(this.i).y = pack.y;
-        BulletList.get(this.i).rotation = pack.rotation;
-        BulletList.get(this.i).time = pack.time;
-        BulletList.get(this.i).height = pack.height;
-        BulletList.get(this.i).type = pack.type;
-        BulletList.get(this.i).type_team = pack.team;
+        Bullet bull = BulletList.get(this.i);
+        bull.x = pack.x;
+        bull.y = pack.y;
+        bull.rotation = pack.rotation;
+        bull.time = pack.time;
+        bull.height = pack.height;
+        bull.type = pack.type;
+        bull.type_team = pack.team;
         this.i += 1;
     }
 

@@ -110,7 +110,7 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
             Main.DebrisList.get(i).all_action(i);
         }
         for (i = 0; i < Main.EnemyList.size(); i++) {
-            packet_enemy_server();
+            packet_enemy_server(Main.EnemyList.get(i));
             Main.EnemyList.get(i).all_action(i);
         }
         for(i = 0; i< PlayerList.size(); i++) {
@@ -158,7 +158,7 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
         if(EnumerationList){
             PacketEnemy.clear();
             for (i = 0; i < Main.EnemyList.size(); i++) {
-                packet_enemy_server();
+                packet_enemy_server(Main.EnemyList.get(i));
             }
             PacketPlayer.clear();
             for (i = 0; i < PlayerList.size(); i++) {
@@ -202,20 +202,21 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
             pack.rotation_tower_2.add(Tower.rotation_tower);
         }
     }
-    private void packet_enemy_server(){
+    private void packet_enemy_server(Unit unit){
         PacketEnemy.add(new TransportPacket());
-        PacketEnemy.get(i).name = EnemyList.get(i).type_unit;
-        PacketEnemy.get(i).x = EnemyList.get(i).x;
-        PacketEnemy.get(i).y = EnemyList.get(i).y;
-        PacketEnemy.get(i).crite_life = EnemyList.get(i).crite_life;
-        PacketEnemy.get(i).rotation_corpus = EnemyList.get(i).rotation_corpus;
-        PacketEnemy.get(i).rotation_tower = EnemyList.get(i).rotation_tower;
-        PacketEnemy.get(i).reload = EnemyList.get(i).reload;
-        PacketEnemy.get(i).hp = EnemyList.get(i).hp;
-        PacketEnemy.get(i).team = EnemyList.get(i).team;
-        PacketEnemy.get(i).speed = EnemyList.get(i).speed;
-        for (int i2 = 0; i2< EnemyList.get(i).tower_obj.size(); i2++) {
-            PacketEnemy.get(i).rotation_tower_2.add(EnemyList.get(i).tower_obj.get(i2).rotation_tower);
+        TransportPacket pack = PacketEnemy.get(i);
+        pack.name = unit.type_unit;
+        pack.x = unit.x;
+        pack.y = unit.y;
+        pack.crite_life = unit.crite_life;
+        pack.rotation_corpus = unit.rotation_corpus;
+        pack.rotation_tower = unit.rotation_tower;
+        pack.reload = unit.reload;
+        pack.hp = unit.hp;
+        pack.team = unit.team;
+        pack.speed = unit.speed;
+        for (int i2 = 0; i2< unit.tower_obj.size(); i2++) {
+            pack.rotation_tower_2.add(unit.tower_obj.get(i2).rotation_tower);
         }
     }
     private void packet_debris_server(){

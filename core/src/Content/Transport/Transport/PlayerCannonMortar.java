@@ -15,7 +15,7 @@ public class PlayerCannonMortar extends Unit {
         this.x = x;this.y = y;
         this.host = host;
         this.speed_inert = 0;this.speed = 0;
-        this.max_speed = 4;this.min_speed = -4;
+        this.max_speed = 4;this.min_speed = -2;
         this.max_hp = 1200;
         this.allyList = tr;
         this.damage = 250;

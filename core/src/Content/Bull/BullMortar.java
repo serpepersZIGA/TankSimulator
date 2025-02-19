@@ -24,6 +24,7 @@ public class BullMortar extends Bullet {
         type = 3;
         speed_save();
     }
+
     public void all_action(int i){
         super.bull_move_xy();
         super.corpus_bull_mortar(Main.EnemyList);

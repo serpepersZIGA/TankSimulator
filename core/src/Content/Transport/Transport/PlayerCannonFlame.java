@@ -61,12 +61,11 @@ public class PlayerCannonFlame extends Unit {
     }
     public void all_action(int i) {
         super.all_action(i);
-        control.ControllerIteration(Main.PlayerList.get(i),i);
+        control.ControllerIteration(this,i);
         super.MotorControl();
         super.build_corpus(i);
         super.corpus_corpus(this.enemyList);
         super.tower_xy();
-        super.TowerControlPlayer();
         center_render();
         RenderMethod.transorm_img(this.x_rend, this.y_rend,this.corpus_width_zoom,this.corpus_height_zoom,this.rotation_corpus,this.corpus_img,const_x_corpus,const_y_corpus);
         tower_iteration(i);
@@ -77,7 +76,7 @@ public class PlayerCannonFlame extends Unit {
     @Override
     public void all_action_client(int i) {
         super.all_action_client(i);
-        control.ControllerIterationClientAnHost(Main.PlayerList.get(i));
+        control.ControllerIterationClientAnHost(this);
         super.MotorControl();
         super.build_corpus(i);
         super.corpus_corpus(this.enemyList);
@@ -93,10 +92,9 @@ public class PlayerCannonFlame extends Unit {
     @Override
     public void all_action_client_1(int i) {
         super.all_action_client_1(i);
-        control.ControllerIterationClientAnClient(Main.PlayerList.get(i));
+        control.ControllerIterationClientAnClient(this);
         move_xy_transport();
         super.tower_xy();
-        super.TowerControlPlayer();
         center_render();
         RenderMethod.transorm_img(this.x_rend, this.y_rend,this.corpus_width_zoom,this.corpus_height_zoom,this.rotation_corpus,this.corpus_img,const_x_corpus,const_y_corpus);
         tower_iteration_client_2(i);
@@ -106,7 +104,6 @@ public class PlayerCannonFlame extends Unit {
     }
     public void all_action_client_2(int i) {
         super.all_action_client_2(i);
-        control.ControllerIterationClientAnClient(this);
         super.tower_xy();
         center_render();
         move_xy_transport();

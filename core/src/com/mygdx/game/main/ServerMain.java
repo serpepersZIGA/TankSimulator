@@ -146,7 +146,6 @@ public class ServerMain extends Listener {
             EnumerationList = true;
             if(!p.equals(new SpawnPlayerVoid())) {
                 int i2 = Main.PlayerList.size();
-                System.out.println(Main.PlayerList.size()+"player");
                 ((PlayerSpawnData) p).SpawnPlayer(false);
                 PlayerList.get(i2).nConnect = nConnect;
             }
