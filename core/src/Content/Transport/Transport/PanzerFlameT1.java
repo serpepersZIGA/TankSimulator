@@ -11,6 +11,8 @@ import com.mygdx.game.unit.Fire.FireRegister;
 import com.mygdx.game.unit.Unit;
 import com.mygdx.game.unit.UnitType;
 
+import static com.mygdx.game.main.Main.RegisterFunctionalComponent;
+
 public class PanzerFlameT1 extends Unit {
     public PanzerFlameT1(float x, float y, ArrayList<Unit> tr, byte team){
         this.type_unit = UnitType.PanzerFlameT1;
@@ -44,6 +46,9 @@ public class PanzerFlameT1 extends Unit {
         this.speed_tower = 1;this.speed_rotation = 1;
         this.sound_fire = Main.ContentSound.flame_attack;
         fire = FireRegister.FireFlame;
+        functional.Add(RegisterFunctionalComponent.TowerXY);
+        functional.Add(RegisterFunctionalComponent.MotorControl);
+        functional.Add(RegisterFunctionalComponent.BuildCollision);
         data();
         this.tower_obj.add(new TowerBullTankEnemy(18,55,52,-12,4,2,65,12, this.id_unit,
                 (byte)1,this.team,Main.ContentImage.tower_enemy_auxiliary_1,this.allyList, Main.ContentSound.flame_attack));
@@ -62,7 +67,7 @@ public class PanzerFlameT1 extends Unit {
         super.all_action(i);
         control.ControllerIteration(this,i);
         super.MotorControl();
-        super.build_corpus(i);
+        super.build_corpus();
         super.corpus_corpus_def_xy(this.allyList);
         super.tower_xy();
         center_render();

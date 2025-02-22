@@ -48,14 +48,9 @@ public class Method {
         tower_y = difference_rotation_cos(tower_y,difference_2,rotation-90);
         return new float[]{tower_x,tower_y};
     }
-    public static double tower_player(float x, float y, float rotation_tower, float speed_tower) {
-        return tower(x, y, Keyboard.MouseX, Keyboard.MouseY, rotation_tower, speed_tower);
-
-    }
     public static int detection_near_transport_i(Unit objBot, ArrayList<Unit> obj) {
         int ind = 0;
         int radius = 0;
-        System.out.println();
         for (int i2 = 0; i2 < obj.size(); i2++) {
             double g = sqrt(pow2.pow2(objBot.x - obj.get(i2).x) + pow2.pow2(objBot.y - obj.get(i2).y));
             if (radius == 0 || radius > g) {
@@ -66,20 +61,22 @@ public class Method {
         }
         return ind;
     }
-    public static int[] detection_near_transport_xy_def(Unit objBot, ArrayList<Unit> obj) {
-        int ind = 0;
+    public static Object[] detection_near_transport_xy_def(Unit objBot, ArrayList<Unit> obj) {
+        Unit ind = null;
         int radius = 0;
         double g;
-        for (int i2 = 0; i2 < obj.size(); i2++) {
-            g = sqrt(pow2.pow2(objBot.x - obj.get(i2).x) + pow2.pow2(objBot.y - obj.get(i2).y));
-            if (radius > g || radius == 0) {
-                if(obj.get(i2).x != objBot.x && obj.get(i2).y != objBot.y) {
-                    ind = i2;
-                    radius = (int) g;
+        for (Unit unit : obj) {
+            if(unit != objBot) {
+                g = sqrt(pow2.pow2(objBot.x - unit.x) + pow2.pow2(objBot.y - unit.y));
+                if (radius > g || radius == 0) {
+                    if (unit.x != objBot.x && unit.y != objBot.y) {
+                        ind = unit;
+                        radius = (int) g;
+                    }
                 }
             }
         }
-        return new int[]{ind,radius};
+        return new Object[]{ind,radius};
     }
     public static int[] detection_near_transport_i_def(ArrayList<Unit> obj_bot, int i, ArrayList<Unit> obj) {
         int ind = 0;

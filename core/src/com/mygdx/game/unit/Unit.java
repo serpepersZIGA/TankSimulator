@@ -15,6 +15,8 @@ import Content.Particle.Bang;
 import com.mygdx.game.soldat.*;
 import com.mygdx.game.unit.Controller.Controller;
 import com.mygdx.game.unit.Fire.Fire;
+import com.mygdx.game.unit.FunctionalComponent.FunctionalComponent;
+import com.mygdx.game.unit.FunctionalComponent.FunctionalList;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -53,6 +55,7 @@ public abstract class Unit {
 
     public byte behavior,behavior_buffer, medic_help, crite_life, team,height = 1,trigger_drive;
     private float g;
+    public FunctionalList functional = new FunctionalList();
     public static int BorderDetected = 200;
     public boolean host;
 
@@ -166,7 +169,7 @@ public abstract class Unit {
         }
     }
     public final void behavior_bot(ArrayList<Unit>trTarget, int i){
-        review_field(i, trTarget);
+        review_field(trTarget);
         if (!this.trigger_attack) {
             if (this.time_trigger_bull_bot > 0) {
                 motor_bot_bypass(i);
@@ -178,11 +181,11 @@ public abstract class Unit {
             motor_bot_bypass(i);
         }
     }
-    protected final void review_field(int i,ArrayList<Unit>trTarget){
+    protected final void review_field(ArrayList<Unit>trTarget){
         if(trTarget.size()!= 0) {
-            int[] sp = Method.detection_near_transport_xy_def(this.allyList.get(i), trTarget);
+            Object[] sp = Method.detection_near_transport_xy_def(this, trTarget);
             //g = atan2(this.y - tr.get(sp[0]).y, this.x - tr.get(sp[0]).x) / 3.1415926535 * 180;
-            this.trigger_attack = sp[1] < this.range_see;
+            this.trigger_attack = (int)sp[1] < this.range_see;
         }
         else{this.trigger_attack = false; }
 
@@ -238,7 +241,7 @@ public abstract class Unit {
             }
         }
     }
-    protected final void MotorControl(){
+    public final void MotorControl(){
         this.time_sound_motor -= 1;
         if (this.press_w) {
             if (this.time_sound_motor < 0) {
@@ -283,7 +286,7 @@ public abstract class Unit {
         press_s = false;
         press_d = false;
     }
-    protected final void move_xy_transport(){
+    public final void move_xy_transport(){
         float rotation_corpus2 = (float) (-this.rotation_corpus*3.1415/180);
         this.x -= move.move_sin2(this.speed, rotation_corpus2);
         this.y -= move.move_cos2(this.speed, rotation_corpus2);
@@ -396,7 +399,7 @@ public abstract class Unit {
         }
     }
 
-    protected void tower_xy(){
+    public void tower_xy(){
     float []xy = Method.tower_xy(this.x,this.y,this.tower_x_const,this.tower_y_const,this.difference,-this.rotation_corpus);
         this.tower_x = xy[0];this.tower_y = xy[1];}
     protected void tower_xy_2(){
@@ -589,7 +592,7 @@ public abstract class Unit {
                 if (null != findIntersection(this.tower_x, this.tower_y, obj_tr.get(i2).tower_x, obj_tr.get(i2).tower_y)) {
                     path.clear();
                     Ai.pathAIAStar(this.allyList.get(i3), obj_tr.get(i2),this.tower_x,this.tower_y);
-                    trigger_fire = false;
+                    //trigger_fire = false;
                 } else {
                     path.clear();
                     trigger_fire = true;
@@ -729,13 +732,14 @@ public abstract class Unit {
             this.speed = 0;
         }
     }
-    protected void helicopter_ii(ArrayList<Unit>obj_search, int i3){
+    protected void helicopter_ii(ArrayList<Unit>obj_search){
         if (this.enemyList.size()!= 0) {
-            int[]sp = Method.detection_near_transport_xy_def(this.allyList.get(i3), obj_search);
-            g = (float) (atan2(this.y - obj_search.get(sp[0]).y, this.x - obj_search.get(sp[0]).x) / 3.1415926535 * 180);
+            Object[]sp = Method.detection_near_transport_xy_def(this, obj_search);
+            Unit unit = (Unit) sp[0];
+            g = (float) (atan2(this.y - unit.y, this.x - unit.x) / 3.1415926535 * 180);
             g -= 90;
             rotation_bot(g);
-            motor_bot_base(sp[1], this.behavior);
+            motor_bot_base((int)sp[1], this.behavior);
             speed_balance();
         }
 
@@ -988,7 +992,7 @@ public abstract class Unit {
     }
     private static boolean z = false;
     private static int render_x_max,render_x_min,render_y_max,render_y_min;
-    protected void build_corpus(int i){
+    public void build_corpus(){
         render_x_max = (int)((x+BorderDetected)/Main.width_block);
         render_x_min = (int)(((x-BorderDetected)/Main.width_block));
         if(render_x_min <0){render_x_min =0;}
@@ -1011,7 +1015,7 @@ public abstract class Unit {
                     }
                 }
                 else{
-                    BlockList2D.get(iy).get(ix).objMap.Collision.collision(allyList.get(i),ix,iy);
+                    BlockList2D.get(iy).get(ix).objMap.Collision.collision(this,ix,iy);
                 }
             }
         }
@@ -1065,8 +1069,8 @@ public abstract class Unit {
         }
     }
     protected void move_debris(){
-        this.x += move.move_sin(this.speed,-this.rotation_corpus);
-        this.y += move.move_cos(this.speed,-this.rotation_corpus);
+        this.x -= move.move_sin(this.speed,-this.rotation_corpus);
+        this.y -= move.move_cos(this.speed,-this.rotation_corpus);
         if(this.speed<0){
             this.speed +=this.acceleration;
             if(this.speed >-this.acceleration &&this.speed <this.acceleration){
@@ -1115,18 +1119,18 @@ public abstract class Unit {
         }
         speed_balance();
     }
-    protected void spawn_soldat(ArrayList<Soldat>soldat){
+    public void spawn_soldat(){
         this.time_spawn_soldat -= 1;
         if(this.time_spawn_soldat <= 0){
             int z = rand.rand(2);
             this.time_spawn_soldat = this.time_spawn_soldat_max;
             switch(z){
                 case 0:{
-                    soldat.add(new SoldatBull(this.x,this.y, EnemyList));
+                    SoldatList.add(new SoldatBull(this.x,this.y, EnemyList));
                     break;
                 }
                 case 1:{
-                    soldat.add(new SoldatFlame(this.x,this.y, EnemyList));
+                    SoldatList.add(new SoldatFlame(this.x,this.y, EnemyList));
                     break;
                 }
                 //case 3->{soldat.add(new soldat_(this.x,this.y));}

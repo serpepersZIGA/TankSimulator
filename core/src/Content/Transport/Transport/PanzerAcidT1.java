@@ -11,6 +11,8 @@ import com.mygdx.game.unit.Fire.FireRegister;
 import com.mygdx.game.unit.Unit;
 import com.mygdx.game.unit.UnitType;
 
+import static com.mygdx.game.main.Main.RegisterFunctionalComponent;
+
 public class PanzerAcidT1 extends Unit {
     public PanzerAcidT1(float x, float y, ArrayList<Unit> tr, byte team){
         this.type_unit = UnitType.PanzerAcidT1;
@@ -47,6 +49,9 @@ public class PanzerAcidT1 extends Unit {
         this.speed_tower = 1;this.speed_rotation = 1;
         this.sound_fire = Main.ContentSound.acid_attack;
         fire = FireRegister.FireAcid;
+        functional.Add(RegisterFunctionalComponent.TowerXY);
+        functional.Add(RegisterFunctionalComponent.MotorControl);
+        functional.Add(RegisterFunctionalComponent.BuildCollision);
         data();
 //        this.tower_obj.add(new tower_flame_enemy(18,55,52,-12,4,2,65,12,2, this.id_unit,
 //                (byte)1,(byte)2,Main.content_base.tower_player_auxiliart_1,this.spisok, Main.sa.get(0).flame_attack));
@@ -65,24 +70,51 @@ public class PanzerAcidT1 extends Unit {
     }
     public void all_action(int i) {
         super.all_action(i);
-        super.build_corpus(i);
-        super.corpus_corpus_def_xy(this.allyList);
-        super.tower_xy();
+        control.ControllerIteration(this,i);
+        functional.FunctionalIterationAnHost(this);
+        super.corpus_corpus(this.enemyList);
         center_render();
         RenderMethod.transorm_img(this.x_rend, this.y_rend,this.corpus_width_zoom,this.corpus_height_zoom,this.rotation_corpus,this.corpus_img,const_x_corpus,const_y_corpus);
-        tower_iteration_bot(i);
+        tower_iteration(i);
         RenderMethod.transorm_img(this.x_tower_rend,this.y_tower_rend,this.width_tower_zoom,this.height_tower_zoom,this.rotation_tower,this.tower_img,const_x_tower,const_y_tower
         );
-        super.transportDeleteBot(i,allyList);
+        super.transportDeletePlayer(i,this.allyList);
     }
+    @Override
     public void all_action_client(int i) {
         super.all_action_client(i);
-        super.tower_xy();
+        control.ControllerIterationClientAnHost(this);
+        functional.FunctionalIterationClientAnHost(this);
+        super.corpus_corpus(this.enemyList);
+        super.corpus_corpus_def_xy(this.allyList);
         center_render();
         RenderMethod.transorm_img(this.x_rend, this.y_rend,this.corpus_width_zoom,this.corpus_height_zoom,this.rotation_corpus,this.corpus_img,const_x_corpus,const_y_corpus);
-        tower_iteration_bot_client(i);
+        tower_iteration_client(i);
         RenderMethod.transorm_img(this.x_tower_rend,this.y_tower_rend,this.width_tower_zoom,this.height_tower_zoom,this.rotation_tower,this.tower_img,const_x_tower,const_y_tower
         );
+        super.transportDeletePlayer(i,this.allyList);
+    }
+    @Override
+    public void all_action_client_1(int i) {
+        super.all_action_client_1(i);
+        control.ControllerIterationClientAnClient(this);
+        functional.FunctionalIterationAnClient(this);
+        center_render();
+        RenderMethod.transorm_img(this.x_rend, this.y_rend,this.corpus_width_zoom,this.corpus_height_zoom,this.rotation_corpus,this.corpus_img,const_x_corpus,const_y_corpus);
+        tower_iteration_client_2(i);
+        RenderMethod.transorm_img(this.x_tower_rend, this.y_tower_rend,this.width_tower_zoom,this.height_tower_zoom,this.rotation_tower,this.tower_img,const_x_tower,const_y_tower
+        );
+
+    }
+    public void all_action_client_2(int i) {
+        super.all_action_client_2(i);
+        functional.FunctionalIterationAnClient(this);
+        center_render();
+        RenderMethod.transorm_img(this.x_rend,this.y_rend,this.corpus_width_zoom,this.corpus_height_zoom,this.rotation_corpus,this.corpus_img,const_x_corpus,const_y_corpus);
+        tower_iteration_client_1(i);
+        RenderMethod.transorm_img(this.x_tower_rend,this.y_tower_rend,this.width_tower_zoom,this.height_tower_zoom,this.rotation_tower,this.tower_img,const_x_tower,const_y_tower
+        );
+
     }
     public void update(){
         indicator_reload();

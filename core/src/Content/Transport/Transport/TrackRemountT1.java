@@ -9,6 +9,7 @@ import com.mygdx.game.unit.Unit;
 import com.mygdx.game.unit.UnitType;
 
 import static com.mygdx.game.main.Main.RegisterControl;
+import static com.mygdx.game.main.Main.RegisterFunctionalComponent;
 
 public class TrackRemountT1 extends Unit {
     public TrackRemountT1(float x, float y, ArrayList<Unit> tr,byte team){
@@ -47,6 +48,10 @@ public class TrackRemountT1 extends Unit {
         this.distance_target = 200;
         this.distance_target_2 = 80;
         control = RegisterControl.controllerBotSupport;
+        functional.Add(RegisterFunctionalComponent.TowerXY);
+        functional.Add(RegisterFunctionalComponent.MotorControl);
+        functional.Add(RegisterFunctionalComponent.BuildCollision);
+        functional.Add(RegisterFunctionalComponent.Hill);
 
         this.speed_tower = 1;this.speed_rotation = 1;
         data();
@@ -55,7 +60,7 @@ public class TrackRemountT1 extends Unit {
         super.all_action(i);
         control.ControllerIteration(this,i);
         super.MotorControl();
-        super.build_corpus(i);
+        super.build_corpus();
         super.hill_bot(Main.EnemyList);
         tower_xy();
         super.corpus_corpus_def_xy(Main.EnemyList);

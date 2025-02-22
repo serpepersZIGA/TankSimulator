@@ -3,10 +3,14 @@ package Content.Transport.Transport;
 import com.mygdx.game.main.Main;
 import com.mygdx.game.method.RenderMethod;
 import com.mygdx.game.unit.Controller.RegisterController;
+import com.mygdx.game.unit.FunctionalComponent.FunctionalComponent;
+import com.mygdx.game.unit.FunctionalComponent.FunctionalComponentRegister;
 import com.mygdx.game.unit.Unit;
 import com.mygdx.game.unit.UnitType;
 
 import java.util.ArrayList;
+
+import static com.mygdx.game.main.Main.RegisterFunctionalComponent;
 
 public class TrackSoldatT1 extends Unit {
     public TrackSoldatT1(float x, float y, ArrayList<Unit> tr,byte team) {
@@ -45,27 +49,53 @@ public class TrackSoldatT1 extends Unit {
         this.host = true;
         this.team = team;
 
+        functional.Add(RegisterFunctionalComponent.TowerXY);
+        functional.Add(RegisterFunctionalComponent.MotorControl);
+        functional.Add(RegisterFunctionalComponent.BuildCollision);
+        functional.Add(RegisterFunctionalComponent.SoldatSpawn);
+
 
         this.speed_tower = 1;
         this.speed_rotation = 1;
         data();
     }
-    public void all_action(int i){
+    public void all_action(int i) {
         super.all_action(i);
         control.ControllerIteration(this,i);
-        super.MotorControl();
-        super.build_corpus(i);
-        super.corpus_corpus_def_xy(Main.EnemyList);
-        //super.spawn_soldat(Main.SoldatList);
+        functional.FunctionalIterationAnHost(this);
+        super.corpus_corpus(this.enemyList);
         center_render();
-        RenderMethod.transorm_img(this.x_rend,this.y_rend,this.corpus_width_zoom,this.corpus_height_zoom,this.rotation_corpus,this.corpus_img,const_x_corpus,const_y_corpus);
-        super.transportDeleteBot(i,allyList);
-    }
-    public void all_action_client(int i){
-        super.all_action_client(i);
-        super.tower_xy();
-        center_corpus_render();
         RenderMethod.transorm_img(this.x_rend, this.y_rend,this.corpus_width_zoom,this.corpus_height_zoom,this.rotation_corpus,this.corpus_img,const_x_corpus,const_y_corpus);
+        super.transportDeletePlayer(i,this.allyList);
+    }
+    @Override
+    public void all_action_client(int i) {
+        super.all_action_client(i);
+        control.ControllerIterationClientAnHost(this);
+        functional.FunctionalIterationClientAnHost(this);
+        super.corpus_corpus(this.enemyList);
+        super.corpus_corpus_def_xy(this.allyList);
+        center_render();
+        RenderMethod.transorm_img(this.x_rend, this.y_rend,this.corpus_width_zoom,this.corpus_height_zoom,this.rotation_corpus,this.corpus_img,const_x_corpus,const_y_corpus);
+        super.transportDeletePlayer(i,this.allyList);
+    }
+    @Override
+    public void all_action_client_1(int i) {
+        super.all_action_client_1(i);
+        control.ControllerIterationClientAnClient(this);
+        functional.FunctionalIterationAnClient(this);
+        center_render();
+        RenderMethod.transorm_img(this.x_tower_rend, this.y_tower_rend,this.width_tower_zoom,this.height_tower_zoom,this.rotation_tower,this.tower_img,const_x_tower,const_y_tower
+        );
+
+    }
+    public void all_action_client_2(int i) {
+        super.all_action_client_2(i);
+        functional.FunctionalIterationAnClient(this);
+        center_render();
+        RenderMethod.transorm_img(this.x_rend, this.y_rend,this.corpus_width_zoom,this.corpus_height_zoom,this.rotation_corpus,this.corpus_img,const_x_corpus,const_y_corpus);
+
+
     }
     public void update(){
         indicator_hp_2();

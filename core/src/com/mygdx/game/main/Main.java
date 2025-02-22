@@ -37,6 +37,7 @@ import com.mygdx.game.unit.*;
 import com.mygdx.game.unit.Controller.ControllerBot;
 import com.mygdx.game.unit.Controller.RegisterController;
 import com.mygdx.game.unit.Fire.FireRegister;
+import com.mygdx.game.unit.FunctionalComponent.FunctionalComponentRegister;
 import com.mygdx.game.unit.PlayerSpawnList.PlayerAllLoad;
 import com.mygdx.game.unit.SpawnPlayer.PlayerSpawnData;
 import com.mygdx.game.unit.SpawnPlayer.PlayerSpawnListData;
@@ -111,6 +112,7 @@ public class Main extends ApplicationAdapter {
 	public static int flame_spawn_time,flame_spawn_time_max = 20;
 	public static RegisterController RegisterControl;
 	public static FireRegister FireRegister;
+	public static FunctionalComponentRegister RegisterFunctionalComponent;
 
 
 
@@ -205,6 +207,7 @@ public class Main extends ApplicationAdapter {
 
 	@Override
 	public void create () {
+		RegisterFunctionalComponent = new FunctionalComponentRegister();
 		VoidObj = new VoidObject();
 		textureBuffer = new Texture("image/infantry/soldat_enemy.png");
 		ContentImage = new DataImage();

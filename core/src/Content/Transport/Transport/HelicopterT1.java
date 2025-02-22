@@ -51,7 +51,7 @@ public class HelicopterT1 extends Unit {
     }
     public void all_action(int i) {
         super.all_action(i);
-        super.helicopter_ii(this.enemyList,i);
+        super.helicopter_ii(this.enemyList);
         super.bot_bull_tank_fire_not_tower(i);
         super.tower_xy();
         super.blade_helicopter();
