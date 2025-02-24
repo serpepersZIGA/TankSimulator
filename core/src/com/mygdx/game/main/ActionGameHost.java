@@ -9,6 +9,7 @@ import com.mygdx.game.build.BuildPacket;
 import com.mygdx.game.method.CycleTimeDay;
 import com.mygdx.game.method.Keyboard;
 import com.mygdx.game.object_map.MapObject;
+import com.mygdx.game.unit.CollisionUnit.CollisionMethodGlobal;
 import com.mygdx.game.unit.DebrisPacket;
 import com.mygdx.game.unit.Unit;
 import com.mygdx.game.unit.TransportPacket;
@@ -153,6 +154,7 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
             Unit.ai_sost=400;}
         if(flame_spawn_time <= 0){flame_spawn_time=flame_spawn_time_max;}
         CycleDayNight.WorkTime();
+        Collision.CollisionIterationGlobal();
     }
     private void server_packet() {
         if(EnumerationList){

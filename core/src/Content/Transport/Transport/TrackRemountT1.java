@@ -4,7 +4,6 @@ import com.mygdx.game.method.RenderMethod;
 
 import java.util.ArrayList;
 import com.mygdx.game.main.Main;
-import com.mygdx.game.unit.Controller.RegisterController;
 import com.mygdx.game.unit.Unit;
 import com.mygdx.game.unit.UnitType;
 
@@ -63,7 +62,7 @@ public class TrackRemountT1 extends Unit {
         super.build_corpus();
         super.hill_bot(Main.EnemyList);
         tower_xy();
-        super.corpus_corpus_def_xy(Main.EnemyList);
+        super.corpus_corpus(Main.EnemyList);
         center_render();
         RenderMethod.transorm_img(this.x_rend,this.y_rend,this.corpus_width_zoom,this.corpus_height_zoom,this.rotation_corpus,this.corpus_img,const_x_corpus,const_y_corpus);
         super.transportDeleteBot(i,allyList);

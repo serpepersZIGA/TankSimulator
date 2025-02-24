@@ -34,6 +34,7 @@ import com.mygdx.game.soldat.Soldat;
 import com.mygdx.game.soldat.SoldatRegister;
 import Data.DataSound;
 import com.mygdx.game.unit.*;
+import com.mygdx.game.unit.CollisionUnit.CollisionMethodGlobal;
 import com.mygdx.game.unit.Controller.ControllerBot;
 import com.mygdx.game.unit.Controller.RegisterController;
 import com.mygdx.game.unit.Fire.FireRegister;
@@ -113,6 +114,7 @@ public class Main extends ApplicationAdapter {
 	public static RegisterController RegisterControl;
 	public static FireRegister FireRegister;
 	public static FunctionalComponentRegister RegisterFunctionalComponent;
+	public static CollisionMethodGlobal Collision;
 
 
 
@@ -213,6 +215,7 @@ public class Main extends ApplicationAdapter {
 		ContentImage = new DataImage();
 		ContentSound = new DataSound();
 		new PlayerSpawnListData();
+		Collision = new CollisionMethodGlobal();
 		FireRegister = new FireRegister();
 		RegisterControl = new RegisterController();
 		CycleDayNight = new CycleTimeDay(5,5,3,3,0.4f,0.9f);

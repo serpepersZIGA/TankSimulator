@@ -44,8 +44,9 @@ public class PlayerCannonMortar extends Unit {
         this.corpus_height = 129;
         this.width_tower = 35;
         this.height_tower = 55;
-        functional.Add(RegisterFunctionalComponent.TowerXY);
+        
         functional.Add(RegisterFunctionalComponent.MotorControl);
+        functional.Add(Main.RegisterFunctionalComponent.TowerXY);
         functional.Add(RegisterFunctionalComponent.BuildCollision);
 
 
@@ -81,7 +82,7 @@ public class PlayerCannonMortar extends Unit {
         control.ControllerIterationClientAnHost(this);
         functional.FunctionalIterationClientAnHost(this);
         super.corpus_corpus(this.enemyList);
-        super.corpus_corpus_def_xy(this.allyList);
+        super.corpus_corpus(this.allyList);
         center_render();
         RenderMethod.transorm_img(this.x_rend, this.y_rend,this.corpus_width_zoom,this.corpus_height_zoom,this.rotation_corpus,this.corpus_img,const_x_corpus,const_y_corpus);
         tower_iteration_client(i);

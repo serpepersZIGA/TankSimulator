@@ -5,17 +5,14 @@ import Content.Soldat.SoldatBull;
 import Content.Soldat.SoldatFlame;
 import Content.Transport.Transport.DebrisTransport;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.mygdx.game.build.Building;
 import com.mygdx.game.main.Main;
 import com.mygdx.game.method.*;
 import Content.Particle.FlameSpawn;
 import Content.Particle.Bang;
-import com.mygdx.game.soldat.*;
+import com.mygdx.game.unit.CollisionUnit.TypeCollision;
 import com.mygdx.game.unit.Controller.Controller;
 import com.mygdx.game.unit.Fire.Fire;
-import com.mygdx.game.unit.FunctionalComponent.FunctionalComponent;
 import com.mygdx.game.unit.FunctionalComponent.FunctionalList;
 
 import java.awt.*;
@@ -36,6 +33,7 @@ import static java.lang.StrictMath.atan2;
 import static java.sql.Types.NULL;
 
 public abstract class Unit {
+    public TypeCollision collision;
     public UnitType type_unit;
     public float x, y;
     public int  difference,difference_2,hp,max_hp,time_spawn_soldat,time_spawn_soldat_max,x_rend,y_rend,x_tower_rend,y_tower_rend, id_unit, x_tower,y_tower,
@@ -786,22 +784,8 @@ public abstract class Unit {
     }
     protected void corpus_corpus(ArrayList<Unit>obj_2){
         boolean z;
-        for(int i = 0;i<obj_2.size();i++) {
-            z = rectCollision((int)this.x,(int)this.y,(int)this.corpus_width,(int)this.corpus_height,this.rotation_corpus,(int)obj_2.get(i).x,
-                    (int)obj_2.get(i).y,(int)obj_2.get(i).corpus_width,(int)obj_2.get(i).corpus_height,obj_2.get(i).rotation_corpus);
-
-            if (z & obj_2.get(i).priority_paint == this.priority_paint) {
-                SoundPlay.sound(Main.ContentSound.hit,1-((float) sqrt(pow2(this.x_rend) + pow2((float)this.y_rend))/SoundConst));
-                MethodCollision(obj_2.get(i));
-                physicCollision(obj_2.get(i));
-
-            }
-        }
-    }
-    protected void corpus_corpus_def_xy(ArrayList<Unit>obj_2){
-        boolean z;
         for (Unit unit : obj_2) {
-            if (unit.x != this.x && unit.y != this.y) {
+            if (unit != this) {
                 z = rectCollision((int) this.x, (int) this.y, (int) this.corpus_width, (int) this.corpus_height, this.rotation_corpus, (int) unit.x,
                         (int) unit.y, (int) unit.corpus_width, (int) unit.corpus_height, unit.rotation_corpus);
 

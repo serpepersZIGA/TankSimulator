@@ -49,8 +49,8 @@ public class PanzerAcidT1 extends Unit {
         this.speed_tower = 1;this.speed_rotation = 1;
         this.sound_fire = Main.ContentSound.acid_attack;
         fire = FireRegister.FireAcid;
-        functional.Add(RegisterFunctionalComponent.TowerXY);
         functional.Add(RegisterFunctionalComponent.MotorControl);
+        functional.Add(Main.RegisterFunctionalComponent.TowerXY);
         functional.Add(RegisterFunctionalComponent.BuildCollision);
         data();
 //        this.tower_obj.add(new tower_flame_enemy(18,55,52,-12,4,2,65,12,2, this.id_unit,
@@ -86,7 +86,7 @@ public class PanzerAcidT1 extends Unit {
         control.ControllerIterationClientAnHost(this);
         functional.FunctionalIterationClientAnHost(this);
         super.corpus_corpus(this.enemyList);
-        super.corpus_corpus_def_xy(this.allyList);
+        super.corpus_corpus(this.allyList);
         center_render();
         RenderMethod.transorm_img(this.x_rend, this.y_rend,this.corpus_width_zoom,this.corpus_height_zoom,this.rotation_corpus,this.corpus_img,const_x_corpus,const_y_corpus);
         tower_iteration_client(i);

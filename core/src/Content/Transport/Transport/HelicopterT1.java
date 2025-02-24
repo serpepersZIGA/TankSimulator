@@ -7,6 +7,8 @@ import com.mygdx.game.main.Main;
 import com.mygdx.game.unit.Unit;
 import com.mygdx.game.unit.UnitType;
 
+import static com.mygdx.game.main.Main.RegisterFunctionalComponent;
+
 public class HelicopterT1 extends Unit {
     public HelicopterT1(float x, float y, ArrayList<Unit>tr){
         this.type_unit = UnitType.HelicopterT1;
@@ -40,6 +42,9 @@ public class HelicopterT1 extends Unit {
         this.sound_fire = Main.ContentSound.flame_attack;
 
         this.speed_rotation = 3;
+        functional.Add(RegisterFunctionalComponent.MotorControl);
+        functional.Add(Main.RegisterFunctionalComponent.TowerXY);
+        functional.Add(RegisterFunctionalComponent.BuildCollision);
         data();
         this.difference = 42;
         speed_tower = 10;

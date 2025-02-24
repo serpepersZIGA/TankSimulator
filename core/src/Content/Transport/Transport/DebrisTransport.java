@@ -41,7 +41,7 @@ public class DebrisTransport extends Unit {
         super.all_action(i);
         super.corpus_corpus(Main.PlayerList);
         super.corpus_corpus(Main.EnemyList);
-        super.corpus_corpus_def_xy(Main.DebrisList);
+        super.corpus_corpus(Main.DebrisList);
         build_corpus();
         move_debris();
         center_render();
