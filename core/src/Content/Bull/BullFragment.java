@@ -29,23 +29,11 @@ public class BullFragment extends Bullet {
     }
     public void all_action(int i){
         super.bull_move_xy();
-        super.corpus_bull(Main.EnemyList);
-        super.corpus_bull(Main.PlayerList);
+        super.corpus_bull(Main.UnitList);
         super.bull_clear_time();
         super.BullBuild();
         super.soldat_bull(Main.SoldatList);
         this.update();
-        super.clear(i);
-    }
-    public void all_action_client(int i){
-        //super.all_action_client(i);
-        this.update();
-        super.bull_move_xy();
-        super.corpus_bull(Main.EnemyList);
-        super.corpus_bull(Main.PlayerList);
-        super.bull_clear_time();
-        super.BullBuild();
-        super.soldat_bull(Main.SoldatList);
         super.clear(i);
     }
     public void update(){

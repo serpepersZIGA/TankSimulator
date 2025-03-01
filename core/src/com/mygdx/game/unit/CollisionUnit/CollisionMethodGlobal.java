@@ -1,6 +1,7 @@
 package com.mygdx.game.unit.CollisionUnit;
 
 import com.mygdx.game.main.Main;
+import com.mygdx.game.method.SoundPlay;
 import com.mygdx.game.unit.Unit;
 
 import java.awt.*;
@@ -10,13 +11,18 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
+import static com.mygdx.game.method.Option.SoundConst;
+import static com.mygdx.game.method.pow2.pow2;
 import static java.lang.StrictMath.pow;
 import static java.lang.StrictMath.sqrt;
 
 public class CollisionMethodGlobal {
     public static ArrayList<Unit>UnitsBuffer;
+    public CollisionMethodGlobal(){
+        UnitsBuffer = new ArrayList<>();
+    }
     public void CollisionIterationGlobal(){
-        for(Unit unit : Main.EnemyList){
+        for(Unit unit : Main.UnitList){
             for (Unit unit2 : UnitsBuffer){
                 CollisionMethod(unit,unit2);
             }
@@ -31,12 +37,16 @@ public class CollisionMethodGlobal {
             case rect:{
                 switch(unit2.collision){
                     case rect:{
-                        CollisionRectRect(unit1,unit2);
-
-
+                        if(CollisionRectRect(unit1,unit2)){
+                            SoundPlay.sound(Main.ContentSound.hit, 1f - ((float) sqrt(pow2(unit1.x_rend) + pow2(unit1.y_rend)) / SoundConst));
+                            CollisionFunctional.physicCollision(unit1,unit2);
+                            CollisionFunctional.MethodCollision(unit1,unit2);
+                        }
                     }
                     case circle:{
-                        CollisionRectCircle(unit1,unit2);
+                        if(CollisionRectCircle(unit1,unit2)){
+
+                        }
                     }
 
                 }
@@ -45,11 +55,15 @@ public class CollisionMethodGlobal {
             case circle:{
                 switch(unit2.collision){
                     case rect:{
-                        CollisionRectCircle(unit2,unit1);
+                        if(CollisionRectCircle(unit2,unit1)){
+
+                        }
 
                     }
                     case circle:{
-                        CollisionCircleCircle(unit1,unit2);
+                        if(CollisionCircleCircle(unit1,unit2)){
+
+                        }
 
                     }
 

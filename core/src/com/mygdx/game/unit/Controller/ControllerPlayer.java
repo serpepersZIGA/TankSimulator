@@ -8,7 +8,6 @@ import com.mygdx.game.unit.Unit;
 import static com.mygdx.game.main.ClientMain.Client;
 import static com.mygdx.game.main.Main.Clients;
 import static com.mygdx.game.main.Main.PacketClient;
-import static com.mygdx.game.unit.TransportRegister.PacketPlayer;
 
 public class ControllerPlayer extends Controller {
     public void ControllerIteration(Unit unit,int i){
@@ -54,6 +53,7 @@ public class ControllerPlayer extends Controller {
                         Tower.TowerControlPlayerClient();
                         Tower.FireControlPlayer();
                     }
+                    Clients.remove(pack);
                     return;
                 }
             }

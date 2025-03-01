@@ -5,10 +5,10 @@ import java.util.ArrayList;
 public class TransportPacket {
     public float x,y,rotation_corpus,rotation_tower,reload;
     public UnitType name;
-    public byte team,crite_life;
+    public byte team;
     public int hp;
     public float speed;
-    public boolean host;
+    public boolean host,crite_life;
     public int IDClient;
     public ArrayList<Float>rotation_tower_2 = new ArrayList<>();
 }

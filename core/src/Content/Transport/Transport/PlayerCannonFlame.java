@@ -47,6 +47,7 @@ public class PlayerCannonFlame extends Unit {
         fire = FireRegister.FireFlame;
         functional.Add(RegisterFunctionalComponent.MotorControl);
         functional.Add(Main.RegisterFunctionalComponent.TowerXY);
+        functional.Add(RegisterFunctionalComponent.TowerIteration);
         functional.Add(RegisterFunctionalComponent.BuildCollision);
         data();
         this.tower_obj.add(new TowerMortarPlayer(18,55,52,-12,40,2,
@@ -68,53 +69,35 @@ public class PlayerCannonFlame extends Unit {
         super.all_action(i);
         control.ControllerIteration(this,i);
         functional.FunctionalIterationAnHost(this);
-        super.corpus_corpus(this.enemyList);
-        center_render();
-        RenderMethod.transorm_img(this.x_rend, this.y_rend,this.corpus_width_zoom,this.corpus_height_zoom,this.rotation_corpus,this.corpus_img,const_x_corpus,const_y_corpus);
-        tower_iteration(i);
-        RenderMethod.transorm_img(this.x_tower_rend,this.y_tower_rend,this.width_tower_zoom,this.height_tower_zoom,this.rotation_tower,this.tower_img,const_x_tower,const_y_tower
-        );
-        super.transportDeletePlayer(i,this.allyList);
+        super.transportDelete();
     }
     @Override
     public void all_action_client(int i) {
         super.all_action_client(i);
         control.ControllerIterationClientAnHost(this);
         functional.FunctionalIterationClientAnHost(this);
-        super.corpus_corpus(this.enemyList);
-        super.corpus_corpus(this.allyList);
-        center_render();
-        RenderMethod.transorm_img(this.x_rend, this.y_rend,this.corpus_width_zoom,this.corpus_height_zoom,this.rotation_corpus,this.corpus_img,const_x_corpus,const_y_corpus);
-        tower_iteration_client(i);
-        RenderMethod.transorm_img(this.x_tower_rend,this.y_tower_rend,this.width_tower_zoom,this.height_tower_zoom,this.rotation_tower,this.tower_img,const_x_tower,const_y_tower
-        );
-        super.transportDeletePlayer(i,this.allyList);
+        super.transportDelete();
     }
     @Override
     public void all_action_client_1(int i) {
         super.all_action_client_1(i);
         control.ControllerIterationClientAnClient(this);
         functional.FunctionalIterationAnClient(this);
-        center_render();
-        RenderMethod.transorm_img(this.x_rend, this.y_rend,this.corpus_width_zoom,this.corpus_height_zoom,this.rotation_corpus,this.corpus_img,const_x_corpus,const_y_corpus);
-        tower_iteration_client_2(i);
-        RenderMethod.transorm_img(this.x_tower_rend, this.y_tower_rend,this.width_tower_zoom,this.height_tower_zoom,this.rotation_tower,this.tower_img,const_x_tower,const_y_tower
-        );
 
     }
     public void all_action_client_2(int i) {
         super.all_action_client_2(i);
-        functional.FunctionalIterationAnClient(this);
-        center_render();
-        RenderMethod.transorm_img(this.x_rend,this.y_rend,this.corpus_width_zoom,this.corpus_height_zoom,this.rotation_corpus,this.corpus_img,const_x_corpus,const_y_corpus);
-        tower_iteration_client_1(i);
-        RenderMethod.transorm_img(this.x_tower_rend,this.y_tower_rend,this.width_tower_zoom,this.height_tower_zoom,this.rotation_tower,this.tower_img,const_x_tower,const_y_tower
-        );
+        functional.FunctionalIterationOtherAnClient(this);
 
     }
     public void update(){
         indicator_reload();
         indicator_hp_2();
+    }
+    public void UpdateUnit(){
+        center_render();
+        RenderMethod.transorm_img(this.x_rend,this.y_rend,this.corpus_width_zoom,this.corpus_height_zoom,this.rotation_corpus,this.corpus_img,const_x_corpus,const_y_corpus);
+        RenderMethod.transorm_img(this.x_tower_rend,this.y_tower_rend,this.width_tower_zoom,this.height_tower_zoom,this.rotation_tower,this.tower_img,const_x_tower,const_y_tower);
     }
 
 }

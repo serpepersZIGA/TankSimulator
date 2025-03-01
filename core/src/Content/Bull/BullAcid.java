@@ -24,20 +24,7 @@ public class BullAcid extends Bullet {
     }
     public void all_action(int i){
         super.bull_move_xy();
-        super.corpus_bull(Main.EnemyList);
-        super.corpus_bull(Main.PlayerList);
-        super.corpus_bull(Main.DebrisList);
-        super.BullBuildAcid();
-        super.soldat_bull(Main.SoldatList);
-        super.bull_clear_time_acid();
-        this.update();
-        super.clear(i);
-    }
-
-    public void all_action_client(int i){
-        super.bull_move_xy();
-        super.corpus_bull(Main.EnemyList);
-        super.corpus_bull(Main.PlayerList);
+        super.corpus_bull(Main.UnitList);
         super.corpus_bull(Main.DebrisList);
         super.BullBuildAcid();
         super.soldat_bull(Main.SoldatList);

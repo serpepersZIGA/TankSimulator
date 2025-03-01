@@ -48,6 +48,7 @@ public class PanzerFlameT1 extends Unit {
         fire = FireRegister.FireFlame;
         functional.Add(RegisterFunctionalComponent.MotorControl);
         functional.Add(Main.RegisterFunctionalComponent.TowerXY);
+        functional.Add(RegisterFunctionalComponent.TowerIteration);
         functional.Add(RegisterFunctionalComponent.BuildCollision);
         data();
         this.tower_obj.add(new TowerBullTankEnemy(18,55,52,-12,4,2,65,12, this.id_unit,
@@ -66,28 +67,35 @@ public class PanzerFlameT1 extends Unit {
     public void all_action(int i) {
         super.all_action(i);
         control.ControllerIteration(this,i);
-        super.MotorControl();
-        super.build_corpus();
-        super.corpus_corpus(this.allyList);
-        super.tower_xy();
-        center_render();
-        RenderMethod.transorm_img(this.x_rend, this.y_rend,this.corpus_width_zoom,this.corpus_height_zoom,this.rotation_corpus,this.corpus_img,const_x_corpus,const_y_corpus);
-        tower_iteration_bot(i);
-        RenderMethod.transorm_img(this.x_tower_rend, this.y_tower_rend,this.width_tower_zoom,this.height_tower_zoom,this.rotation_tower,this.tower_img,const_x_tower,const_y_tower
-        );
-        super.transportDeleteBot(i,allyList);
+        functional.FunctionalIterationAnHost(this);
+        super.transportDelete();
     }
+    @Override
     public void all_action_client(int i) {
-        super.tower_xy();
-        center_render();
-        RenderMethod.transorm_img(this.x_rend, this.y_rend,this.corpus_width_zoom,this.corpus_height_zoom,this.rotation_corpus,this.corpus_img,const_x_corpus,const_y_corpus);
-        tower_iteration_bot_client(i);
-        RenderMethod.transorm_img(this.x_tower_rend,this.y_tower_rend,this.width_tower_zoom,this.height_tower_zoom,this.rotation_tower,this.tower_img,const_x_tower,const_y_tower
-        );
+        super.all_action_client(i);
+        control.ControllerIterationClientAnHost(this);
+        functional.FunctionalIterationClientAnHost(this);
+        super.transportDelete();
+    }
+    @Override
+    public void all_action_client_1(int i) {
+        super.all_action_client_1(i);
+        control.ControllerIterationClientAnClient(this);
+        functional.FunctionalIterationAnClient(this);
+    }
+    public void all_action_client_2(int i) {
+        super.all_action_client_2(i);
+        functional.FunctionalIterationAnClient(this);
     }
     public void update(){
         indicator_reload();
         indicator_hp_2();
+    }
+    public void UpdateUnit(){
+        center_render();
+        RenderMethod.transorm_img(this.x_rend,this.y_rend,this.corpus_width_zoom,this.corpus_height_zoom,this.rotation_corpus,this.corpus_img,const_x_corpus,const_y_corpus);
+        RenderMethod.transorm_img(this.x_tower_rend,this.y_tower_rend,this.width_tower_zoom,this.height_tower_zoom,this.rotation_tower,this.tower_img,const_x_tower,const_y_tower
+        );
     }
 
 

@@ -115,18 +115,21 @@ public class AI {
 //        }
     }
     public void pathAISoldat(Soldat ai, Unit target, float x_ai, float y_ai){
-
+        ai.path.clear();
         int[] target_xy = block_detected_2Soldat(target);
         int[] ai_xy = block_detected_3(x_ai, y_ai);
         x = ai_xy[0];
         y = ai_xy[1];
         TargetLineMin = -1;
+        conf = false;
+        OpenBlockList.clear();
+        CloseBlockList.clear();
         while (y != target_xy[1] || x != target_xy[0]) {
             xTotal = x+1;
             if (!BlockList2D.get(y).get(xTotal).passability) {
                 TargetLine = (int) sqrt(pow2(target_xy[0]-x+1)+pow2(target_xy[1]-y));
-                for (int i = 0;i<CloseBlockList.size();i++) {
-                    if(xTotal== CloseBlockList.get(i)[0]&y== CloseBlockList.get(i)[1]){
+                for (int[] ints : CloseBlockList) {
+                    if (xTotal == ints[0] & y == ints[1]) {
                         conf = true;
                         break;
                     }
@@ -139,8 +142,8 @@ public class AI {
             xTotal = x-1;
             if (!BlockList2D.get(y).get(xTotal).passability) {
                 TargetLine = (int) sqrt(pow2(target_xy[0]-x-1)+pow2(target_xy[1]-y));
-                for (int i = 0;i<CloseBlockList.size();i++) {
-                    if(xTotal== CloseBlockList.get(i)[0]&y== CloseBlockList.get(i)[1]){
+                for (int[] ints : CloseBlockList) {
+                    if (xTotal == ints[0] & y == ints[1]) {
                         conf = true;
                         break;
                     }
@@ -153,8 +156,8 @@ public class AI {
             yTotal = y+1;
             if (!BlockList2D.get(yTotal).get(x).passability) {
                 TargetLine = (int) sqrt(pow2(target_xy[0]-x)+pow2(target_xy[1]-y+1));
-                for (int i = 0;i<CloseBlockList.size();i++) {
-                    if(x== CloseBlockList.get(i)[0]&yTotal== CloseBlockList.get(i)[1]){
+                for (int[] ints : CloseBlockList) {
+                    if (x == ints[0] & yTotal == ints[1]) {
                         conf = true;
                         break;
                     }
@@ -167,8 +170,8 @@ public class AI {
             yTotal = y-1;
             if (!BlockList2D.get(yTotal).get(x).passability) {
                 TargetLine = (int) sqrt(pow2(target_xy[0]-x)+pow2(target_xy[1]-y-1));
-                for (int i = 0;i<CloseBlockList.size();i++) {
-                    if(x== CloseBlockList.get(i)[0]&yTotal== CloseBlockList.get(i)[1]){
+                for (int[] ints : CloseBlockList) {
+                    if (x == ints[0] & yTotal == ints[1]) {
                         conf = true;
                         break;
                     }
@@ -178,22 +181,20 @@ public class AI {
                 }
                 conf = false;
             }
-            for(int i = 0;i<OpenBlockList.size();i++){
-                if(TargetLineMin == -1||OpenBlockList.get(i)[2]>TargetLineMin){
-                    TargetLineMin = OpenBlockList.get(i)[2];
-                    x = OpenBlockList.get(i)[0];
-                    y = OpenBlockList.get(i)[1];
-                    MinPathTotal = new int[]{OpenBlockList.get(i)[0],OpenBlockList.get(i)[1]};
+            for (int[] ints : OpenBlockList) {
+                if (TargetLineMin == -1 || ints[2] > TargetLineMin) {
+                    TargetLineMin = ints[2];
+                    x = ints[0];
+                    y = ints[1];
                 }
             }
-            //TargetLineTotal += 10;
+            //TargetLineTotal += 1;
             TargetLineMin = -1;
-            CloseBlockList.add(new int[]{MinPathTotal[0],MinPathTotal[1]});
-            ai.path.add(new int[]{MinPathTotal[0],MinPathTotal[1]});
+            CloseBlockList.add(new int[]{x,y});
+            ai.path.add(new int[]{x,y});
             OpenBlockList.clear();
 
         }
-        CloseBlockList.clear();
     }
     public int[] block_detected_2(Unit tr){
         int i = (int)(tr.tower_y/Main.height_block)-1;

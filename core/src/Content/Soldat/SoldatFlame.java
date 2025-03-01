@@ -30,13 +30,13 @@ public class SoldatFlame extends Soldat {
         super.move_soldat_ii_flame(i);
         super.collision_soldat(Main.SoldatList,i);
         super.collision_build();
-        super.collision_transport(Main.EnemyList);
-        super.hustle(Main.PlayerList);
+        super.collision_transport(Main.UnitList);
+        super.hustle(Main.UnitList);
         super.clear(Main.SoldatList,i);
     }
     public void all_action_client(int i) {
         super.all_action(i);
-        super.hustle(Main.PlayerList);
+        super.hustle(Main.UnitList);
         super.clear(Main.SoldatList,i);
     }
 }

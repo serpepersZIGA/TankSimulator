@@ -29,26 +29,12 @@ public class BullFlame extends Bullet {
     public void all_action(int i){
         super.bull_move_xy();
         super.color_fire();
-        super.corpus_bull_temperature(Main.EnemyList);
-        super.corpus_bull_temperature(Main.PlayerList);
+        super.corpus_bull_temperature(Main.UnitList);
         super.corpus_bull(Main.DebrisList);
         super.soldat_bull(Main.SoldatList);
         super.BullBuildFlame();
         super.bull_clear_time_flame();
         this.update();
-        super.clear(i);
-    }
-    public void all_action_client(int i){
-        //super.all_action_client(i);
-        super.color_fire();
-        this.update();
-        super.bull_move_xy();
-        super.corpus_bull_temperature(Main.EnemyList);
-        super.corpus_bull_temperature(Main.PlayerList);
-        super.corpus_bull(Main.DebrisList);
-        super.soldat_bull(Main.SoldatList);
-        super.BullBuildFlame();
-        super.bull_clear_time_flame();
         super.clear(i);
     }
 

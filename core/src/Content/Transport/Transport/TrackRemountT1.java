@@ -34,7 +34,6 @@ public class TrackRemountT1 extends Unit {
         this.reload_max = 180;
         this.team = team;
         this.t = 0;
-        this.crite_life = 0;
         this.hill = 2;
         this.corpus_img = Main.ContentImage.track_enemy_1lvl;
         this.corpus_width = 50;
@@ -55,28 +54,46 @@ public class TrackRemountT1 extends Unit {
         this.speed_tower = 1;this.speed_rotation = 1;
         data();
     }
-    public void all_action(int i){
+    public void all_action(int i) {
         super.all_action(i);
         control.ControllerIteration(this,i);
-        super.MotorControl();
-        super.build_corpus();
-        super.hill_bot(Main.EnemyList);
-        tower_xy();
-        super.corpus_corpus(Main.EnemyList);
+        functional.FunctionalIterationAnHost(this);
         center_render();
-        RenderMethod.transorm_img(this.x_rend,this.y_rend,this.corpus_width_zoom,this.corpus_height_zoom,this.rotation_corpus,this.corpus_img,const_x_corpus,const_y_corpus);
-        super.transportDeleteBot(i,allyList);
+        RenderMethod.transorm_img(this.x_rend, this.y_rend,this.corpus_width_zoom,this.corpus_height_zoom,this.rotation_corpus,this.corpus_img,const_x_corpus,const_y_corpus);
+        super.transportDelete();
+    }
+    @Override
+    public void all_action_client(int i) {
+        super.all_action_client(i);
+        control.ControllerIterationClientAnHost(this);
+        functional.FunctionalIterationClientAnHost(this);
+        center_render();
+        RenderMethod.transorm_img(this.x_rend, this.y_rend,this.corpus_width_zoom,this.corpus_height_zoom,this.rotation_corpus,this.corpus_img,const_x_corpus,const_y_corpus);
+        super.transportDelete();
+    }
+    @Override
+    public void all_action_client_1(int i) {
+        super.all_action_client_1(i);
+        control.ControllerIterationClientAnClient(this);
+        functional.FunctionalIterationAnClient(this);
+        center_render();
+        RenderMethod.transorm_img(this.x_tower_rend, this.y_tower_rend,this.width_tower_zoom,this.height_tower_zoom,this.rotation_tower,this.tower_img,const_x_tower,const_y_tower
+        );
 
     }
-    public void all_action_client(int i){
-        super.all_action_client(i);
-        super.tower_xy();
+    public void all_action_client_2(int i) {
+        super.all_action_client_2(i);
+        functional.FunctionalIterationAnClient(this);
         center_render();
-        RenderMethod.transorm_img(this.x_rend,this.y_rend,this.corpus_width_zoom,this.corpus_height_zoom,this.rotation_corpus,this.corpus_img,const_x_corpus,const_y_corpus);
+        RenderMethod.transorm_img(this.x_rend, this.y_rend,this.corpus_width_zoom,this.corpus_height_zoom,this.rotation_corpus,this.corpus_img,const_x_corpus,const_y_corpus);
+
 
     }
     public void update(){
         indicator_hp_2();
+    }
+    public void UpdateUnit(){
+        RenderMethod.transorm_img(this.x_rend,this.y_rend,this.corpus_width_zoom,this.corpus_height_zoom,this.rotation_corpus,this.corpus_img,const_x_corpus,const_y_corpus);
     }
 
 }

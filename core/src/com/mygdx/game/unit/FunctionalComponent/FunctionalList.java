@@ -25,4 +25,9 @@ public class FunctionalList {
             func.FunctionalIterationAnClient(unit);
         }
     }
+    public void FunctionalIterationOtherAnClient(Unit unit){
+        for(FunctionalComponent func : functional){
+            func.FunctionalIterationOtherAnClient(unit);
+        }
+    }
 }

@@ -27,24 +27,11 @@ public class BullMortar extends Bullet {
 
     public void all_action(int i){
         super.bull_move_xy();
-        super.corpus_bull_mortar(Main.EnemyList);
-        super.corpus_bull_mortar(Main.PlayerList);
+        super.corpus_bull_mortar(Main.UnitList);
         super.corpus_bull_mortar(Main.DebrisList);
         super.BullBuildMortar();
         super.soldat_bull(Main.SoldatList);
         super.fragments_create();
-        this.update();
-        super.clear(i);
-    }
-    public void all_action_client(int i){
-        //super.all_action_client(i);
-        super.bull_move_xy();
-        super.corpus_bull_mortar(Main.EnemyList);
-        super.corpus_bull_mortar(Main.PlayerList);
-        super.corpus_bull_mortar(Main.DebrisList);
-        super.BullBuildMortar();
-        super.soldat_bull(Main.SoldatList);
-        super.fragments_create_client();
         this.update();
         super.clear(i);
     }

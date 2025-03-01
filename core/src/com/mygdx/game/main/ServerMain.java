@@ -1,7 +1,6 @@
 package com.mygdx.game.main;
 import Content.Bull.*;
 import Content.Particle.*;
-import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
@@ -19,7 +18,6 @@ import com.mygdx.game.unit.DebrisPacket;
 import Content.Transport.Transport.DebrisTransport;
 import com.mygdx.game.unit.SpawnPlayer.*;
 import com.mygdx.game.unit.TransportPacket;
-import com.mygdx.game.unit.Unit;
 import com.mygdx.game.unit.UnitType;
 
 import java.io.IOException;
@@ -145,9 +143,9 @@ public class ServerMain extends Listener {
             nConnect += 1;
             EnumerationList = true;
             if(!p.equals(new SpawnPlayerVoid())) {
-                int i2 = Main.PlayerList.size();
+                int i2 = Main.UnitList.size();
                 ((PlayerSpawnData) p).SpawnPlayer(false);
-                PlayerList.get(i2).nConnect = nConnect;
+                Main.UnitList.get(i2).nConnect = nConnect;
             }
         }
     }

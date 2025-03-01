@@ -39,8 +39,8 @@ public class DebrisTransport extends Unit {
     }
     public void all_action(int i){
         super.all_action(i);
-        super.corpus_corpus(Main.PlayerList);
-        super.corpus_corpus(Main.EnemyList);
+        super.corpus_corpus(Main.UnitList);
+        super.corpus_corpus(Main.UnitList);
         super.corpus_corpus(Main.DebrisList);
         build_corpus();
         move_debris();

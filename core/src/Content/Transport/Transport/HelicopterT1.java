@@ -56,8 +56,8 @@ public class HelicopterT1 extends Unit {
     }
     public void all_action(int i) {
         super.all_action(i);
-        super.helicopter_ii(this.enemyList);
-        super.bot_bull_tank_fire_not_tower(i);
+        super.helicopter_ii();
+        super.bot_bull_tank_fire_not_tower();
         super.tower_xy();
         super.blade_helicopter();
         center_render();
@@ -65,7 +65,7 @@ public class HelicopterT1 extends Unit {
         //tower_iteration_bot_client(i);
         RenderMethod.transorm_img(this.x_tower_rend,this.y_tower_rend,this.width_tower_zoom,this.height_tower_zoom,this.rotation_tower,this.tower_img,const_x_tower,const_y_tower
         );
-        super.transportDeletePlayer(i,this.allyList);
+        super.transportDelete();
 
     }
     public void all_action_client(int i) {

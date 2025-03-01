@@ -2,7 +2,6 @@ package Content.Transport.Tower;
 
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.mygdx.game.main.Main;
 import com.mygdx.game.method.RenderMethod;
 import com.mygdx.game.unit.Fire.FireRegister;
 import com.mygdx.game.unit.Unit;
@@ -37,41 +36,11 @@ public class TowerBullTankPlayer extends Unit {
 
 
     }
-    public void tower_action(int i,int iTower,float x,float y,float rotation,boolean sost_fire_bot) {
-        this.x = x;
-        this.y = y;
-        this.rotation_corpus = rotation;
-        this.left_mouse = sost_fire_bot;
-        tower_xy_2();
-        center_render_tower();
-        RenderMethod.transorm_img(this.x_tower_rend,this.y_tower_rend,this.width_tower_zoom,this.height_tower_zoom,this.rotation_tower,this.tower_img,const_x_tower,const_y_tower);
-
+    public void tower_action() {
+        TowerXY2();
+        UpdateTower();
     }
-    public void tower_action_client(int i,int iTower,float x,float y,float rotation,boolean sost_fire_bot) {
-        this.x = x;
-        this.y = y;
-        this.rotation_corpus = rotation;
-        this.left_mouse = sost_fire_bot;
-        tower_xy_2();
-        center_render_tower();
-        RenderMethod.transorm_img(this.x_tower_rend,this.y_tower_rend,this.width_tower_zoom,this.height_tower_zoom,this.rotation_tower,this.tower_img,const_x_tower,const_y_tower);
-
-    }
-    public void tower_action_client_1(int i,int iTower,float x,float y,float rotation,boolean sost_fire_bot) {
-        this.x = x;
-        this.y = y;
-        this.rotation_corpus = rotation;
-        this.left_mouse = sost_fire_bot;
-        super.tower_xy_2();
-        center_render_tower();
-        RenderMethod.transorm_img(this.x_tower_rend,this.y_tower_rend,this.width_tower_zoom,this.height_tower_zoom,this.rotation_tower,this.tower_img,const_x_tower,const_y_tower);
-    }
-    public void tower_action_client_2(int i,int iTr,float x,float y,float rotation,boolean sost_fire_bot) {
-        this.x = x;
-        this.y = y;
-        this.rotation_corpus = rotation;
-        this.left_mouse = sost_fire_bot;
-        super.tower_xy_2();
+    public void UpdateTower(){
         center_render_tower();
         RenderMethod.transorm_img(this.x_tower_rend,this.y_tower_rend,this.width_tower_zoom,this.height_tower_zoom,this.rotation_tower,this.tower_img,const_x_tower,const_y_tower);
     }

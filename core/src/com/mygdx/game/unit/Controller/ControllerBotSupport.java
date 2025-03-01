@@ -5,6 +5,6 @@ import com.mygdx.game.unit.Unit;
 
 public class ControllerBotSupport extends Controller{
     public void ControllerIteration(Unit unit, int i){
-        unit.bypass_hiller(i);
+        unit.bypass_hiller();
     }
 }

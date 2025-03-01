@@ -74,14 +74,17 @@ public class ActionMenu extends ActionGame {
         for (i= 0; i< Main.FlameSpawnList.size(); i++){
             Main.FlameSpawnList.get(i).all_action(i);
         }
-        for(i = 0; i< PlayerList.size(); i++) {Main.PlayerList.get(i).all_action_client_2(i);}
+        for(i = 0; i< Main.UnitList.size(); i++) {
+            Main.UnitList.get(i).UpdateUnit();
+            Main.UnitList.get(i).all_action_client_2(i);
+        }
 
 
         for (i= 0; i< Main.DebrisList.size(); i++){
             Main.DebrisList.get(i).all_action_client(i);
         }
-        for (i = 0; i < Main.EnemyList.size(); i++) {
-            Main.EnemyList.get(i).all_action_client(i);
+        for (i = 0; i < Main.UnitList.size(); i++) {
+            Main.UnitList.get(i).all_action_client(i);
         }
         RC.BuildingIteration();
         Batch.draw(textureBuffer,-20,1,1,1);
@@ -93,11 +96,11 @@ public class ActionMenu extends ActionGame {
                 Main.BulletList.get(i).update();
             }
         }
-        for (i= 0; i< PlayerList.size(); i++){
-            PlayerList.get(i).update();
+        for (i= 0; i< Main.UnitList.size(); i++){
+            Main.UnitList.get(i).update();
         }
-        for (i= 0; i< EnemyList.size(); i++){
-            EnemyList.get(i).update();
+        for (i= 0; i< UnitList.size(); i++){
+            UnitList.get(i).update();
         }
         for (i = 0;i< ButtonList.size();i++){
             if(Main.ConfigMenu == ButtonList.get(i).ConfigMenu) {

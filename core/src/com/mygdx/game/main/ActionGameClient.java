@@ -7,8 +7,6 @@ import com.mygdx.game.method.Keyboard;
 
 import static com.mygdx.game.main.Main.*;
 import static com.mygdx.game.main.ClientMain.Client;
-import static com.mygdx.game.soldat.SoldatRegister.PacketSoldat;
-import static com.mygdx.game.unit.TransportRegister.*;
 
 
 public class ActionGameClient extends com.mygdx.game.main.ActionGame {
@@ -20,7 +18,7 @@ public class ActionGameClient extends com.mygdx.game.main.ActionGame {
     private static int timer = 0;
     public void action() {
         Main.RC.method();
-        if(Main.PlayerList.size()==0){
+        if(Main.UnitList.size()==0){
             if(Keyboard.PressW){
                 Main.RC.y += 10;
             }
@@ -87,20 +85,18 @@ public class ActionGameClient extends com.mygdx.game.main.ActionGame {
         for (i= 0; i< Main.FlameSpawnList.size(); i++){
             Main.FlameSpawnList.get(i).all_action(i);
         }
-        for(i = 0; i< PlayerList.size(); i++) {
-            if(PlayerList.get(i).host ||PlayerList.get(i).nConnect != IDClient) {
-                Main.PlayerList.get(i).all_action_client_2(i);
+        for(i = 0; i< Main.UnitList.size(); i++) {
+            Main.UnitList.get(i).UpdateUnit();
+            if(Main.UnitList.get(i).host || Main.UnitList.get(i).nConnect != IDClient) {
+                Main.UnitList.get(i).all_action_client_2(i);
             }
             else {
-                Main.PlayerList.get(i).all_action_client_1(i);
+                Main.UnitList.get(i).all_action_client_1(i);
             }
         }
 
         for (i= 0; i< Main.DebrisList.size(); i++){
             Main.DebrisList.get(i).all_action_client(i);
-        }
-        for (i = 0; i < Main.EnemyList.size(); i++) {
-            Main.EnemyList.get(i).all_action_client(i);
         }
         RC.BuildingIteration();
         Batch.draw(textureBuffer,-20,1,1,1);
@@ -113,11 +109,11 @@ public class ActionGameClient extends com.mygdx.game.main.ActionGame {
                 Main.BulletList.get(i).all_action(i);
             }
         }
-        for (i= 0; i< PlayerList.size(); i++){
-            PlayerList.get(i).update();
+        for (i= 0; i< Main.UnitList.size(); i++){
+            Main.UnitList.get(i).update();
         }
-        for (i= 0; i< EnemyList.size(); i++){
-            EnemyList.get(i).update();
+        for (i= 0; i< UnitList.size(); i++){
+            UnitList.get(i).update();
         }
         for (i= 0; i< AirList.size(); i++){
             for(int i2= 0; i2< AirList.get(i).size(); i2++) {

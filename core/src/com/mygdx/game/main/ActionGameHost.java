@@ -9,7 +9,6 @@ import com.mygdx.game.build.BuildPacket;
 import com.mygdx.game.method.CycleTimeDay;
 import com.mygdx.game.method.Keyboard;
 import com.mygdx.game.object_map.MapObject;
-import com.mygdx.game.unit.CollisionUnit.CollisionMethodGlobal;
 import com.mygdx.game.unit.DebrisPacket;
 import com.mygdx.game.unit.Unit;
 import com.mygdx.game.unit.TransportPacket;
@@ -26,7 +25,7 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
     private static int timer = 0;
     public void action() {
         RC.method();
-        if(Main.PlayerList.size()==0){
+        if(Main.UnitList.size()==0){
             if(Keyboard.PressW){
                 Main.RC.y += 10;
             }
@@ -110,17 +109,16 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
             packet_debris_server();
             Main.DebrisList.get(i).all_action(i);
         }
-        for (i = 0; i < Main.EnemyList.size(); i++) {
-            packet_enemy_server(Main.EnemyList.get(i));
-            Main.EnemyList.get(i).all_action(i);
-        }
-        for(i = 0; i< PlayerList.size(); i++) {
-            packet_player_server(i);
-            if(PlayerList.get(i).host) {
-                Main.PlayerList.get(i).all_action(i);
+        for(i = 0; i< Main.UnitList.size(); i++) {
+            Main.UnitList.get(i).UpdateUnit();
+            packet_player_server(Main.UnitList.get(i));
+            if(Main.UnitList.get(i).host || UnitList.get(i).control == RegisterControl.controllerBot
+                    || UnitList.get(i).control == RegisterControl.controllerBotSupport
+                    || UnitList.get(i).control == RegisterControl.controllerSoldatTransport) {
+                Main.UnitList.get(i).all_action(i);
             }
-            else {
-                Main.PlayerList.get(i).all_action_client(i);
+            else{
+                Main.UnitList.get(i).all_action_client(i);
             }
         }
         RC.BuildingIteration();
@@ -134,11 +132,11 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
                 Main.BulletList.get(i).all_action(i);
             }
         }
-        for (i= 0; i< PlayerList.size(); i++){
-            PlayerList.get(i).update();
+        for (i= 0; i< Main.UnitList.size(); i++){
+            Main.UnitList.get(i).update();
         }
-        for (i= 0; i< EnemyList.size(); i++){
-            EnemyList.get(i).update();
+        for (i= 0; i< UnitList.size(); i++){
+            UnitList.get(i).update();
         }
         for (i= 0; i< AirList.size(); i++){
             for(int i2= 0; i2< AirList.get(i).size(); i2++) {
@@ -158,37 +156,30 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
     }
     private void server_packet() {
         if(EnumerationList){
-            PacketEnemy.clear();
-            for (i = 0; i < Main.EnemyList.size(); i++) {
-                packet_enemy_server(Main.EnemyList.get(i));
+            for (i = 0; i < Main.UnitList.size(); i++) {
+                packet_player_server(Main.UnitList.get(i));
             }
-            PacketPlayer.clear();
-            for (i = 0; i < PlayerList.size(); i++) {
-                packet_player_server(i);
-            }
+            PacketUnit.clear();
             EnumerationList = false;
         }
         PacketServer.debris = PacketDebris;
         PacketServer.soldat = PacketSoldat;
-        PacketServer.player = PacketPlayer;
-        PacketServer.enemy = PacketEnemy;
+        PacketServer.player = PacketUnit;
         PacketServer.bull = PacketBull;
         PacketServer.building = PacketBuilding;
         PacketServer.mapObject = MapObject.PacketMapObjects;
         PacketServer.TotalLight = CycleTimeDay.lightTotal;
         Server.sendToAllUDP(PacketServer);
         MapObject.PacketMapObjects.clear();
-        PacketPlayer.clear();
-        PacketEnemy.clear();
+        PacketUnit.clear();
         PacketBull.clear();
         PacketSoldat.clear();
         PacketDebris.clear();
         PacketBuilding.clear();
     }
-    private void packet_player_server(int i){
-        Unit unit = PlayerList.get(i);
-        PacketPlayer.add(new TransportPacket());
-        TransportPacket pack = PacketPlayer.get(i);
+    private void packet_player_server(Unit unit){
+        PacketUnit.add(new TransportPacket());
+        TransportPacket pack = PacketUnit.get(i);
         pack.name = unit.type_unit;
         pack.x = unit.x;
         pack.y = unit.y;
@@ -205,8 +196,8 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
         }
     }
     private void packet_enemy_server(Unit unit){
-        PacketEnemy.add(new TransportPacket());
-        TransportPacket pack = PacketEnemy.get(i);
+        com.mygdx.game.unit.TransportRegister.PacketUnit.add(new TransportPacket());
+        TransportPacket pack = com.mygdx.game.unit.TransportRegister.PacketUnit.get(i);
         pack.name = unit.type_unit;
         pack.x = unit.x;
         pack.y = unit.y;

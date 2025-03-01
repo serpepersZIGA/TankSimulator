@@ -37,11 +37,11 @@ public abstract class Soldat implements Serializable {
     public ArrayList<Unit>allyList,enemyList;
     public float SpeedCollision;
     public void data(){
-        if(allyList == EnemyList){
-            enemyList = PlayerList;
+        if(allyList == UnitList){
+            enemyList = Main.UnitList;
         }
         else {
-            enemyList = EnemyList;
+            enemyList = UnitList;
         }
         this.width_render = (int)(width*Zoom);
         this.height_render = (int)(height*Zoom);
@@ -167,26 +167,23 @@ public abstract class Soldat implements Serializable {
         }
     }
     protected float[] findIntersection(float x0, float y0, float dx, float dy) {
-        float x = x0/width_block;
-        float y = y0/height_block;
-        dx = dx/width_block;
-        dy = dy/height_block;
+        //float xy_r = (float) atan2(y0-dy, x0-dx);
+        float x = dx/width_block-1;
+        float y = dy/height_block-1;
+        dx = x0/width_block-1;
+        dy = y0/height_block-1;
         float xy_r = (float)(atan2(y-dy, x-dx));
-        float speed_x = (float) cos(xy_r)/2;
-        float speed_y = (float) sin(xy_r)/2;
-//        System.out.println(x+" g "+y);
-//        System.out.println(dx+" h "+dy);
-//        System.out.println(xy_r);
+        float speed_x = (float) cos(xy_r);
+        float speed_y = (float) sin(xy_r);
         if (y > dy) {
             if (x > dx) {
                 while (x > dx && y > dy) {
                     x -= speed_x;
                     y -= speed_y;
-                    //System.out.println(x+" "+y+" "+speed_x+" "+speed_y+" "+dx+" "+dy+" "+" "+xy_r+" w");
-                    //double[]xy = Main.rc.get(0).render_obj(x0,y0);
-//                    System.out.println(x+" z "+y);
-//                    System.out.println(dx+" vo "+dy);
                     if (BlockList2D.get((int)y).get((int)x).passability) {
+                        float[]xy = Main.RC.render_objZoom((x)*height_block,(y)*height_block);
+                        float[]xy2 = Main.RC.render_objZoom((dx)*height_block,(dy)*height_block);
+                        Render.line(xy[0],xy[1],xy2[0],xy2[1]);
                         return new float[]{x, y};
                     }
 
@@ -195,9 +192,10 @@ public abstract class Soldat implements Serializable {
                 while (x < dx && y > dy) {
                     x -= speed_x;
                     y -= speed_y;
-                    //System.out.println(x+" "+y+" "+speed_x+" "+speed_y+" "+dx+" "+dy+" "+" "+xy_r+" s");
-                    //double[]xy = Main.rc.get(0).render_obj(x0,y0);
                     if (BlockList2D.get((int)y).get((int)x).passability) {
+                        float[]xy = Main.RC.render_objZoom((x)*height_block,(y)*height_block);
+                        float[]xy2 = Main.RC.render_objZoom((dx)*height_block,(dy)*height_block);
+                        Render.line(xy[0],xy[1],xy2[0],xy2[1]);
                         return new float[]{x, y};
                     }
                 }
@@ -205,21 +203,24 @@ public abstract class Soldat implements Serializable {
             else{
                 while (y > dy) {
                     y -= speed_y;
-                    //System.out.println(x+" "+y+" "+speed_x+" "+speed_y+" "+dx+" "+dy+" "+" "+xy_r+" s");
-                    //double[]xy = Main.rc.get(0).render_obj(x0,y0);
                     if (BlockList2D.get((int)y).get((int)x).passability) {
+                        float[]xy = Main.RC.render_objZoom((x)*height_block,(y)*height_block);
+                        float[]xy2 = Main.RC.render_objZoom((dx)*height_block,(dy)*height_block);
+                        Render.line(xy[0],xy[1],xy2[0],xy2[1]);
                         return new float[]{x, y};
                     }
                 }
             }
+            return null;
         } else if(y < dy){
             if (x > dx) {
                 while (x > dx && y < dy) {
                     x -= speed_x;
                     y -= speed_y;
-                    //System.out.println(x+" "+y+" "+speed_x+" "+speed_y+" "+dx+" "+dy+" "+" "+xy_r+" x");
-                    //double[]xy = Main.rc.get(0).render_obj(x0,y0);
                     if (BlockList2D.get((int)y).get((int)x).passability) {
+                        float[]xy = Main.RC.render_objZoom((x)*height_block,(y)*height_block);
+                        float[]xy2 = Main.RC.render_objZoom((dx)*height_block,(dy)*height_block);
+                        Render.line(xy[0],xy[1],xy2[0],xy2[1]);
                         return new float[]{x, y};
                     }
                 }
@@ -227,10 +228,10 @@ public abstract class Soldat implements Serializable {
                 while (x < dx && y < dy) {
                     x -= speed_x;
                     y -= speed_y;
-
-                    // System.out.println(x+" "+y+" "+speed_x+" "+speed_y+" "+dx+" "+dy+" "+" "+xy_r+" z");
-                    //double[]xy = Main.rc.get(0).render_obj(x0,y0);
                     if (BlockList2D.get((int)y).get((int)x).passability) {
+                        float[]xy = Main.RC.render_objZoom((x)*height_block,(y)*height_block);
+                        float[]xy2 = Main.RC.render_objZoom((dx)*height_block,(dy)*height_block);
+                        Render.line(xy[0],xy[1],xy2[0],xy2[1]);
                         return new float[]{x, y};
                     }
                 }
@@ -238,38 +239,40 @@ public abstract class Soldat implements Serializable {
             else {
                 while (y < dy) {
                     y -= speed_y;
-                    //System.out.println(x+" "+y+" "+speed_x+" "+speed_y+" "+dx+" "+dy+" "+" "+xy_r+" s");
-                    //double[]xy = Main.rc.get(0).render_obj(x0,y0);
                     if (BlockList2D.get((int)y).get((int)x).passability) {
+                        float[]xy = Main.RC.render_objZoom((x)*height_block,(y)*height_block);
+                        float[]xy2 = Main.RC.render_objZoom((dx)*height_block,(dy)*height_block);
+                        Render.line(xy[0],xy[1],xy2[0],xy2[1]);
                         return new float[]{x, y};
                     }
                 }
             }
+            return null;
         }
         else {
             if (x > dx) {
                 while (x > dx) {
                     x -= speed_x;
-                    //System.out.println(x+" "+y+" "+speed_x+" "+speed_y+" "+dx+" "+dy+" "+" "+xy_r+" x");
-                    //double[]xy = Main.rc.get(0).render_obj(x0,y0);
                     if (BlockList2D.get((int)y).get((int)x).passability) {
+                        float[]xy = Main.RC.render_objZoom((x)*height_block,(y)*height_block);
+                        float[]xy2 = Main.RC.render_objZoom((dx)*height_block,(dy)*height_block);
+                        Render.line(xy[0],xy[1],xy2[0],xy2[1]);
                         return new float[]{x, y};
                     }
                 }
             } else if (x < dx){
                 while (x < dx) {
                     x -= speed_x;
-
-
-                    // System.out.println(x+" "+y+" "+speed_x+" "+speed_y+" "+dx+" "+dy+" "+" "+xy_r+" z");
-                    //double[]xy = Main.rc.get(0).render_obj(x0,y0);
                     if (BlockList2D.get((int)y).get((int)x).passability) {
+                        float[]xy = Main.RC.render_objZoom((x)*height_block,(y)*height_block);
+                        float[]xy2 = Main.RC.render_objZoom((dx)*height_block,(dy)*height_block);
+                        Render.line(xy[0],xy[1],xy2[0],xy2[1]);
                         return new float[]{x, y};
                     }
                 }
             }
+            return null;
         }
-        return null;
 
     }
     public void move_soldat_ii_bull(int i){

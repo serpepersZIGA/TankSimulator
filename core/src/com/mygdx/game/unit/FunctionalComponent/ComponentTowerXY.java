@@ -12,4 +12,7 @@ public class ComponentTowerXY extends FunctionalComponent{
     public void FunctionalIterationAnClient(Unit unit){
         unit.tower_xy();
     }
+    public void FunctionalIterationOtherAnClient(Unit unit){
+        unit.tower_xy();
+    }
 }

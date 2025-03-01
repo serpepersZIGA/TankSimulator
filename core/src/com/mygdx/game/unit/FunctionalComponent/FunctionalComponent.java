@@ -15,4 +15,7 @@ public abstract class FunctionalComponent {
     public void FunctionalIterationAnClient(Unit unit){
 
     }
+    public void FunctionalIterationOtherAnClient(Unit unit){
+
+    }
 }

@@ -6,6 +6,7 @@ import com.mygdx.game.unit.Unit;
 
 import java.util.ArrayList;
 
+import static com.mygdx.game.main.Main.UnitList;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 import static java.lang.StrictMath.atan2;
@@ -48,50 +49,52 @@ public class Method {
         tower_y = difference_rotation_cos(tower_y,difference_2,rotation-90);
         return new float[]{tower_x,tower_y};
     }
-    public static int detection_near_transport_i(Unit objBot, ArrayList<Unit> obj) {
-        int ind = 0;
+    public static Unit detection_near_transport_i(Unit objBot) {
+        Unit ind = null;
         int radius = 0;
-        for (int i2 = 0; i2 < obj.size(); i2++) {
-            double g = sqrt(pow2.pow2(objBot.x - obj.get(i2).x) + pow2.pow2(objBot.y - obj.get(i2).y));
-            if (radius == 0 || radius > g) {
-                ind = i2;
-                radius = (int)g;
+        for (Unit unit : UnitList) {
+            if(unit.team !=objBot.team) {
+                double g = sqrt(pow2.pow2(objBot.x - unit.x) + pow2.pow2(objBot.y - unit.y));
+                if (radius == 0 || radius > g) {
+                    ind = unit;
+                    radius = (int) g;
 
+                }
             }
         }
         return ind;
     }
-    public static Object[] detection_near_transport_xy_def(Unit objBot, ArrayList<Unit> obj) {
+    public static Object[] detection_near_transport(Unit objBot) {
         Unit ind = null;
         int radius = 0;
         double g;
-        for (Unit unit : obj) {
-            if(unit != objBot) {
+        for (Unit unit : UnitList) {
+            if(unit != objBot & unit.team != objBot.team) {
                 g = sqrt(pow2.pow2(objBot.x - unit.x) + pow2.pow2(objBot.y - unit.y));
                 if (radius > g || radius == 0) {
-                    if (unit.x != objBot.x && unit.y != objBot.y) {
-                        ind = unit;
-                        radius = (int) g;
-                    }
+                    ind = unit;
+                    radius = (int) g;
+
                 }
             }
         }
         return new Object[]{ind,radius};
     }
-    public static int[] detection_near_transport_i_def(ArrayList<Unit> obj_bot, int i, ArrayList<Unit> obj) {
-        int ind = 0;
+    public static Object[] detectionNearSupportTransport(Unit objBot) {
+        Unit ind = null;
         int radius = 0;
         double g;
-        for (int i2 = 0; i2 < obj.size(); i2++) {
-            g = sqrt(pow2.pow2(obj_bot.get(i).x - obj.get(i2).x)) + pow2.pow2(obj_bot.get(i).y - obj.get(i2).y);
-            if (radius > g || radius == 0) {
-                if(i2 != i) {
-                    ind = i2;
+        for (Unit unit : UnitList) {
+            if(unit.team == objBot.team & unit != objBot) {
+                g = sqrt(pow2.pow2(objBot.x - unit.x)) + pow2.pow2(objBot.y - unit.y);
+                if (radius > g || radius == 0) {
+                    ind = unit;
                     radius = (int) g;
+
                 }
             }
         }
-        return new int[]{ind,radius};
+        return new Object[]{ind,radius};
     }
 
     public static int[] detection_near_soldat_transport_i_def(ArrayList<Soldat> obj_bot, int i, ArrayList<Unit> obj) {

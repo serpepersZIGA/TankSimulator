@@ -131,43 +131,48 @@ public class ClientMain extends Listener{
                 }
             }
             CycleTimeDay.lightTotal = ((PackerServer) p).TotalLight;
-            PacketPlayer = ((PackerServer) p).player;
-            if (PacketPlayer.size() == PlayerList.size()) {
-                for (i = 0; i < PacketPlayer.size(); i++) {
+            PacketUnit = ((PackerServer) p).player;
+            if (PacketUnit.size() == Main.UnitList.size()) {
+                for (i = 0; i < PacketUnit.size(); i++) {
                     player_data(i);
                 }
             } else {
-                PlayerList.clear();
-                for (i = 0; i < PacketPlayer.size(); i++) {
-                    switch (PacketPlayer.get(i).name) {
+                Main.UnitList.clear();
+                for (i = 0; i < PacketUnit.size(); i++) {
+                    switch (PacketUnit.get(i).name) {
                         case PlayerFlameT1:
-                            PlayerList.add(new PlayerCannonFlame(0, 0, PlayerList, PacketPlayer.get(i).host,(byte)1));
+                            Main.UnitList.add(new PlayerCannonFlame(0, 0, Main.UnitList, PacketUnit.get(i).host,(byte)1));
                             break;
                         case PlayerMortarT1:
-                            PlayerList.add(new PlayerCannonMortar(0, 0, PlayerList, PacketPlayer.get(i).host,(byte)1));
+                            Main.UnitList.add(new PlayerCannonMortar(0, 0, Main.UnitList, PacketUnit.get(i).host,(byte)1));
                             break;
                         case PlayerT1:
-                            PlayerList.add(new PlayerCannonBullTank(0, 0, PlayerList, PacketPlayer.get(i).host,(byte)1));
+                            Main.UnitList.add(new PlayerCannonBullTank(0, 0, Main.UnitList, PacketUnit.get(i).host,(byte)1));
                             break;
                         case PlayerAcidT1:
-                            PlayerList.add(new PlayerCannonAcid(0, 0, PlayerList, PacketPlayer.get(i).host,(byte)1));
+                            Main.UnitList.add(new PlayerCannonAcid(0, 0, Main.UnitList, PacketUnit.get(i).host,(byte)1));
+                            break;
+                        case PanzerFlameT1:
+                            UnitList.add(new PanzerFlameT1(0, 0, UnitList,(byte)2));
+                            break;
+                        case PanzerMortarT1:
+                            UnitList.add(new PanzerMortarT1(0, 0, UnitList,(byte)2));
+                            break;
+                        case PanzerT1:
+                            UnitList.add(new PanzerT1(0, 0, UnitList,(byte)2));
+                            break;
+                        case PanzerAcidT1:
+                            UnitList.add(new PanzerAcidT1(0, 0, UnitList,(byte)2));
+                            break;
+                        case TrackRemountT1:
+                            UnitList.add(new TrackRemountT1(0, 0, UnitList,(byte)2));
+                            break;
+                        case TrackSoldatT1:
+                            UnitList.add(new TrackSoldatT1(0, 0, UnitList,(byte)2));
                             break;
                     }
-                    PlayerList.get(PlayerList.size()-1).control = RegisterControl.controllerPlayer;
+                    Main.UnitList.get(Main.UnitList.size()-1).control = RegisterControl.controllerPlayer;
                     player_data(i);
-                }
-                KeyboardObj.zoom_const();
-            }
-            PacketEnemy = ((PackerServer) p).enemy;
-            if (PacketEnemy.size() == EnemyList.size()) {
-                for (int i = 0; i < PacketEnemy.size(); i++) {
-                    enemy_data(i);
-                }
-            } else {
-                EnemyList.clear();
-                for (int i = 0; i < PacketEnemy.size(); i++) {
-                    enemy_create(i);
-                    enemy_data(i);
                 }
                 KeyboardObj.zoom_const();
             }
@@ -205,17 +210,16 @@ public class ClientMain extends Listener{
                 SoldatList.clear();
                 for (SoldatPacket soldatPacket : PacketSoldat) {
                     if (soldatPacket.name.equals("flame")) {
-                        SoldatList.add(new SoldatFlame(0, 0,EnemyList));
+                        SoldatList.add(new SoldatFlame(0, 0, UnitList));
                     } else if (soldatPacket.name.equals("bull")) {
-                        SoldatList.add(new SoldatBull(0, 0,EnemyList));
+                        SoldatList.add(new SoldatBull(0, 0, UnitList));
                     }
                 }
                 KeyboardObj.zoom_const();
             }
             PacketMapObjects.clear();
             PacketBull.clear();
-            PacketPlayer.clear();
-            PacketEnemy.clear();
+            PacketUnit.clear();
             PacketDebris.clear();
             PacketSoldat.clear();
         }
@@ -266,35 +270,35 @@ public class ClientMain extends Listener{
     }
 
     private void player_data(int i) {
-        PlayerList.get(i).type_unit = PacketPlayer.get(i).name;
-        PlayerList.get(i).x = PacketPlayer.get(i).x;
-        PlayerList.get(i).y = PacketPlayer.get(i).y;
-        PlayerList.get(i).rotation_corpus = PacketPlayer.get(i).rotation_corpus;
-        PlayerList.get(i).reload = PacketPlayer.get(i).reload;
-        PlayerList.get(i).hp = PacketPlayer.get(i).hp;
-        PlayerList.get(i).team = PacketPlayer.get(i).team;
-        PlayerList.get(i).speed = PacketPlayer.get(i).speed;
-        PlayerList.get(i).host = PacketPlayer.get(i).host;
-        PlayerList.get(i).nConnect = PacketPlayer.get(i).IDClient;
-        PlayerList.get(i).rotation_tower = PacketPlayer.get(i).rotation_tower;
-        for (int i2 = 0; i2< PacketPlayer.get(i).rotation_tower_2.size(); i2++) {
-            PlayerList.get(i).tower_obj.get(i2).rotation_tower = PacketPlayer.get(i).rotation_tower_2.get(i2);
+        Main.UnitList.get(i).type_unit = PacketUnit.get(i).name;
+        Main.UnitList.get(i).x = PacketUnit.get(i).x;
+        Main.UnitList.get(i).y = PacketUnit.get(i).y;
+        Main.UnitList.get(i).rotation_corpus = PacketUnit.get(i).rotation_corpus;
+        Main.UnitList.get(i).reload = PacketUnit.get(i).reload;
+        Main.UnitList.get(i).hp = PacketUnit.get(i).hp;
+        Main.UnitList.get(i).team = PacketUnit.get(i).team;
+        Main.UnitList.get(i).speed = PacketUnit.get(i).speed;
+        Main.UnitList.get(i).host = PacketUnit.get(i).host;
+        Main.UnitList.get(i).nConnect = PacketUnit.get(i).IDClient;
+        Main.UnitList.get(i).rotation_tower = PacketUnit.get(i).rotation_tower;
+        for (int i2 = 0; i2< PacketUnit.get(i).rotation_tower_2.size(); i2++) {
+            Main.UnitList.get(i).tower_obj.get(i2).rotation_tower = PacketUnit.get(i).rotation_tower_2.get(i2);
         }
 
     }
     private void enemy_data(int i){
-        EnemyList.get(i).type_unit = PacketEnemy.get(i).name;
-        EnemyList.get(i).x = PacketEnemy.get(i).x;
-        EnemyList.get(i).y = PacketEnemy.get(i).y;
-        EnemyList.get(i).rotation_corpus = PacketEnemy.get(i).rotation_corpus;
-        EnemyList.get(i).crite_life = PacketEnemy.get(i).crite_life;
-        EnemyList.get(i).rotation_tower = PacketEnemy.get(i).rotation_tower;
-        EnemyList.get(i).reload = PacketEnemy.get(i).reload;
-        EnemyList.get(i).hp = PacketEnemy.get(i).hp;
-        EnemyList.get(i).team = PacketEnemy.get(i).team;
-        EnemyList.get(i).speed = PacketEnemy.get(i).speed;
-        for (int i2 = 0; i2< PacketEnemy.get(i).rotation_tower_2.size(); i2++) {
-            EnemyList.get(i).tower_obj.get(i2).rotation_tower = PacketEnemy.get(i).rotation_tower_2.get(i2);
+        UnitList.get(i).type_unit = PacketUnit.get(i).name;
+        UnitList.get(i).x = PacketUnit.get(i).x;
+        UnitList.get(i).y = PacketUnit.get(i).y;
+        UnitList.get(i).rotation_corpus = PacketUnit.get(i).rotation_corpus;
+        UnitList.get(i).crite_life = PacketUnit.get(i).crite_life;
+        UnitList.get(i).rotation_tower = PacketUnit.get(i).rotation_tower;
+        UnitList.get(i).reload = PacketUnit.get(i).reload;
+        UnitList.get(i).hp = PacketUnit.get(i).hp;
+        UnitList.get(i).team = PacketUnit.get(i).team;
+        UnitList.get(i).speed = PacketUnit.get(i).speed;
+        for (int i2 = 0; i2< PacketUnit.get(i).rotation_tower_2.size(); i2++) {
+            UnitList.get(i).tower_obj.get(i2).rotation_tower = PacketUnit.get(i).rotation_tower_2.get(i2);
         }
     }
     private void debris_data(int i){
@@ -311,24 +315,24 @@ public class ClientMain extends Listener{
         SoldatList.get(i).team = PacketSoldat.get(i).team;
     }
     private void enemy_create(int i){
-        switch (PacketEnemy.get(i).name) {
+        switch (PacketUnit.get(i).name) {
             case PanzerFlameT1:
-                EnemyList.add(new PanzerFlameT1(0, 0, EnemyList,(byte)2));
+                UnitList.add(new PanzerFlameT1(0, 0, UnitList,(byte)2));
                 break;
             case PanzerMortarT1:
-                EnemyList.add(new PanzerMortarT1(0, 0, EnemyList,(byte)2));
+                UnitList.add(new PanzerMortarT1(0, 0, UnitList,(byte)2));
                 break;
             case PanzerT1:
-                EnemyList.add(new PanzerT1(0, 0, EnemyList,(byte)2));
+                UnitList.add(new PanzerT1(0, 0, UnitList,(byte)2));
                 break;
             case PanzerAcidT1:
-                EnemyList.add(new PanzerAcidT1(0, 0, EnemyList,(byte)2));
+                UnitList.add(new PanzerAcidT1(0, 0, UnitList,(byte)2));
                 break;
             case TrackRemountT1:
-                EnemyList.add(new TrackRemountT1(0, 0, EnemyList,(byte)2));
+                UnitList.add(new TrackRemountT1(0, 0, UnitList,(byte)2));
                 break;
             case TrackSoldatT1:
-                EnemyList.add(new TrackSoldatT1(0, 0, EnemyList,(byte)2));
+                UnitList.add(new TrackSoldatT1(0, 0, UnitList,(byte)2));
                 break;
         }
     }

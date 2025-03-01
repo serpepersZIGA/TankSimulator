@@ -49,7 +49,7 @@ public class TrackSoldatT1 extends Unit {
         functional.Add(RegisterFunctionalComponent.TowerXY);
         functional.Add(RegisterFunctionalComponent.MotorControl);
         functional.Add(RegisterFunctionalComponent.BuildCollision);
-        functional.Add(RegisterFunctionalComponent.SoldatSpawn);
+        //functional.Add(RegisterFunctionalComponent.SoldatSpawn);
 
 
         this.speed_tower = 1;
@@ -60,21 +60,18 @@ public class TrackSoldatT1 extends Unit {
         super.all_action(i);
         control.ControllerIteration(this,i);
         functional.FunctionalIterationAnHost(this);
-        super.corpus_corpus(this.enemyList);
         center_render();
         RenderMethod.transorm_img(this.x_rend, this.y_rend,this.corpus_width_zoom,this.corpus_height_zoom,this.rotation_corpus,this.corpus_img,const_x_corpus,const_y_corpus);
-        super.transportDeletePlayer(i,this.allyList);
+        super.transportDelete();
     }
     @Override
     public void all_action_client(int i) {
         super.all_action_client(i);
         control.ControllerIterationClientAnHost(this);
         functional.FunctionalIterationClientAnHost(this);
-        super.corpus_corpus(this.enemyList);
-        super.corpus_corpus(this.allyList);
         center_render();
         RenderMethod.transorm_img(this.x_rend, this.y_rend,this.corpus_width_zoom,this.corpus_height_zoom,this.rotation_corpus,this.corpus_img,const_x_corpus,const_y_corpus);
-        super.transportDeletePlayer(i,this.allyList);
+        super.transportDelete();
     }
     @Override
     public void all_action_client_1(int i) {
@@ -96,5 +93,8 @@ public class TrackSoldatT1 extends Unit {
     }
     public void update(){
         indicator_hp_2();
+    }
+    public void UpdateUnit(){
+        RenderMethod.transorm_img(this.x_rend,this.y_rend,this.corpus_width_zoom,this.corpus_height_zoom,this.rotation_corpus,this.corpus_img,const_x_corpus,const_y_corpus);
     }
 }

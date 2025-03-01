@@ -193,7 +193,7 @@ public class Keyboard extends InputAdapter{
         for(Bullet bull : Main.BulletList){
             bull.size_render = (int)(bull.size* Main.Zoom);
         }
-        for(Unit tr : Main.PlayerList){
+        for(Unit tr : Main.UnitList){
             tr.corpus_width_zoom = (int)(tr.corpus_width*Main.Zoom);
             tr.corpus_height_zoom = (int)(tr.corpus_height*Main.Zoom);
             tr.width_tower_zoom = (int)(tr.width_tower *Main.Zoom);
@@ -210,7 +210,7 @@ public class Keyboard extends InputAdapter{
             }
 
         }
-        for(Unit tr : Main.EnemyList){
+        for(Unit tr : Main.UnitList){
             tr.corpus_width_zoom = (int)(tr.corpus_width*Main.Zoom);
             tr.corpus_height_zoom = (int)(tr.corpus_height*Main.Zoom);
             tr.width_tower_zoom = (int)(tr.width_tower *Main.Zoom);
@@ -247,7 +247,7 @@ public class Keyboard extends InputAdapter{
         Main.Option.const_reload_y_zoom = (int)(Main.Option.const_reload_y* Main.Zoom);
     }
     public static void ZoomConstTransport(){
-        for(Unit tr : Main.PlayerList){
+        for(Unit tr : Main.UnitList){
             tr.corpus_width_zoom = (int)(tr.corpus_width*Main.Zoom);
             tr.corpus_height_zoom = (int)(tr.corpus_height*Main.Zoom);
             tr.width_tower_zoom = (int)(tr.width_tower *Main.Zoom);
@@ -265,7 +265,7 @@ public class Keyboard extends InputAdapter{
 
 
         }
-        for(Unit tr : Main.EnemyList){
+        for(Unit tr : Main.UnitList){
             tr.corpus_width_zoom = (int)(tr.corpus_width*Main.Zoom);
             tr.corpus_height_zoom = (int)(tr.corpus_height*Main.Zoom);
             tr.width_tower_zoom = (int)(tr.width_tower *Main.Zoom);
