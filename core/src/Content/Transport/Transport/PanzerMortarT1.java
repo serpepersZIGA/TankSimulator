@@ -14,12 +14,13 @@ import com.mygdx.game.unit.UnitType;
 import static com.mygdx.game.main.Main.RegisterFunctionalComponent;
 
 public class PanzerMortarT1 extends Unit {
-    public PanzerMortarT1(float x, float y, ArrayList<Unit>tr, byte team){
+    public PanzerMortarT1(float x, float y, ArrayList<Unit>tr,boolean host, byte team){
         this.type_unit = UnitType.PanzerMortarT1;
         this.x = x;this.y = y;
         this.speed_inert = 0;this.speed = 0;
         this.max_speed = 4;this.min_speed = -4;
         this.damage = 250;
+        this.host = host;
         this.armor = 50;
         this.allyList = tr;
         this.penetration = 7;
@@ -68,27 +69,27 @@ public class PanzerMortarT1 extends Unit {
         this.tower_y_const = (int) (corpus_height/2)-(height_tower/2)+7;
         center_render();
     }
-    public void all_action(int i) {
-        super.all_action(i);
-        control.ControllerIteration(this,i);
+    public void all_action() {
+        super.all_action();
+        control.ControllerIteration(this);
         functional.FunctionalIterationAnHost(this);
         super.transportDelete();
     }
     @Override
-    public void all_action_client(int i) {
-        super.all_action_client(i);
+    public void all_action_client() {
+        super.all_action_client();
         control.ControllerIterationClientAnHost(this);
         functional.FunctionalIterationClientAnHost(this);
         super.transportDelete();
     }
     @Override
-    public void all_action_client_1(int i) {
-        super.all_action_client_1(i);
+    public void all_action_client_1() {
+        super.all_action_client_1();
         control.ControllerIterationClientAnClient(this);
         functional.FunctionalIterationAnClient(this);
     }
-    public void all_action_client_2(int i) {
-        super.all_action_client_2(i);
+    public void all_action_client_2() {
+        super.all_action_client_2();
         functional.FunctionalIterationAnClient(this);
     }
     public void update(){

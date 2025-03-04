@@ -133,11 +133,11 @@ public class Main extends ApplicationAdapter {
 		SoldatList.add(new SoldatBull(1200,200, UnitList));
 		MapScan.MapInput("Map/maps/MapBase.mapt");
 		MapAllLoad.MapCount();
-		UnitList.add(new PanzerFlameT1(2200,2000,Main.UnitList,(byte)2));
+		UnitList.add(new PanzerFlameT1(2200,2000,Main.UnitList,true,(byte)2));
 		UnitList.get(0).control = Main.RegisterControl.controllerBot;
-		UnitList.add(new TrackRemountT1(2700,2000,Main.UnitList,(byte)2));
-		UnitList.get(1).control = Main.RegisterControl.controllerBotSupport;
-		UnitList.add(new TrackSoldatT1(2700,2000,Main.UnitList,(byte)2));
+//		UnitList.add(new TrackRemountT1(2700,2000,Main.UnitList,true,(byte)2));
+//		UnitList.get(1).control = Main.RegisterControl.controllerBotSupport;
+		UnitList.add(new TrackSoldatT1(2700,2000,Main.UnitList,true,(byte)2));
 		LiquidList.add(new Acid(200,200));
 		LiquidList.add(new Blood(200,200));
 		FlameSpawnList.add(new FlameSpawn(200,200));

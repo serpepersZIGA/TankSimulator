@@ -1,5 +1,4 @@
 package Content.Build;
-
 import com.mygdx.game.build.BuildType;
 import com.mygdx.game.build.Building;
 import com.mygdx.game.main.Main;

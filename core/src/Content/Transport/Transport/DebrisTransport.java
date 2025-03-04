@@ -37,18 +37,17 @@ public class DebrisTransport extends Unit {
         this.team = -1;
         this.acceleration = 0.1f;
     }
-    public void all_action(int i){
-        super.all_action(i);
-        super.corpus_corpus(Main.UnitList);
+    public void all_action(){
+        super.all_action();
         super.corpus_corpus(Main.UnitList);
         super.corpus_corpus(Main.DebrisList);
         build_corpus();
         move_debris();
         center_render();
         RenderMethod.transorm_img(this.x_rend,this.y_rend,this.corpus_width_zoom,this.corpus_height_zoom,this.rotation_corpus,this.corpus_img,const_x_corpus,const_y_corpus);
-        debrisDelete(i, Main.DebrisList);
+        debrisDelete();
     }
-    public void all_action_client(int i){;
+    public void all_action_client(int i){
         center_render();
         RenderMethod.transorm_img(this.x_rend,this.y_rend,this.corpus_width_zoom,this.corpus_height_zoom,this.rotation_corpus,this.corpus_img,const_x_corpus,const_y_corpus);
     }

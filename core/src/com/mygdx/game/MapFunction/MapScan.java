@@ -1,6 +1,7 @@
 package com.mygdx.game.MapFunction;
 
 import Content.Build.BigBuildingWood1;
+import Content.Build.Home1;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.mygdx.game.block.UpdateRegister;
@@ -174,6 +175,10 @@ public class MapScan {
             switch (Build) {
                 case "BigBuildingWood1": {
                     Main.BuildingList.add(new BigBuildingWood1(x * Main.width_block, y * Main.height_block));
+                }
+                break;
+                case "Home1": {
+                    Main.BuildingList.add(new Home1(x * Main.width_block, y * Main.height_block));
                 }
                 break;
                 case "Asphalt": {

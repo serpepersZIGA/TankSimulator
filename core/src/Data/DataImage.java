@@ -11,7 +11,7 @@ public class DataImage {
     public Sprite track_enemy_1lvl;
     public Sprite grass,dirt_2,dirt_3,dirt_4;
     public Sprite asphalt1;
-    public Sprite soldat_1;
+    public Sprite soldat_1,ExpBuild;
     public Texture buff;
     public DataImage(){
         corpus_track_soldat_enemy = new Sprite(LoadImage("image/enemy/machine_enemy_1lvl.png"));
@@ -22,6 +22,7 @@ public class DataImage {
         corpus_enemy = new Sprite(LoadImage("image/enemy/corpus_enemy_many_tower_1.png"));
         build_1 = new Sprite(LoadImage("image/build/home_3.png"));
         big_build_wood_1 = new Sprite(LoadImage("image/build/big_build_wood_1.png"));
+        ExpBuild = new Sprite(LoadImage("image/build/AssetExp.png"));
         grass = new Sprite(LoadImage("image/other/grass_256_1.png"));
         dirt_2 = new Sprite(LoadImage("image/other/dirt_256_1.png"));
         dirt_3 = new Sprite(LoadImage("image/other/dirt_256_2.png"));

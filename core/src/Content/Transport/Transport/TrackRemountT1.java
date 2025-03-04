@@ -11,7 +11,7 @@ import static com.mygdx.game.main.Main.RegisterControl;
 import static com.mygdx.game.main.Main.RegisterFunctionalComponent;
 
 public class TrackRemountT1 extends Unit {
-    public TrackRemountT1(float x, float y, ArrayList<Unit> tr,byte team){
+    public TrackRemountT1(float x, float y, ArrayList<Unit> tr,boolean host,byte team){
         this.type_unit = UnitType.TrackRemountT1;
         this.x = x;this.y = y;
         this.speed_inert = 0;this.speed = 0;
@@ -38,7 +38,7 @@ public class TrackRemountT1 extends Unit {
         this.corpus_img = Main.ContentImage.track_enemy_1lvl;
         this.corpus_width = 50;
         this.corpus_height = 129;
-        this.host = true;
+        this.host = host;
 
         this.x_tower = 15;
         this.y_tower = 20;
@@ -54,17 +54,17 @@ public class TrackRemountT1 extends Unit {
         this.speed_tower = 1;this.speed_rotation = 1;
         data();
     }
-    public void all_action(int i) {
-        super.all_action(i);
-        control.ControllerIteration(this,i);
+    public void all_action() {
+        super.all_action();
+        control.ControllerIteration(this);
         functional.FunctionalIterationAnHost(this);
         center_render();
         RenderMethod.transorm_img(this.x_rend, this.y_rend,this.corpus_width_zoom,this.corpus_height_zoom,this.rotation_corpus,this.corpus_img,const_x_corpus,const_y_corpus);
         super.transportDelete();
     }
     @Override
-    public void all_action_client(int i) {
-        super.all_action_client(i);
+    public void all_action_client() {
+        super.all_action_client();
         control.ControllerIterationClientAnHost(this);
         functional.FunctionalIterationClientAnHost(this);
         center_render();
@@ -72,8 +72,8 @@ public class TrackRemountT1 extends Unit {
         super.transportDelete();
     }
     @Override
-    public void all_action_client_1(int i) {
-        super.all_action_client_1(i);
+    public void all_action_client_1() {
+        super.all_action_client_1();
         control.ControllerIterationClientAnClient(this);
         functional.FunctionalIterationAnClient(this);
         center_render();
@@ -81,8 +81,8 @@ public class TrackRemountT1 extends Unit {
         );
 
     }
-    public void all_action_client_2(int i) {
-        super.all_action_client_2(i);
+    public void all_action_client_2() {
+        super.all_action_client_2();
         functional.FunctionalIterationAnClient(this);
         center_render();
         RenderMethod.transorm_img(this.x_rend, this.y_rend,this.corpus_width_zoom,this.corpus_height_zoom,this.rotation_corpus,this.corpus_img,const_x_corpus,const_y_corpus);

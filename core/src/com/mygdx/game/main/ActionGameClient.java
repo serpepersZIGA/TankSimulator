@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import Content.Particle.Acid;
 import Content.Particle.FlameSpawn;
 import com.mygdx.game.method.Keyboard;
+import com.mygdx.game.unit.Unit;
 
 import static com.mygdx.game.main.Main.*;
 import static com.mygdx.game.main.ClientMain.Client;
@@ -85,18 +86,18 @@ public class ActionGameClient extends com.mygdx.game.main.ActionGame {
         for (i= 0; i< Main.FlameSpawnList.size(); i++){
             Main.FlameSpawnList.get(i).all_action(i);
         }
-        for(i = 0; i< Main.UnitList.size(); i++) {
-            Main.UnitList.get(i).UpdateUnit();
-            if(Main.UnitList.get(i).host || Main.UnitList.get(i).nConnect != IDClient) {
-                Main.UnitList.get(i).all_action_client_2(i);
+        for(Unit unit : UnitList) {
+            unit.UpdateUnit();
+            if(unit.host || unit.nConnect != IDClient) {
+                unit.all_action_client_2();
             }
             else {
-                Main.UnitList.get(i).all_action_client_1(i);
+                unit.all_action_client_1();
             }
         }
 
-        for (i= 0; i< Main.DebrisList.size(); i++){
-            Main.DebrisList.get(i).all_action_client(i);
+        for (Unit debris : DebrisList){
+            debris.all_action_client();
         }
         RC.BuildingIteration();
         Batch.draw(textureBuffer,-20,1,1,1);

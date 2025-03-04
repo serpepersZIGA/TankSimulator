@@ -64,28 +64,28 @@ public class PlayerCannonMortar extends Unit {
         this.fire = FireRegister.FireMortar;
         data();
     }
-    public void all_action(int i) {
-        super.all_action(i);
+    public void all_action() {
+        super.all_action();
+        control.ControllerIteration(this);
         functional.FunctionalIterationAnHost(this);
-        control.ControllerIteration(this,i);
         super.transportDelete();
     }
     @Override
-    public void all_action_client(int i) {
-        super.all_action_client(i);
+    public void all_action_client() {
+        super.all_action_client();
         functional.FunctionalIterationClientAnHost(this);
         control.ControllerIterationClientAnHost(this);
         super.transportDelete();
     }
     @Override
-    public void all_action_client_1(int i) {
-        super.all_action_client_1(i);
+    public void all_action_client_1() {
+        super.all_action_client_1();
         functional.FunctionalIterationAnClient(this);
         control.ControllerIterationClientAnClient(this);
 
     }
-    public void all_action_client_2(int i) {
-        super.all_action_client_2(i);
+    public void all_action_client_2() {
+        super.all_action_client_2();
         functional.FunctionalIterationOtherAnClient(this);
 
     }

@@ -50,6 +50,7 @@ public abstract class Unit {
     public int time_max_relocation = 300,time_relocation = 0;
     public float x_relocation,y_relocation,rotation_relocation,priority_paint = 0,ai_x_const = 24f,ai_y_const = 62f;
     public int range_see=2000,range_see_2 = (int)(range_see*1.5),time_trigger_bull_bot,time_trigger_bull = 700;
+    public boolean PlayerConf;
 
     public byte behavior,behavior_buffer, medic_help, team,height = 1,trigger_drive;
     private float g;
@@ -555,7 +556,6 @@ public abstract class Unit {
     private void bypass_build(float g, Unit Target) {
         if (ai_sost == 0) {
             if (null != findIntersection(this.tower_x, this.tower_y, Target.tower_x, Target.tower_y)) {
-                path.clear();
                 Ai.pathAIAStar(this,Target,this.tower_x,this.tower_y);
             } else {
                 path.clear();
@@ -846,7 +846,7 @@ public abstract class Unit {
             this.t +=2;
         }
     }
-    protected void transportDelete(){
+    public void transportDelete(){
         if(this.hp>0)return;
         if(this.crite_life){
             Main.DebrisList.add(new DebrisTransport(this.x,this.y,this.rotation_corpus,this.speed,this.rotation_inert,this.speed_inert,
@@ -860,9 +860,9 @@ public abstract class Unit {
         this.hp = this.max_hp/2;
 
     }
-    protected void debrisDelete(int i, ArrayList<Unit>obj){
+    protected void debrisDelete(){
         if(this.hp<0){
-            obj.remove(i);
+            DebrisList.remove(this);
             EnumerationList = true;
         }
     }
@@ -1050,18 +1050,18 @@ public abstract class Unit {
     public void HPSynchronization(){
         this.green_len = (float) this.hp /this.max_hp * Option.size_x_indicator;
     }
-    public void all_action(int i){
+    public void all_action(){
         damage_temperature();
         inertia_xy();
     }
-    public void all_action_client(int i){
+    public void all_action_client(){
         HPSynchronization();
 
     }
-    public void all_action_client_1(int i){
+    public void all_action_client_1(){
         HPSynchronization();
     }
-    public void all_action_client_2(int i){
+    public void all_action_client_2(){
         HPSynchronization();
     }
     public void tower_action_client(float x,float y,float rotation,boolean sost_fire_bot){

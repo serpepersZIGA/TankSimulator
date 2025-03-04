@@ -153,25 +153,29 @@ public class ClientMain extends Listener{
                             Main.UnitList.add(new PlayerCannonAcid(0, 0, Main.UnitList, PacketUnit.get(i).host,(byte)1));
                             break;
                         case PanzerFlameT1:
-                            UnitList.add(new PanzerFlameT1(0, 0, UnitList,(byte)2));
+                            UnitList.add(new PanzerFlameT1(0, 0, UnitList,PacketUnit.get(i).host,(byte)2));
                             break;
                         case PanzerMortarT1:
-                            UnitList.add(new PanzerMortarT1(0, 0, UnitList,(byte)2));
+                            UnitList.add(new PanzerMortarT1(0, 0, UnitList,PacketUnit.get(i).host,(byte)2));
                             break;
                         case PanzerT1:
-                            UnitList.add(new PanzerT1(0, 0, UnitList,(byte)2));
+                            UnitList.add(new PanzerT1(0, 0, UnitList,PacketUnit.get(i).host,(byte)2));
                             break;
                         case PanzerAcidT1:
-                            UnitList.add(new PanzerAcidT1(0, 0, UnitList,(byte)2));
+                            UnitList.add(new PanzerAcidT1(0, 0, UnitList,PacketUnit.get(i).host,(byte)2));
                             break;
                         case TrackRemountT1:
-                            UnitList.add(new TrackRemountT1(0, 0, UnitList,(byte)2));
+                            UnitList.add(new TrackRemountT1(0, 0, UnitList,PacketUnit.get(i).host,(byte)2));
                             break;
                         case TrackSoldatT1:
-                            UnitList.add(new TrackSoldatT1(0, 0, UnitList,(byte)2));
+                            UnitList.add(new TrackSoldatT1(0, 0, UnitList,PacketUnit.get(i).host,(byte)2));
                             break;
                     }
-                    Main.UnitList.get(Main.UnitList.size()-1).control = RegisterControl.controllerPlayer;
+                    if(PacketUnit.get(i).PlayerConf) {
+                        Main.UnitList.get(Main.UnitList.size() - 1).control = RegisterControl.controllerPlayer;
+                    }else{
+                        Main.UnitList.get(Main.UnitList.size() - 1).control = RegisterControl.controllerBot;
+                    }
                     player_data(i);
                 }
                 KeyboardObj.zoom_const();
@@ -313,28 +317,6 @@ public class ClientMain extends Listener{
         SoldatList.get(i).y = PacketSoldat.get(i).y;
         SoldatList.get(i).rotation = PacketSoldat.get(i).rotation;
         SoldatList.get(i).team = PacketSoldat.get(i).team;
-    }
-    private void enemy_create(int i){
-        switch (PacketUnit.get(i).name) {
-            case PanzerFlameT1:
-                UnitList.add(new PanzerFlameT1(0, 0, UnitList,(byte)2));
-                break;
-            case PanzerMortarT1:
-                UnitList.add(new PanzerMortarT1(0, 0, UnitList,(byte)2));
-                break;
-            case PanzerT1:
-                UnitList.add(new PanzerT1(0, 0, UnitList,(byte)2));
-                break;
-            case PanzerAcidT1:
-                UnitList.add(new PanzerAcidT1(0, 0, UnitList,(byte)2));
-                break;
-            case TrackRemountT1:
-                UnitList.add(new TrackRemountT1(0, 0, UnitList,(byte)2));
-                break;
-            case TrackSoldatT1:
-                UnitList.add(new TrackSoldatT1(0, 0, UnitList,(byte)2));
-                break;
-        }
     }
     public void Building_create(int i,int x,int y){
         if(PacketBuilding.get(i).name != null) {

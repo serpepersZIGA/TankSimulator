@@ -9,5 +9,6 @@ public class SpawnPlayerCannonAcid extends PlayerSpawnData{
     public void SpawnPlayer(boolean host){
         UnitList.add(new PlayerCannonAcid(200,200, UnitList,host,(byte)1));
         UnitList.get(UnitList.size()-1).control = Main.RegisterControl.controllerPlayer;
+        UnitList.get(UnitList.size()-1).PlayerConf = true;
     }
 }

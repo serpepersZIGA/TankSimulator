@@ -57,28 +57,28 @@ public class PlayerCannonBullTank extends Unit {
                 this.team,Main.ContentImage.tower_player_auxiliary_1,this.allyList,Main.ContentSound.flame_attack));
 
     }
-    public void all_action(int i) {
-        super.all_action(i);
-        control.ControllerIteration(this,i);
+    public void all_action() {
+        super.all_action();
+        control.ControllerIteration(this);
         functional.FunctionalIterationAnHost(this);
         super.transportDelete();
     }
     @Override
-    public void all_action_client(int i) {
-        super.all_action_client(i);
+    public void all_action_client() {
+        super.all_action_client();
         control.ControllerIterationClientAnHost(this);
         functional.FunctionalIterationClientAnHost(this);
         super.transportDelete();
     }
     @Override
-    public void all_action_client_1(int i) {
-        super.all_action_client_1(i);
+    public void all_action_client_1() {
+        super.all_action_client_1();
         control.ControllerIterationClientAnClient(this);
         functional.FunctionalIterationAnClient(this);
 
     }
-    public void all_action_client_2(int i) {
-        super.all_action_client_2(i);
+    public void all_action_client_2() {
+        super.all_action_client_2();
         functional.FunctionalIterationOtherAnClient(this);
 
     }

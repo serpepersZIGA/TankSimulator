@@ -9,5 +9,6 @@ public class SpawnPlayerCannonBull extends PlayerSpawnData{
     public void SpawnPlayer(boolean host){
         Main.UnitList.add(new PlayerCannonBullTank(200,200,Main.UnitList,host,(byte)1));
         UnitList.get(UnitList.size()-1).control = Main.RegisterControl.controllerPlayer;
+        UnitList.get(UnitList.size()-1).PlayerConf = true;
     }
 }

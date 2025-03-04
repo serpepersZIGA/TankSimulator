@@ -105,20 +105,22 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
         for (i= 0; i< Main.FlameSpawnList.size(); i++){
             Main.FlameSpawnList.get(i).all_action(i);
         }
-        for (i= 0; i< Main.DebrisList.size(); i++){
-            packet_debris_server();
-            Main.DebrisList.get(i).all_action(i);
+        for(i = 0;i< DebrisList.size();i++) {
+            Unit debris = DebrisList.get(i);
+            packet_debris_server(debris);
+            debris.all_action();
         }
-        for(i = 0; i< Main.UnitList.size(); i++) {
-            Main.UnitList.get(i).UpdateUnit();
-            packet_player_server(Main.UnitList.get(i));
-            if(Main.UnitList.get(i).host || UnitList.get(i).control == RegisterControl.controllerBot
-                    || UnitList.get(i).control == RegisterControl.controllerBotSupport
-                    || UnitList.get(i).control == RegisterControl.controllerSoldatTransport) {
-                Main.UnitList.get(i).all_action(i);
+        for(i = 0;i< UnitList.size();i++) {
+            Unit unit = UnitList.get(i);
+            unit.UpdateUnit();
+            packet_player_server(unit);
+            if(unit.host || unit.control == RegisterControl.controllerBot
+                    || unit.control == RegisterControl.controllerBotSupport
+                    || unit.control == RegisterControl.controllerSoldatTransport) {
+                unit.all_action();
             }
             else{
-                Main.UnitList.get(i).all_action_client(i);
+                unit.all_action_client();
             }
         }
         RC.BuildingIteration();
@@ -132,11 +134,8 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
                 Main.BulletList.get(i).all_action(i);
             }
         }
-        for (i= 0; i< Main.UnitList.size(); i++){
-            Main.UnitList.get(i).update();
-        }
-        for (i= 0; i< UnitList.size(); i++){
-            UnitList.get(i).update();
+        for(Unit unit : UnitList) {
+            unit.update();
         }
         for (i= 0; i< AirList.size(); i++){
             for(int i2= 0; i2< AirList.get(i).size(); i2++) {
@@ -183,6 +182,7 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
         pack.name = unit.type_unit;
         pack.x = unit.x;
         pack.y = unit.y;
+        pack.PlayerConf = unit.PlayerConf;
         pack.rotation_corpus = unit.rotation_corpus;
         pack.rotation_tower = unit.rotation_tower;
         pack.reload = unit.reload;
@@ -212,12 +212,12 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
             pack.rotation_tower_2.add(unit.tower_obj.get(i2).rotation_tower);
         }
     }
-    private void packet_debris_server(){
+    private void packet_debris_server(Unit unit){
         PacketDebris.add(new DebrisPacket());
-        PacketDebris.get(i).name = DebrisList.get(i).type_unit;
-        PacketDebris.get(i).x = DebrisList.get(i).x;
-        PacketDebris.get(i).y = DebrisList.get(i).y;
-        PacketDebris.get(i).rotation = DebrisList.get(i).rotation_corpus;
+        PacketDebris.get(i).name = unit.type_unit;
+        PacketDebris.get(i).x = unit.x;
+        PacketDebris.get(i).y = unit.y;
+        PacketDebris.get(i).rotation = unit.rotation_corpus;
     }
     private void packet_enemy_soldat(){
         PacketSoldat.add(new SoldatPacket());

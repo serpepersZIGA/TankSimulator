@@ -13,7 +13,7 @@ import com.mygdx.game.unit.UnitType;
 import static com.mygdx.game.main.Main.RegisterFunctionalComponent;
 
 public class PanzerT1 extends Unit {
-    public PanzerT1(float x, float y, ArrayList<Unit> tr, byte team){
+    public PanzerT1(float x, float y, ArrayList<Unit> tr,boolean host, byte team){
         this.type_unit = UnitType.PanzerT1;
         this.x = x;this.y = y;
         this.speed_inert = 0;this.speed = 0;
@@ -37,7 +37,7 @@ public class PanzerT1 extends Unit {
         this.y_tower = 20;
         this.distance_target = 150;
         this.distance_target_2 = 30;
-        this.host = true;
+        this.host = host;
         this.team = team;
 
         this.tower_img = Main.ContentImage.tower_enemy;
@@ -68,27 +68,27 @@ public class PanzerT1 extends Unit {
 
 
     }
-    public void all_action(int i) {
-        super.all_action(i);
-        control.ControllerIteration(this,i);
+    public void all_action() {
+        super.all_action();
+        control.ControllerIteration(this);
         functional.FunctionalIterationAnHost(this);
         super.transportDelete();
     }
     @Override
-    public void all_action_client(int i) {
-        super.all_action_client(i);
+    public void all_action_client() {
+        super.all_action_client();
         control.ControllerIterationClientAnHost(this);
         functional.FunctionalIterationClientAnHost(this);
         super.transportDelete();
     }
     @Override
-    public void all_action_client_1(int i) {
-        super.all_action_client_1(i);
+    public void all_action_client_1() {
+        super.all_action_client_1();
         control.ControllerIterationClientAnClient(this);
         functional.FunctionalIterationAnClient(this);
     }
-    public void all_action_client_2(int i) {
-        super.all_action_client_2(i);
+    public void all_action_client_2() {
+        super.all_action_client_2();
         functional.FunctionalIterationAnClient(this);
     }
     public void update(){

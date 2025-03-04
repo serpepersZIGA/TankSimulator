@@ -10,11 +10,13 @@ import com.mygdx.game.unit.UnitType;
 import static com.mygdx.game.main.Main.RegisterFunctionalComponent;
 
 public class HelicopterT1 extends Unit {
-    public HelicopterT1(float x, float y, ArrayList<Unit>tr){
+    public HelicopterT1(float x, float y, ArrayList<Unit>tr,boolean host,byte team){
         this.type_unit = UnitType.HelicopterT1;
         this.corpus_img = Main.ContentImage.helicopter_enemy_t1;
         this.tower_img = Main.ContentImage.helicopter_blade;
         this.x = x;this.y = y;
+        this.host = host;
+        this.team = team;
         corpus_width = 60;
         corpus_height = 200;
         width_tower = 120;
@@ -30,14 +32,12 @@ public class HelicopterT1 extends Unit {
         this.height = 2;
         this.behavior = (byte) (2);
         this.reload_max = 180;
-        this.host = true;
 
 
 
         this.distance_target = 350;
         this.distance_target_2 = 120;
 
-        this.team = 2;
         this.priority_paint = 1;
         this.sound_fire = Main.ContentSound.flame_attack;
 
@@ -54,8 +54,8 @@ public class HelicopterT1 extends Unit {
         this.tower_y_const = (int) (corpus_height/2)-(height_tower/2);
         center_render();
     }
-    public void all_action(int i) {
-        super.all_action(i);
+    public void all_action() {
+        super.all_action();
         super.helicopter_ii();
         super.bot_bull_tank_fire_not_tower();
         super.tower_xy();
@@ -68,8 +68,8 @@ public class HelicopterT1 extends Unit {
         super.transportDelete();
 
     }
-    public void all_action_client(int i) {
-        super.all_action_client(i);
+    public void all_action_client() {
+        super.all_action_client();
         super.tower_xy();
         center_render();
         RenderMethod.transorm_img(this.x_rend, this.y_rend,this.corpus_width_zoom,this.corpus_height_zoom,this.rotation_corpus,this.corpus_img,const_x_corpus,const_y_corpus);

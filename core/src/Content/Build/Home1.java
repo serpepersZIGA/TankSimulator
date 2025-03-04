@@ -10,13 +10,19 @@ public class Home1 extends Building {
         name = BuildType.Home1;
         this.x = x;
         this.y = y;
-        this.build_image = Main.ContentImage.build_1;
-        this.width = 100;
-        this.height = 50;
-        this.width_2 = this.width/2;
-        this.height_2 = this.height/2;
-        this.time_flame = 0;
+        RenderBuilding = Main.BuildingRegister.UpdateExpBuild;
+        this.build_image = Main.ContentImage.ExpBuild;
+        ConstructBuilding = new boolean[][]{
+                {true,true,true,true,true,false,true,true,true,true},
+                {true,false,false,false,false,false,false,false,false,true},
+                {true,false,false,false,false,false,false,false,false,true},
+                {true,false,false,false,false,false,false,false,false,true},
+                {true,false,false,false,false,false,false,false,false,true},
+                {true,true,true,true,true,true,true,true,true,true}
+        };
+
         super.Data();
+
 
     }
     public void all_action(int i) {
@@ -25,7 +31,6 @@ public class Home1 extends Building {
 
     }
     public void update(){
-        center_render();
-        RenderMethod.transorm_img(this.x_rend,this.y_rend,this.width_render,this.height_render,this.build_image);
+        RenderBuilding.render(this.x,this.y,this.width_render,this.height_render);
     }
 }

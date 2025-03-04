@@ -4,6 +4,7 @@ import Content.Particle.*;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.mygdx.game.block.Block;
 import com.mygdx.game.method.Keyboard;
+import com.mygdx.game.unit.Unit;
 
 import static com.mygdx.game.main.Main.*;
 
@@ -76,15 +77,15 @@ public class ActionMenu extends ActionGame {
         }
         for(i = 0; i< Main.UnitList.size(); i++) {
             Main.UnitList.get(i).UpdateUnit();
-            Main.UnitList.get(i).all_action_client_2(i);
+            Main.UnitList.get(i).all_action_client_2();
         }
 
 
         for (i= 0; i< Main.DebrisList.size(); i++){
-            Main.DebrisList.get(i).all_action_client(i);
+            Main.DebrisList.get(i).all_action_client();
         }
-        for (i = 0; i < Main.UnitList.size(); i++) {
-            Main.UnitList.get(i).all_action_client(i);
+        for(Unit unit : UnitList) {
+            unit.all_action_client();
         }
         RC.BuildingIteration();
         Batch.draw(textureBuffer,-20,1,1,1);
