@@ -14,12 +14,15 @@ import static java.lang.Math.sqrt;
 public class AI {
     // Координаты ИИ
     private float x, y,xTotal,yTotal;
-    public float TargetLine,TargetLineMin;
+    public float TargetLine, TargetLineMinBuffer;
     private int TargetLineTotal,TotalIndex = 1;
     private ArrayList<float[]> OpenBlockList = new ArrayList<>();
     private ArrayList<int[]> CloseBlockList = new ArrayList<>();
     private ArrayList<int[]>BufferPathIteration = new ArrayList<>();
     private boolean conf,ConfPathAdd;
+    public static int iteration;
+    public int indMin;
+    public float TargetLineMin;
 
     // Метод для обновления позиции ИИ
     public void pathAIAStar(Unit ai, Unit target, float x_ai, float y_ai){
@@ -36,9 +39,11 @@ public class AI {
         TotalIndex = 1;
         ai.path.add(new int[]{(int)x, (int)y});
         CloseBlockList.add(new int[]{(int)x,(int)y});
+        iteration = 0;
+        TargetLineMin = TargetGet(x,y, target_xy[0],target_xy[1]);
         while (y != target_xy[1] || x != target_xy[0]) {
             xTotal = x+1;
-            TargetLineMin = -1;
+            TargetLineMinBuffer = -1;
             if (!BlockList2D.get((int)y).get((int)xTotal).passability) {
                 for (int[] ints : CloseBlockList) {
                     if (xTotal == ints[0] & y == ints[1]) {
@@ -47,7 +52,7 @@ public class AI {
                     }
                 }
                 if(!conf){
-                    TargetLine = (float) sqrt(pow2(target_xy[0]-x+1)+pow2(target_xy[1]-y));
+                    TargetLine = TargetGet(xTotal,y, target_xy[0],target_xy[1]);
                     OpenBlockList.add(new float[]{xTotal, y, TargetLine});
                 }
                 conf = false;
@@ -61,7 +66,7 @@ public class AI {
                     }
                 }
                 if(!conf) {
-                    TargetLine = (float) sqrt(pow2(target_xy[0]-x-1)+pow2(target_xy[1]-y));
+                    TargetLine = TargetGet(xTotal,y, target_xy[0],target_xy[1]);
                     OpenBlockList.add(new float[]{xTotal, y, TargetLine});
                 }
                 conf = false;
@@ -75,7 +80,7 @@ public class AI {
                     }
                 }
                 if(!conf) {
-                    TargetLine = (float) sqrt(pow2(target_xy[0]-x)+pow2(target_xy[1]-y+1));
+                    TargetLine = TargetGet(x,yTotal, target_xy[0],target_xy[1]);
                     OpenBlockList.add(new float[]{x, yTotal, TargetLine});
                 }
                 conf = false;
@@ -89,7 +94,7 @@ public class AI {
                     }
                 }
                 if(!conf) {
-                    TargetLine = (float) sqrt(pow2(target_xy[0]-x)+pow2(target_xy[1]-y-1));
+                    TargetLine = TargetGet(x,yTotal, target_xy[0],target_xy[1]);
                     OpenBlockList.add(new float[]{x, yTotal, TargetLine});
                 }
                 conf = false;
@@ -102,31 +107,69 @@ public class AI {
                 y = ai.path.get(ai.path.size()-1)[1];
                 ai.path.remove(ai.path.size()-1);
                 TotalIndex += 1;
+                if(iteration != 0) {
+                    iteration -= 1;
+                }
             }
             else {
                 for (float[] ints : OpenBlockList) {
-                    if (TargetLineMin == -1 || ints[2] > TargetLineMin) {
-                        TargetLineMin = ints[2];
+                    if (TargetLineMinBuffer == -1 || ints[2] < TargetLineMinBuffer) {
+                        TargetLineMinBuffer = ints[2];
                         x = ints[0];
                         y = ints[1];
+
                     }
                 }
-                CloseBlockList.add(new int[]{(int)x,(int)y});
-                ai.path.add(new int[]{(int)x, (int)y});
+                if(TargetLineMin+22>=TargetLineMinBuffer) {
+                    TargetLineMin = TargetLineMinBuffer;
+                    iteration = 0;
+                    indMin = CloseBlockList.size()-1;
+                }
+                else{
+                    iteration+= 1;
+                }
+                if(iteration>=5){
+                    x = CloseBlockList.get(indMin)[0];
+                    y = CloseBlockList.get(indMin)[1];
+                    for(int i = iteration;i>0;i--){
+                        if(ai.path.size()>1) {
+                            ai.path.remove(ai.path.size() - 1);
+                        }
+                    }
+                }
+                else {
+                    CloseBlockList.add(new int[]{(int) x, (int) y});
+                    ai.path.add(new int[]{(int) x, (int) y});
+                }
                 TotalIndex = 1;
                 OpenBlockList.clear();
             }
         }
+//        for (int i = 0;i<ai.path.size();i++){
+//            if(i+3<ai.path.size()) {
+//
+//                for (int i2 = i+2; i2 < ai.path.size(); i2++) {
+//                    if(abs(ai.path.get(i)[0]-ai.path.get(i2)[0])<=1&abs(ai.path.get(i)[1]-ai.path.get(i2)[1])<=1){
+//                        int ic = i2-i;
+//                        System.out.println(ai.path.size()+" 1");
+//                        ai.path.subList(i2, i + ic).clear();
+//                        System.out.println(ai.path.size()+" 2");
+//                    }
+//                }
+//            }
+//        }
+
+
 //        for (ArrayList<Block> blockY : BlockList2D){
 //            for (Block block : blockY) {
 //                block.render_block = UpdateRegister.GrassUpdate;
 //            }
 //        }
-//        for (int i = 0;i<CloseBlockList.size();i++){
-//            BlockList2D.get(CloseBlockList.get(i)[1]).get(CloseBlockList.get(i)[0]).render_block =
+//        for (int i = 0;i<ai.path.size();i++){
+//            BlockList2D.get(ai.path.get(i)[1]).get(ai.path.get(i)[0]).render_block =
 //                    UpdateRegister.Update3;
 //        }
-        TargetLineMin = -1;
+        TargetLineMinBuffer = -1;
         conf = false;
         yTotal = 0;
         xTotal = 0;
@@ -135,20 +178,26 @@ public class AI {
         TotalIndex = 1;
 
     }
+    public static float TargetGet(float x,float y,float x2,float y2){
+        return  abs(x2-x)+abs(y2-y);
+    }
+    public static float TargetGet2(float x,float y,float x2,float y2){
+        return  (float) sqrt(pow2(x2-x)+pow2(y2-y));
+    }
     public void pathAISoldat(Soldat ai, Unit target, float x_ai, float y_ai){
         ai.path.clear();
         int[] target_xy = block_detected_2Soldat(target);
         int[] ai_xy = block_detected_3(x_ai, y_ai);
         x = ai_xy[0];
         y = ai_xy[1];
-        TargetLineMin = -1;
+        TargetLineMinBuffer = -1;
         conf = false;
         OpenBlockList.clear();
         CloseBlockList.clear();
         while (y != target_xy[1] || x != target_xy[0]) {
             ConfPathAdd = true;
             xTotal = x+1;
-            TargetLineMin = -1;
+            TargetLineMinBuffer = -1;
             if (!BlockList2D.get((int)y).get((int)xTotal).passability) {
                 for (int[] ints : CloseBlockList) {
                     if (xTotal == ints[0] & y == ints[1]) {
@@ -212,8 +261,8 @@ public class AI {
                 //CloseBlockList.remove(CloseBlockList.size()-1);
             }
             for (float[] ints : OpenBlockList) {
-                if (TargetLineMin == -1 || (float)ints[2] > TargetLineMin) {
-                    TargetLineMin = (float)ints[2];
+                if (TargetLineMinBuffer == -1 || (float)ints[2] > TargetLineMinBuffer) {
+                    TargetLineMinBuffer = (float)ints[2];
                     x = (int)ints[0];
                     y = (int)ints[1];
                 }
