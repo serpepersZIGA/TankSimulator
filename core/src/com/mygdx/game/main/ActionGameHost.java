@@ -148,7 +148,7 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
         Batch.end();
         server_packet();
         if(Unit.ai_sost == 0){
-            Unit.ai_sost=500;}
+            Unit.ai_sost=1000;}
         if(flame_spawn_time <= 0){flame_spawn_time=flame_spawn_time_max;}
         CycleDayNight.WorkTime();
         Collision.CollisionIterationGlobal();
