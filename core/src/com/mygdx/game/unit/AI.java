@@ -80,27 +80,7 @@ public class AI {
 
                     }
                 }
-                if(target_xy[0]==x & target_xy[1]==y){
-                    ai.path = (ArrayList<int[]>) pathAi.clone();
-                    for (ArrayList<Block> blockY : BlockList2D){
-                        for (Block block : blockY) {
-                            block.render_block = UpdateRegister.GrassUpdate;
-                        }
-                    }
-                    for (int[] ints : CloseBlockList) {
-                        BlockList2D.get(ints[1]).get(ints[0]).render_block =
-                                UpdateRegister.Update3;
-                    }
-                    IterationPath.clear();
-                    yTotal = 0;
-                    xTotal = 0;
-                    OpenBlockList.clear();
-                    CloseBlockList.clear();
-                    TotalIndex = 1;
-                    return;
-                }
             }
-
         }
     }
     public static float TargetGet(float x,float y,float x2,float y2){
