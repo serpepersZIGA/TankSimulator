@@ -1,9 +1,10 @@
-package Content.Transport.Transport;
+package Content.UnitPack.Transport.Transport;
 
 import com.mygdx.game.method.RenderMethod;
 
 import java.util.ArrayList;
 import com.mygdx.game.main.Main;
+import com.mygdx.game.unit.ClassUnit;
 import com.mygdx.game.unit.Unit;
 import com.mygdx.game.unit.UnitType;
 
@@ -17,7 +18,7 @@ public class TrackRemountT1 extends Unit {
         this.speed_inert = 0;this.speed = 0;
         this.max_speed = 4;this.min_speed = -4;
         this.damage = 5;
-        this.teg_unit = "support";
+        classUnit = ClassUnit.SupportTransport;
         this.penetration = 20;
         this.allyList = tr;
         this.max_hp = 1500;

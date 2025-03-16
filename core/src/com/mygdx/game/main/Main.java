@@ -1,7 +1,9 @@
 package com.mygdx.game.main;
 import Content.Particle.*;
 import Content.Soldat.SoldatBull;
-import Content.Transport.Transport.*;
+import Content.UnitPack.Soldat.SoldatFlame;
+import Content.UnitPack.Transport.Transport.PanzerFlameT1;
+import Content.UnitPack.Transport.Transport.TrackSoldatT1;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
@@ -13,6 +15,7 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.mygdx.game.Event.EventRegister;
 import com.mygdx.game.MapFunction.MapScan;
 import com.mygdx.game.block.Block;
 import com.mygdx.game.block.BlockMap;
@@ -102,6 +105,7 @@ public class Main extends ApplicationAdapter {
 	public static int xMap ;
 	public static int yMap ;
 	public static Texture textureBuffer;
+	public static EventRegister EventData;
 	public static int IDClient;
 	public static UpdateBuildingRegister BuildingRegister;
 	public static  ArrayList<Packet_client> Clients = new ArrayList<>();
@@ -130,11 +134,12 @@ public class Main extends ApplicationAdapter {
 
 	public static void spawn_object(){
 		//PlayerList.add(new PlayerCannonFlame(200,200, PlayerList,true));
-		SoldatList.add(new SoldatBull(1200,200, UnitList));
+		//SoldatList.add(new SoldatBull(1200,200, UnitList));
 		MapScan.MapInput("Map/maps/MapBase.mapt");
 		MapAllLoad.MapCount();
 		UnitList.add(new PanzerFlameT1(2200,2000,Main.UnitList,true,(byte)2));
 		UnitList.get(0).control = Main.RegisterControl.controllerBot;
+		UnitList.add(new SoldatFlame(1200,200,(byte)2,true));
 //		UnitList.add(new TrackRemountT1(2700,2000,Main.UnitList,true,(byte)2));
 //		UnitList.get(1).control = Main.RegisterControl.controllerBotSupport;
 		UnitList.add(new TrackSoldatT1(2700,2000,Main.UnitList,true,(byte)2));
@@ -225,6 +230,7 @@ public class Main extends ApplicationAdapter {
 		font = TXTFont((int) (64*ZoomWindowX),"font/Base/BaseFont4.ttf");
 		font2 = TXTFont((int) (16*ZoomWindowX),"font/Base/BaseFont.ttf");
 		InputWindow = new InputWindow();
+		EventData = new EventRegister();
 
 		KeyboardObj = new Keyboard();
 		Keyboard.ZoomMaxMin();

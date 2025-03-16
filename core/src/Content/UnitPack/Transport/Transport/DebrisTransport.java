@@ -1,4 +1,4 @@
-package Content.Transport.Transport;
+package Content.UnitPack.Transport.Transport;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.mygdx.game.method.RenderMethod;
@@ -26,7 +26,6 @@ public class DebrisTransport extends Unit {
         this.allyList = Main.DebrisList;
         this.max_hp = 10000;
         this.armor = 5;
-        this.teg_unit = "debris";
         if(this.corpus_img == null){
             this.corpus_img = ContentImage.corpus_enemy;
             this.corpus_width = 50;

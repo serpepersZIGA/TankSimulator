@@ -154,7 +154,6 @@ public abstract class Soldat implements Serializable {
             SoldatRotate(g);
             SoldatMove(g,radius);
         }
-
     }
     public void SoldatRotatePath(float TargetRotate){
         if (abs(TargetRotate-rotation)<5){

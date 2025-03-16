@@ -29,12 +29,11 @@ public class BullFragment extends Bullet {
     }
     public void all_action(int i){
         super.bull_move_xy();
-        super.corpus_bull(Main.UnitList);
+        super.corpus_bull();
         super.bull_clear_time();
         super.BullBuild();
-        super.soldat_bull(Main.SoldatList);
         this.update();
-        super.clear(i);
+        super.clear();
     }
     public void update(){
         center_render();

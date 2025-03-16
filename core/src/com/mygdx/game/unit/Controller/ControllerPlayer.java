@@ -24,13 +24,11 @@ public class ControllerPlayer extends Controller {
         Main.RC.x = unit.tower_x;
         Main.RC.y = unit.tower_y;
         unit.TowerControlPlayer();
-        unit.FireControlPlayer();
         for(Unit Tower : unit.tower_obj){
             Tower.left_mouse = Keyboard.RightMouse;
             Tower.TargetX = Keyboard.MouseX;
             Tower.TargetY = Keyboard.MouseY;
             Tower.TowerControlPlayer();
-            Tower.FireControlPlayer();
         }
 
     }
@@ -49,13 +47,13 @@ public class ControllerPlayer extends Controller {
                         unit.TargetX = pack.mouse_x;
                         unit.TargetY = pack.mouse_y;
                         unit.TowerControlPlayerClient();
-                        unit.FireControlPlayer();
+                        unit.FireControl();
                         for (Unit Tower : unit.tower_obj) {
                             Tower.left_mouse = pack.right_mouse;
                             Tower.TargetX = pack.mouse_x;
                             Tower.TargetY = pack.mouse_y;
                             Tower.TowerControlPlayerClient();
-                            Tower.FireControlPlayer();
+                            Tower.FireControl();
                         }
                         return;
                     }

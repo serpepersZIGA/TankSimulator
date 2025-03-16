@@ -1,9 +1,8 @@
-package Content.Transport.Transport;
+package Content.UnitPack.Transport.Transport;
 
-import Content.Transport.Tower.TowerBullTankEnemy;
-import Content.Transport.Tower.TowerFlameEnemy;
+import Content.UnitPack.Transport.Tower.TowerBullTankEnemy;
+import Content.UnitPack.Transport.Tower.TowerFlameEnemy;
 import com.mygdx.game.method.RenderMethod;
-import com.mygdx.game.method.rand;
 
 import java.util.ArrayList;
 import com.mygdx.game.main.Main;
@@ -13,44 +12,49 @@ import com.mygdx.game.unit.UnitType;
 
 import static com.mygdx.game.main.Main.RegisterFunctionalComponent;
 
-public class PanzerFlameT1 extends Unit {
-    public PanzerFlameT1(float x, float y, ArrayList<Unit> tr,boolean host, byte team){
-        this.type_unit = UnitType.PanzerFlameT1;
+public class PanzerT1 extends Unit {
+    public PanzerT1(float x, float y, ArrayList<Unit> tr,boolean host, byte team){
+        this.type_unit = UnitType.PanzerT1;
         this.x = x;this.y = y;
         this.speed_inert = 0;this.speed = 0;
         this.max_speed = 4;this.min_speed = -4;
-        this.max_hp = 1200;
-        this.damage = 10;
-        this.host = host;
-        this.allyList = tr;
+        this.damage = 100;
+        this.penetration = 20;
+        this.max_hp = 1500;
         this.armor = 50;
-        this.penetration = 2;
+        this.allyList = tr;
         this.acceleration = 0.2f;
-        this.behavior = (byte) (2+rand.rand(1));
-        this.reload_max = 2;
+        this.rotation_tower = 0;
+        this.rotation_corpus = 70;
+        this.tower_x = 0;
+        this.tower_y = 0;
+        this.medic_help = 0;
         this.height = 1;
-        this.tower_img = Main.ContentImage.tower_enemy;
-        this.corpus_img = Main.ContentImage.corpus_enemy;
+        this.behavior = 3;
+        this.reload_max = 180;
         this.t = 0;
-        this.t_damage = 1;
         this.x_tower = 15;
         this.y_tower = 20;
         this.distance_target = 150;
         this.distance_target_2 = 30;
+        this.host = host;
         this.team = team;
 
+        this.tower_img = Main.ContentImage.tower_enemy;
+        this.corpus_img = Main.ContentImage.corpus_enemy;
 
         this.corpus_width = 50;
         this.corpus_height = 129;
         this.width_tower = 35;
         this.height_tower = 55;
         this.speed_tower = 1;this.speed_rotation = 1;
-        this.sound_fire = Main.ContentSound.flame_attack;
-        fire = FireRegister.FireFlame;
+        this.sound_fire = Main.ContentSound.acid_attack;
+        fire = FireRegister.FireBull;
         functional.Add(RegisterFunctionalComponent.MotorControl);
         functional.Add(Main.RegisterFunctionalComponent.TowerXY);
         functional.Add(RegisterFunctionalComponent.TowerIteration);
         functional.Add(RegisterFunctionalComponent.BuildCollision);
+        functional.Add(RegisterFunctionalComponent.FireControl);
         data();
         this.tower_obj.add(new TowerBullTankEnemy(18,55,52,-12,4,2,65,12, this.id_unit,
                 (byte)1,this.team,Main.ContentImage.tower_enemy_auxiliary_1,this.allyList, Main.ContentSound.flame_attack));

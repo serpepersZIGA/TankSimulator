@@ -1,6 +1,6 @@
-package Content.Transport.Transport;
+package Content.UnitPack.Transport.Transport;
 
-import Content.Transport.Tower.TowerBullTankPlayer;
+import Content.UnitPack.Transport.Tower.TowerBullTankPlayer;
 import com.mygdx.game.method.RenderMethod;
 import com.mygdx.game.main.Main;
 import com.mygdx.game.unit.Fire.FireRegister;
@@ -48,10 +48,10 @@ public class PlayerCannonMortar extends Unit {
         functional.Add(RegisterFunctionalComponent.TowerIteration);
         functional.Add(Main.RegisterFunctionalComponent.TowerXY);
         functional.Add(RegisterFunctionalComponent.BuildCollision);
+        functional.Add(RegisterFunctionalComponent.FireControl);
 
 
         this.speed_tower = 1;this.speed_rotation = 0.5f;
-        data();
         this.tower_obj.add(new TowerBullTankPlayer(18,55,52,-12,5,2,20,12, this.id_unit,
                 (byte)1,this.team,Main.ContentImage.tower_player_auxiliary_1,this.allyList,Main.ContentSound.machinegun));
         this.tower_obj.add(new TowerBullTankPlayer(18,55,52,12,5,2,20,12, this.id_unit,

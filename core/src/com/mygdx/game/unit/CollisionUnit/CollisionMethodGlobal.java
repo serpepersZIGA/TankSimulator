@@ -40,36 +40,54 @@ public class CollisionMethodGlobal {
                         if(CollisionRectRect(unit1,unit2)){
                             SoundPlay.sound(Main.ContentSound.hit, 1f - ((float) sqrt(pow2(unit1.x_rend) + pow2(unit1.y_rend)) / SoundConst));
                             CollisionFunctional.physicCollision(unit1,unit2);
-                            CollisionFunctional.MethodCollision(unit1,unit2);
+                            CollisionFunctional.MethodCollisionTransport(unit1,unit2);
                         }
                     }
+                    break;
                     case circle:{
                         if(CollisionRectCircle(unit1,unit2)){
+                            if(unit1.team == unit2.team){
+                                CollisionFunctional.MethodCollisionTransportSoldatAlly(unit1,unit2);
+                            }
+                            else{
+                                unit2.hp = -1;
+                                CollisionFunctional.MethodCollisionTransportSoldatAlly(unit1,unit2);
+                            }
 
                         }
                     }
+                    break;
 
                 }
-
             }
+            break;
             case circle:{
                 switch(unit2.collision){
                     case rect:{
                         if(CollisionRectCircle(unit2,unit1)){
-
+                            if(unit1.team == unit2.team){
+                                CollisionFunctional.MethodCollisionTransportSoldatAlly(unit2,unit1);
+                            }
+                            else{
+                                CollisionFunctional.MethodCollisionTransportSoldatAlly(unit1,unit2);
+                                unit1.hp = -1;
+                            }
                         }
-
                     }
+                    break;
                     case circle:{
                         if(CollisionCircleCircle(unit1,unit2)){
+                            CollisionFunctional.MethodCollisionSoldatSoldat(unit1,unit2);
 
                         }
 
                     }
+                    break;
 
                 }
 
             }
+            break;
         }
     }
     private boolean CollisionRectCircle(Unit unit1,Unit unit2){

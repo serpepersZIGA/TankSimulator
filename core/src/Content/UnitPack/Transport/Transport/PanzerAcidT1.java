@@ -1,7 +1,7 @@
-package Content.Transport.Transport;
+package Content.UnitPack.Transport.Transport;
 
-import Content.Transport.Tower.TowerBullTankEnemy;
-import Content.Transport.Tower.TowerFlameEnemy;
+import Content.UnitPack.Transport.Tower.TowerBullTankEnemy;
+import Content.UnitPack.Transport.Tower.TowerFlameEnemy;
 import com.mygdx.game.method.RenderMethod;
 import com.mygdx.game.method.rand;
 
@@ -54,6 +54,7 @@ public class PanzerAcidT1 extends Unit {
         functional.Add(Main.RegisterFunctionalComponent.TowerXY);
         functional.Add(RegisterFunctionalComponent.TowerIteration);
         functional.Add(RegisterFunctionalComponent.BuildCollision);
+        functional.Add(RegisterFunctionalComponent.FireControl);
         data();
 //        this.tower_obj.add(new tower_flame_enemy(18,55,52,-12,4,2,65,12,2, this.id_unit,
 //                (byte)1,(byte)2,Main.content_base.tower_player_auxiliart_1,this.spisok, Main.sa.get(0).flame_attack));

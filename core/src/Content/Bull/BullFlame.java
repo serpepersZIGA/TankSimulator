@@ -1,5 +1,6 @@
 package Content.Bull;
 import com.mygdx.game.bull.Bullet;
+import com.mygdx.game.bull.EffectBullet;
 import com.mygdx.game.method.rand;
 
 import com.mygdx.game.main.Main;
@@ -24,18 +25,17 @@ public class BullFlame extends Bullet {
         this.time = 65+rand.rand(15);
         type = 1;
         speed_save();
+        effectBullet = EffectBullet.Flame;
 
     }
     public void all_action(int i){
         super.bull_move_xy();
         super.color_fire();
-        super.corpus_bull_temperature(Main.UnitList);
-        super.corpus_bull(Main.DebrisList);
-        super.soldat_bull(Main.SoldatList);
+        super.corpus_bull();
         super.BullBuildFlame();
         super.bull_clear_time_flame();
         this.update();
-        super.clear(i);
+        super.clear();
     }
 
     public void update(){

@@ -26,7 +26,7 @@ public abstract class Bullet implements Serializable {
     public int time,size,amount_fragment,x_rend,y_rend,size_render;
     public float r,g,b,r_wane = (float)(1/255*1.5),g_wane= (float)(1/255*1.5),b_wane= (float)(1/255);
     private boolean z;
-    private int i;
+    public EffectBullet effectBullet = EffectBullet.Void;
     public byte type_team,height,clear_sost;
     public byte type;
     protected final void speed_save(){
@@ -77,9 +77,9 @@ public abstract class Bullet implements Serializable {
             Main.LiquidList.add(new Acid(this.x,this.y));
         }
     }
-    protected final void clear(int i){
+    protected final void clear(){
         if(this.clear_sost == 1){
-            Main.BulletList.remove(i);
+            Main.BulletList.remove(this);
         }
     }
     public void all_action(int i){
@@ -169,60 +169,80 @@ public abstract class Bullet implements Serializable {
             spawn_acid();
         }
     }
-    protected final void corpus_bull_mortar(ArrayList<Unit> obj_2){
-        for(i = 0;i<obj_2.size();i++) {
-            if(this.type_team != obj_2.get(i).team) {
+    protected final void corpus_bull(){
+        for(Unit unit : UnitList) {
+           if (this.type_team != unit.team & rect_bull((int)unit.x,(int)unit.y,(int)unit.corpus_width,
+                   (int)unit.corpus_height,(int)this.x,(int)this.y,this.size,-unit.rotation_corpus)) {
+               unit.time_trigger_bull_bot = unit.time_trigger_bull;
+               armor_damage(unit);
+               switch(effectBullet){
+                   case Flame: {
+                       method_temperature(unit);
+                   }
+                   break;
+                   case Mortar:{
+                       method_mortar();
+                   }
+                   break;
+                   default:{
+                       this.clear_sost = 1;
+                   }
+                   break;
+               }
+               unit.green_len = ((float) unit.hp / unit.max_hp) * Option.size_x_indicator;
+               return;
+           }
 
-                z = rect_bull((int) obj_2.get(i).x, (int) obj_2.get(i).y, (int) obj_2.get(i).corpus_width, (int) obj_2.get(i).corpus_height, (int) this.x, (int) this.y,
-                        this.size, -obj_2.get(i).rotation_corpus);
-                if (z) {
-                    obj_2.get(i).time_trigger_bull_bot = obj_2.get(i).time_trigger_bull;
-                    armor_damage(obj_2, i);
-                    metod_mortar();
-                    obj_2.get(i).green_len = ((float) obj_2.get(i).hp / obj_2.get(i).max_hp) * Option.size_x_indicator;
-                    return;
+        }
+        for(Unit unit : DebrisList) {
+            if (rect_bull((int)unit.x, (int)unit.y,(int)unit.corpus_width,(int)unit.corpus_height,(int)this.x,(int)this.y,
+                    this.size,-unit.rotation_corpus)) {
+                unit.time_trigger_bull_bot = unit.time_trigger_bull;
+                armor_damage(unit);
+                switch(effectBullet){
+                    case Flame: {
+                        method_temperature(unit);
+                    }
+                    break;
+                    case Mortar:{
+                        method_mortar();
+                    }
+                    break;
+                    default:{
+                        this.clear_sost = 1;
+                    }
+                    break;
                 }
+                unit.green_len = ((float) unit.hp / unit.max_hp) * Option.size_x_indicator;
+                return;
             }
+
         }
     }
-    protected final void corpus_bull(ArrayList<Unit> obj_2){
-        for(i = 0;i<obj_2.size();i++) {
-            if(this.type_team != obj_2.get(i).team) {
-            z = rect_bull((int)obj_2.get(i).x, (int)obj_2.get(i).y,(int)obj_2.get(i).corpus_width,(int)obj_2.get(i).corpus_height,(int)this.x,(int)this.y,
-                    this.size,-obj_2.get(i).rotation_corpus);
-                if (z) {
-                    obj_2.get(i).time_trigger_bull_bot = obj_2.get(i).time_trigger_bull;
-                    armor_damage(obj_2, i);
-                    this.clear_sost = 1;
-                    obj_2.get(i).green_len = ((float) obj_2.get(i).hp / obj_2.get(i).max_hp) * Option.size_x_indicator;
-                    return;
-                }
-            }
-        }
+//    protected final void corpus_bull_temperature(ArrayList<Unit> obj_2){
+//
+//        for(i = 0;i<obj_2.size();i++) {
+//            if(this.type_team != obj_2.get(i).team) {
+//                z = rect_bull((int) obj_2.get(i).x, (int) obj_2.get(i).y, (int) (obj_2.get(i).corpus_width), (int) (obj_2.get(i).corpus_height), (int) this.x, (int) this.y,
+//                        this.size, -obj_2.get(i).rotation_corpus);
+//                if (z) {
+//                    obj_2.get(i).time_trigger_bull_bot = obj_2.get(i).time_trigger_bull;
+//                    armor_damage(obj_2, i);
+//                    method_temperature(obj_2, i);
+//                    obj_2.get(i).green_len = ((float) obj_2.get(i).hp / obj_2.get(i).max_hp) * Option.size_x_indicator;
+//                    return;
+//                }
+//            }
+//        }
+//    }
+    protected final void armor_damage(Unit unit){
+        unit.hp -=this.damage-((this.damage/100*(unit.armor-this.penetration)));
     }
-    protected final void corpus_bull_temperature(ArrayList<Unit> obj_2){
-        for(i = 0;i<obj_2.size();i++) {
-            if(this.type_team != obj_2.get(i).team) {
-                z = rect_bull((int) obj_2.get(i).x, (int) obj_2.get(i).y, (int) (obj_2.get(i).corpus_width), (int) (obj_2.get(i).corpus_height), (int) this.x, (int) this.y,
-                        this.size, -obj_2.get(i).rotation_corpus);
-                if (z) {
-                    obj_2.get(i).time_trigger_bull_bot = obj_2.get(i).time_trigger_bull;
-                    armor_damage(obj_2, i);
-                    metod_temperature(obj_2, i);
-                    obj_2.get(i).green_len = ((float) obj_2.get(i).hp / obj_2.get(i).max_hp) * Option.size_x_indicator;
-                    return;
-                }
-            }
-        }
-    }
-    protected final void armor_damage(ArrayList<Unit>tr, int i){
-        tr.get(i).hp -=this.damage-((this.damage/100*(tr.get(i).armor-this.penetration)));
-    }
-    protected final void metod_temperature(ArrayList<Unit>obj, int i2){
-         obj.get(i2).t += this.t_damage;
+    protected final void method_temperature(Unit unit){
+        unit.t += this.t_damage;
          this.clear_sost = 1;
     }
-    protected final void metod_mortar(){
+    protected final void method_mortar(){
         for(int i3 = 0;i3<this.amount_fragment;i3++){
             Main.BulletList.add(new BullFragment(this.x,this.y,this.damage_fragment,this.penetration_fragment,this.type_team));}
         Main.BangList.add(new Bang(this.x,this.y,4));
@@ -233,7 +253,7 @@ public abstract class Bullet implements Serializable {
         for (Soldat value : soldat) {
             if (circle_bull((int) this.x, (int) this.y, this.size, (int) value.x, (int) value.y, value.size)
                     && this.type_team != value.team) {
-                metod_mortar();
+                method_mortar();
                 value.clear_sost = 1;
                 this.clear_sost = 1;
             }

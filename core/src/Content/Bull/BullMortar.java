@@ -1,6 +1,7 @@
 package Content.Bull;
 
 import com.mygdx.game.bull.Bullet;
+import com.mygdx.game.bull.EffectBullet;
 import com.mygdx.game.main.Main;
 
 public class BullMortar extends Bullet {
@@ -23,17 +24,16 @@ public class BullMortar extends Bullet {
         this.b = (float)1/255*38;
         type = 3;
         speed_save();
+        effectBullet = EffectBullet.Mortar;
     }
 
     public void all_action(int i){
         super.bull_move_xy();
-        super.corpus_bull_mortar(Main.UnitList);
-        super.corpus_bull_mortar(Main.DebrisList);
+        super.corpus_bull();
         super.BullBuildMortar();
-        super.soldat_bull(Main.SoldatList);
         super.fragments_create();
         this.update();
-        super.clear(i);
+        super.clear();
     }
     public void update(){
         center_render();

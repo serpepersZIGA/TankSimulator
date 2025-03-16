@@ -69,7 +69,7 @@ public class Method {
         int radius = 0;
         double g;
         for (Unit unit : UnitList) {
-            if(unit != objBot & unit.team != objBot.team) {
+            if(unit.team != objBot.team) {
                 g = sqrt(pow2.pow2(objBot.x - unit.x) + pow2.pow2(objBot.y - unit.y));
                 if (radius > g || radius == 0) {
                     ind = unit;

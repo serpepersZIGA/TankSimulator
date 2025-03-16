@@ -1,4 +1,4 @@
-package Content.Transport.Transport;
+package Content.UnitPack.Transport.Transport;
 
 import com.mygdx.game.main.Main;
 import com.mygdx.game.method.RenderMethod;
@@ -43,7 +43,7 @@ public class TrackSoldatT1 extends Unit {
         this.corpus_width = 50;
         this.corpus_height = 129;
         this.control = Main.RegisterControl.controllerSoldatTransport;
-        this.host = true;
+        this.host = host;
         this.team = team;
 
         functional.Add(RegisterFunctionalComponent.TowerXY);

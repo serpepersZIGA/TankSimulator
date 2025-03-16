@@ -27,12 +27,10 @@ public class BullTank extends Bullet {
         super.bull_move_xy();
         //super.bull_clear_display();
         super.bull_clear_time();
-        super.corpus_bull(Main.UnitList);
-        super.corpus_bull(Main.DebrisList);
+        super.corpus_bull();
         super.BullBuild();
-        super.soldat_bull(Main.SoldatList);
         this.update();
-        super.clear(i);
+        super.clear();
     }
     public void update(){
         center_render();

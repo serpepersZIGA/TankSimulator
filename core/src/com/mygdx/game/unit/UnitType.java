@@ -11,7 +11,9 @@ public enum UnitType {
     PlayerFlameT1,
     PlayerMortarT1,
     PlayerT1,
-    PlayerAcidT1
+    PlayerAcidT1,
+    SoldatBullet,
+    SoldatFlame
 
 
 }

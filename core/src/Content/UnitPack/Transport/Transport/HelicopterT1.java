@@ -1,4 +1,4 @@
-package Content.Transport.Transport;
+package Content.UnitPack.Transport.Transport;
 
 import com.mygdx.game.method.RenderMethod;
 
@@ -45,6 +45,7 @@ public class HelicopterT1 extends Unit {
         functional.Add(RegisterFunctionalComponent.MotorControl);
         functional.Add(Main.RegisterFunctionalComponent.TowerXY);
         functional.Add(RegisterFunctionalComponent.BuildCollision);
+        functional.Add(RegisterFunctionalComponent.FireControl);
         data();
         this.difference = 42;
         speed_tower = 10;

@@ -15,7 +15,7 @@ import com.mygdx.game.soldat.SoldatPacket;
 import com.mygdx.game.object_map.ObjectMapAssets;
 import com.mygdx.game.object_map.PacketMapObject;
 import com.mygdx.game.unit.DebrisPacket;
-import Content.Transport.Transport.DebrisTransport;
+import Content.UnitPack.Transport.Transport.DebrisTransport;
 import com.mygdx.game.unit.SpawnPlayer.*;
 import com.mygdx.game.unit.TransportPacket;
 import com.mygdx.game.unit.UnitType;

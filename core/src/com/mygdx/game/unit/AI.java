@@ -66,6 +66,12 @@ public class AI {
                         if (target_xy[0] == ints[0] & target_xy[1] == ints[1]) {
                             ai.path = (ArrayList<int[]>) pathAi.clone();
                             ai.path.add(new int[]{(int) ints[0], (int) ints[1]});
+
+//                            for (ArrayList<Block> blockY : BlockList2D) {
+//                                for (Block block : blockY) {
+//                                    block.render_block = UpdateRegister.GrassUpdate;
+//                                }
+//                            }
                             for (int[] intss : CloseBlockList) {
                                 BlockList2D.get(intss[1]).get(intss[0]).AiClose = false;
                             }

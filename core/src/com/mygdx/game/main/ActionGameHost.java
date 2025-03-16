@@ -76,7 +76,12 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
         //Main.player_obj.get(1).all_action_client(Main.left_mouse_client, Main.right_mouse_client, Main.mouse_x_client,
                 //Main.mouse_y_client, Main.press_w_client, Main.press_a_client, Main.press_s_client, Main.press_d_client);
         if(Unit.ai_sost != 0){
-            Unit.ai_sost-=1;}
+            Unit.ai_sost-=1;
+            Unit.AIScan = false;}
+        else {
+            Unit.ai_sost=1000;
+            Unit.AIScan = true;
+        }
         if(flame_spawn_time > 0){flame_spawn_time-=1;}
         Batch.begin();
         Render.begin(ShapeRenderer.ShapeType.Filled);
@@ -147,8 +152,8 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
         Render.end();
         Batch.end();
         server_packet();
-        if(Unit.ai_sost == 0){
-            Unit.ai_sost=1000;}
+//        if(Unit.ai_sost == 0){
+//            Unit.AIScan = false;}
         if(flame_spawn_time <= 0){flame_spawn_time=flame_spawn_time_max;}
         CycleDayNight.WorkTime();
         Collision.CollisionIterationGlobal();
