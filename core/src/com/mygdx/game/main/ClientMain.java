@@ -3,6 +3,7 @@ import Content.Build.BigBuildingWood1;
 import Content.Build.Home1;
 import Content.Bull.*;
 import Content.Particle.*;
+import Content.UnitPack.Soldat.SoldatFlame;
 import Content.UnitPack.Transport.Transport.*;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.esotericsoftware.kryonet.Client;
@@ -21,7 +22,7 @@ import com.mygdx.game.method.CycleTimeDay;
 import com.mygdx.game.object_map.ObjectLoad;
 import com.mygdx.game.method.SoundPlay;
 import Content.Soldat.SoldatBull;
-import Content.Soldat.SoldatFlame;
+import Content.Soldat.SoldatFlamse;
 import com.mygdx.game.soldat.SoldatPacket;
 import com.mygdx.game.object_map.MapObject;
 import com.mygdx.game.object_map.ObjectMapAssets;
@@ -58,7 +59,7 @@ public class ClientMain extends Listener{
         Client.getKryo().register(SoundPlay.class);
         Client.getKryo().register(SoldatPacket.class);
         Client.getKryo().register(DebrisPacket.class);
-        Client.getKryo().register(SoldatFlame.class);
+        Client.getKryo().register(SoldatFlamse.class);
         Client.getKryo().register(SoldatBull.class);
         Client.getKryo().register(UnitType.class);
         Client.getKryo().register(Bang.class);
@@ -170,6 +171,9 @@ public class ClientMain extends Listener{
                         case TrackSoldatT1:
                             UnitList.add(new TrackSoldatT1(0, 0, UnitList,PacketUnit.get(i).host,(byte)2));
                             break;
+                        case SoldatFlame:
+                            UnitList.add(new SoldatFlame(0, 0,(byte)2,PacketUnit.get(i).host));
+                            break;
                     }
                     if(PacketUnit.get(i).PlayerConf) {
                         Main.UnitList.get(Main.UnitList.size() - 1).control = RegisterControl.controllerPlayer;
@@ -205,27 +209,26 @@ public class ClientMain extends Listener{
 
 
 
-            PacketSoldat = ((PackerServer) p).soldat;
-            if (PacketSoldat.size() == SoldatList.size()) {
-                for (int i = 0; i < PacketSoldat.size(); i++) {
-                    soldat_data(i);
-                }
-            } else {
-                SoldatList.clear();
-                for (SoldatPacket soldatPacket : PacketSoldat) {
-                    if (soldatPacket.name.equals("flame")) {
-                        SoldatList.add(new SoldatFlame(0, 0, UnitList));
-                    } else if (soldatPacket.name.equals("bull")) {
-                        SoldatList.add(new SoldatBull(0, 0, UnitList));
-                    }
-                }
-                KeyboardObj.zoom_const();
-            }
+//            PacketSoldat = ((PackerServer) p).soldat;
+//            if (PacketSoldat.size() == SoldatList.size()) {
+//                for (int i = 0; i < PacketSoldat.size(); i++) {
+//                    soldat_data(i);
+//                }
+//            } else {
+//                SoldatList.clear();
+//                for (SoldatPacket soldatPacket : PacketSoldat) {
+//                    if (soldatPacket.name.equals("flame")) {
+//                        SoldatList.add(new SoldatFlamse(0, 0, UnitList));
+//                    } else if (soldatPacket.name.equals("bull")) {
+//                        SoldatList.add(new SoldatBull(0, 0, UnitList));
+//                    }
+//                }
+//                KeyboardObj.zoom_const();
+//            }
             PacketMapObjects.clear();
             PacketBull.clear();
             PacketUnit.clear();
             PacketDebris.clear();
-            PacketSoldat.clear();
         }
         else if(p instanceof PacketBuildingServer){
             PacketBuilding = ((PacketBuildingServer) p).BuildPack;
@@ -285,7 +288,7 @@ public class ClientMain extends Listener{
         Main.UnitList.get(i).host = PacketUnit.get(i).host;
         Main.UnitList.get(i).nConnect = PacketUnit.get(i).IDClient;
         Main.UnitList.get(i).rotation_tower = PacketUnit.get(i).rotation_tower;
-        for (int i2 = 0; i2< PacketUnit.get(i).rotation_tower_2.size(); i2++) {
+        for (int i2 = 0; i2< UnitList.get(i).tower_obj.size(); i2++) {
             Main.UnitList.get(i).tower_obj.get(i2).rotation_tower = PacketUnit.get(i).rotation_tower_2.get(i2);
         }
 

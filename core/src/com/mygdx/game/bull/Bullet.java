@@ -170,8 +170,9 @@ public abstract class Bullet implements Serializable {
         }
     }
     protected final void corpus_bull(){
-        for(Unit unit : UnitList) {
-           if (this.type_team != unit.team & rect_bull((int)unit.x,(int)unit.y,(int)unit.corpus_width,
+        for(int i = 0;i< UnitList.size();i++) {
+            Unit unit = UnitList.get(i);
+            if (this.type_team != unit.team & rect_bull((int)unit.x,(int)unit.y,(int)unit.corpus_width,
                    (int)unit.corpus_height,(int)this.x,(int)this.y,this.size,-unit.rotation_corpus)) {
                unit.time_trigger_bull_bot = unit.time_trigger_bull;
                armor_damage(unit);
@@ -194,7 +195,8 @@ public abstract class Bullet implements Serializable {
            }
 
         }
-        for(Unit unit : DebrisList) {
+        for(int i = 0;i< DebrisList.size();i++) {
+            Unit unit = DebrisList.get(i);
             if (rect_bull((int)unit.x, (int)unit.y,(int)unit.corpus_width,(int)unit.corpus_height,(int)this.x,(int)this.y,
                     this.size,-unit.rotation_corpus)) {
                 unit.time_trigger_bull_bot = unit.time_trigger_bull;

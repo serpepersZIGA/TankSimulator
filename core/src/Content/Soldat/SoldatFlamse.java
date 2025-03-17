@@ -5,8 +5,8 @@ import com.mygdx.game.unit.Unit;
 
 import java.util.ArrayList;
 
-public class SoldatFlame extends Soldat {
-    public SoldatFlame(float x, float y, ArrayList<Unit>List){
+public class SoldatFlamse extends Soldat {
+    public SoldatFlamse(float x, float y, ArrayList<Unit>List){
         this.name = "bull";
         this.x = x;
         this.y = y;

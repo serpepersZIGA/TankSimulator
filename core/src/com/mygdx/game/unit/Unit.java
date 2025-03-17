@@ -3,7 +3,7 @@ package com.mygdx.game.unit;
 import Content.Bull.*;
 import Content.Particle.Blood;
 import Content.Soldat.SoldatBull;
-import Content.Soldat.SoldatFlame;
+import Content.Soldat.SoldatFlamse;
 import Content.UnitPack.Transport.Transport.DebrisTransport;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -1100,7 +1100,7 @@ public abstract class Unit {
                     break;
                 }
                 case 1:{
-                    SoldatList.add(new SoldatFlame(this.x,this.y, UnitList));
+                    SoldatList.add(new SoldatFlamse(this.x,this.y, UnitList));
                     break;
                 }
                 //case 3->{soldat.add(new soldat_(this.x,this.y));}
