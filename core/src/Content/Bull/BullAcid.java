@@ -4,6 +4,8 @@ import com.mygdx.game.bull.Bullet;
 import com.mygdx.game.method.rand;
 import com.mygdx.game.main.Main;
 
+import static Data.DataColor.*;
+
 public class BullAcid extends Bullet {
     public BullAcid(float x, float y, float rotation, float damage, float penetration, byte type_team, byte height){
         this.x = x;
@@ -13,7 +15,7 @@ public class BullAcid extends Bullet {
         this.penetration = penetration;
         this.type_team = type_team;
         this.height = height;
-        r = (float) 1 /255*51;g =  (float) 1 /255*179; b = (float) 1 /255*51;
+        r = AcidR;g =  AcidG; b = AcidB;
         this.size = 8+rand.rand(8);
         this.size_render = (int)(size*Main.Zoom);
         this.speed = -5;

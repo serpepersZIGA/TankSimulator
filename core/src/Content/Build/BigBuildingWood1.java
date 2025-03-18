@@ -9,8 +9,7 @@ public class BigBuildingWood1 extends Building {
         name = BuildType.BigBuildingWood1;
         this.x = x;
         this.y = y;
-        RenderBuilding = Main.BuildingRegister.UpdateExpBuild;
-        this.build_image = Main.ContentImage.big_build_wood_1;
+        RenderBuilding = Main.BuildingRegister.Update_big_build_wood1;
         ConstructBuilding = new boolean[][]{
                 {true,true,true,true,false,false,true,true,true,true},
                 {true,true,true,true,false,false,true,true,true,true},

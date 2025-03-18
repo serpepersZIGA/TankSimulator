@@ -10,8 +10,8 @@ public class Home1 extends Building {
         name = BuildType.Home1;
         this.x = x;
         this.y = y;
-        RenderBuilding = Main.BuildingRegister.UpdateExpBuild;
-        this.build_image = Main.ContentImage.ExpBuild;
+        RenderBuilding = Main.BuildingRegister.Update_big_build_wood1;
+        this.build_image = Main.ContentImage.big_build_wood_1;
         ConstructBuilding = new boolean[][]{
                 {true,true,true,true,true,false,true,true,true,true},
                 {true,false,false,false,false,false,false,false,false,true},

@@ -5,6 +5,8 @@ import com.mygdx.game.method.rand;
 
 import com.mygdx.game.main.Main;
 
+import static Data.DataColor.*;
+
 public class BullFragment extends Bullet {
     public int x2,y2;
 
@@ -21,9 +23,9 @@ public class BullFragment extends Bullet {
         this.size = this.x2;
         this.height = 1;
         this.size_render = (int)(size*Main.Zoom);
-        this.r = (float)1/255*236;
-        this.g = (float)1/255*124;
-        this.b = (float)1/255*38;
+        this.r = MortarR;
+        this.g = MortarG;
+        this.b = MortarB;
         this.time = 50+rand.rand(80);
         type = 2;
     }
