@@ -167,7 +167,6 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
             EnumerationList = false;
         }
         PacketServer.debris = PacketDebris;
-        PacketServer.soldat = PacketSoldat;
         PacketServer.player = PacketUnit;
         PacketServer.bull = PacketBull;
         PacketServer.building = PacketBuilding;
@@ -200,29 +199,13 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
             pack.rotation_tower_2.add(Tower.rotation_tower);
         }
     }
-    private void packet_enemy_server(Unit unit){
-        com.mygdx.game.unit.TransportRegister.PacketUnit.add(new TransportPacket());
-        TransportPacket pack = com.mygdx.game.unit.TransportRegister.PacketUnit.get(i);
+    private void packet_debris_server(Unit unit){
+        PacketDebris.add(new DebrisPacket());
+        DebrisPacket pack = PacketDebris.get(i);
         pack.name = unit.type_unit;
         pack.x = unit.x;
         pack.y = unit.y;
-        pack.crite_life = unit.crite_life;
-        pack.rotation_corpus = unit.rotation_corpus;
-        pack.rotation_tower = unit.rotation_tower;
-        pack.reload = unit.reload;
-        pack.hp = unit.hp;
-        pack.team = unit.team;
-        pack.speed = unit.speed;
-        for (int i2 = 0; i2< unit.tower_obj.size(); i2++) {
-            pack.rotation_tower_2.add(unit.tower_obj.get(i2).rotation_tower);
-        }
-    }
-    private void packet_debris_server(Unit unit){
-        PacketDebris.add(new DebrisPacket());
-        PacketDebris.get(i).name = unit.type_unit;
-        PacketDebris.get(i).x = unit.x;
-        PacketDebris.get(i).y = unit.y;
-        PacketDebris.get(i).rotation = unit.rotation_corpus;
+        pack.rotation = unit.rotation_corpus;
     }
     private void packet_enemy_soldat(){
         PacketSoldat.add(new SoldatPacket());

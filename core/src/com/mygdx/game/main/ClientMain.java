@@ -360,7 +360,6 @@ public class ClientMain extends Listener{
                         TrackSoldatT1.corpus_width, TrackSoldatT1.corpus_height, UnitType.TrackSoldatT1));
                 break;
 
-
             case PlayerFlameT1:
                 DebrisList.add(new DebrisTransport(x, y,rotation,0, 0,0, PlayerCannonFlame.corpus_img,
                         PlayerCannonFlame.corpus_width, PlayerCannonFlame.corpus_height, UnitType.PlayerFlameT1));

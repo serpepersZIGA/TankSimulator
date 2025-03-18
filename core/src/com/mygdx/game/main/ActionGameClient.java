@@ -86,7 +86,8 @@ public class ActionGameClient extends com.mygdx.game.main.ActionGame {
         for (i= 0; i< Main.FlameSpawnList.size(); i++){
             Main.FlameSpawnList.get(i).all_action(i);
         }
-        for(Unit unit : UnitList) {
+        for(i = 0;i< UnitList.size();i++) {
+            Unit unit = UnitList.get(i);
             unit.UpdateUnit();
             if(unit.host || unit.nConnect != IDClient) {
                 unit.all_action_client_2();
