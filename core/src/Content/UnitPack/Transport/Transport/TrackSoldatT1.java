@@ -49,7 +49,7 @@ public class TrackSoldatT1 extends Unit {
         functional.Add(RegisterFunctionalComponent.TowerXY);
         functional.Add(RegisterFunctionalComponent.MotorControl);
         functional.Add(RegisterFunctionalComponent.BuildCollision);
-        //functional.Add(RegisterFunctionalComponent.SoldatSpawn);
+        functional.Add(RegisterFunctionalComponent.SoldatSpawn);
 
 
         this.speed_tower = 1;

@@ -4,6 +4,7 @@ import Content.Bull.*;
 import Content.Particle.Blood;
 import Content.Soldat.SoldatBull;
 import Content.Soldat.SoldatFlamse;
+import Content.UnitPack.Soldat.SoldatFlame;
 import Content.UnitPack.Transport.Transport.DebrisTransport;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -1096,11 +1097,11 @@ public abstract class Unit {
             this.time_spawn_soldat = this.time_spawn_soldat_max;
             switch(z){
                 case 0:{
-                    SoldatList.add(new SoldatBull(this.x,this.y, UnitList));
+                    //UnitList.add(new SoldatFlame(this.x,this.y,this.team,true));
                     break;
                 }
                 case 1:{
-                    SoldatList.add(new SoldatFlamse(this.x,this.y, UnitList));
+                    UnitList.add(new SoldatFlame(this.x,this.y,this.team,true));
                     break;
                 }
                 //case 3->{soldat.add(new soldat_(this.x,this.y));}
