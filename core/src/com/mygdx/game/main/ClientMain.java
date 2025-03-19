@@ -143,46 +143,55 @@ public class ClientMain extends Listener{
                     switch (PacketUnit.get(i).name) {
                         case PlayerFlameT1:
                             Main.UnitList.add(new PlayerCannonFlame(0, 0, Main.UnitList, PacketUnit.get(i).host,(byte)1));
+                            Main.UnitList.get(Main.UnitList.size() - 1).control = RegisterControl.controllerBot;
                             break;
                         case PlayerMortarT1:
                             Main.UnitList.add(new PlayerCannonMortar(0, 0, Main.UnitList, PacketUnit.get(i).host,(byte)1));
+                            Main.UnitList.get(Main.UnitList.size() - 1).control = RegisterControl.controllerBot;
                             break;
                         case PlayerT1:
                             Main.UnitList.add(new PlayerCannonBullTank(0, 0, Main.UnitList, PacketUnit.get(i).host,(byte)1));
+                            Main.UnitList.get(Main.UnitList.size() - 1).control = RegisterControl.controllerBot;
                             break;
                         case PlayerAcidT1:
                             Main.UnitList.add(new PlayerCannonAcid(0, 0, Main.UnitList, PacketUnit.get(i).host,(byte)1));
+                            Main.UnitList.get(Main.UnitList.size() - 1).control = RegisterControl.controllerBot;
                             break;
                         case PanzerFlameT1:
                             UnitList.add(new PanzerFlameT1(0, 0, UnitList,PacketUnit.get(i).host,(byte)2));
+                            Main.UnitList.get(Main.UnitList.size() - 1).control = RegisterControl.controllerBot;
                             break;
                         case PanzerMortarT1:
                             UnitList.add(new PanzerMortarT1(0, 0, UnitList,PacketUnit.get(i).host,(byte)2));
+                            Main.UnitList.get(Main.UnitList.size() - 1).control = RegisterControl.controllerBot;
                             break;
                         case PanzerT1:
                             UnitList.add(new PanzerT1(0, 0, UnitList,PacketUnit.get(i).host,(byte)2));
+                            Main.UnitList.get(Main.UnitList.size() - 1).control = RegisterControl.controllerBot;
                             break;
                         case PanzerAcidT1:
                             UnitList.add(new PanzerAcidT1(0, 0, UnitList,PacketUnit.get(i).host,(byte)2));
+                            Main.UnitList.get(Main.UnitList.size() - 1).control = RegisterControl.controllerBot;
                             break;
                         case TrackRemountT1:
                             UnitList.add(new TrackRemountT1(0, 0, UnitList,PacketUnit.get(i).host,(byte)2));
+                            Main.UnitList.get(Main.UnitList.size() - 1).control = RegisterControl.controllerBotSupport;
                             break;
                         case TrackSoldatT1:
                             UnitList.add(new TrackSoldatT1(0, 0, UnitList,PacketUnit.get(i).host,(byte)2));
+                            Main.UnitList.get(Main.UnitList.size() - 1).control = RegisterControl.controllerSoldatTransport;
                             break;
                         case SoldatFlame:
                             UnitList.add(new SoldatFlame(0, 0,(byte)2,PacketUnit.get(i).host));
+                            Main.UnitList.get(Main.UnitList.size() - 1).control = RegisterControl.controllerSoldatBot;
                             break;
                     }
                     if(PacketUnit.get(i).PlayerConf) {
                         Main.UnitList.get(Main.UnitList.size() - 1).control = RegisterControl.controllerPlayer;
-                    }else{
-                        Main.UnitList.get(Main.UnitList.size() - 1).control = RegisterControl.controllerBot;
                     }
                     player_data(i);
                 }
-                KeyboardObj.zoom_const();
+                KeyboardObj.ZoomConstTransport();
             }
             PacketDebris = ((PackerServer) p).debris;
             if (PacketDebris.size() == DebrisList.size()) {
@@ -195,7 +204,7 @@ public class ClientMain extends Listener{
                     debris_create(i, PacketDebris.get(i).x, PacketDebris.get(i).y, PacketDebris.get(i).rotation);
                     debris_data(i);
                 }
-                KeyboardObj.zoom_const();
+                KeyboardObj.ZoomConstTransport();
             }
 
 

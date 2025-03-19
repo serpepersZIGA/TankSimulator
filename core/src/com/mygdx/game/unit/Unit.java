@@ -1181,6 +1181,7 @@ public abstract class Unit {
             for(int i1 =0;i1<12;i1++){
                 Main.LiquidList.add(new Blood(this.x+i1, this.y));}
             UnitList.remove(this);
+            EnumerationList = true;
         }
     }
     public boolean rect_bull(int x1,int y1,int width,int height,int x,int y,int size,float rotation){

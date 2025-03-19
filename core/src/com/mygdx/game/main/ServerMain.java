@@ -24,7 +24,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import static com.mygdx.game.main.Main.*;
-import static com.mygdx.game.method.Keyboard.ZoomConstTransport;
 
 public class ServerMain extends Listener {
     static Server Server;
@@ -104,7 +103,7 @@ public class ServerMain extends Listener {
         Server.sendToAllTCP(PacketBuildingServer);
         PacketBuildingServer.ObjectMapPack.clear();
         PacketBuildingServer.BuildPack.clear();
-        ZoomConstTransport();
+        //KeyboardObj.ZoomConstTransport();
         KeyboardObj.zoom_const();
 
     }
@@ -130,7 +129,8 @@ public class ServerMain extends Listener {
     //Используется когда клиент отправляет пакет серверу
     public void received(Connection c, Object p){
         if(p instanceof Packet_client) {
-            for (Packet_client pack : Clients) {
+            for (int i = 0;i<Clients.size();i++) {
+                Packet_client pack = Clients.get(i);
                 if(pack.IDClient == ((Packet_client) p).IDClient){
                     Clients.remove(pack);
                     Clients.add((Packet_client)p);

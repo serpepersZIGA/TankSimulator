@@ -246,7 +246,7 @@ public class Keyboard extends InputAdapter{
         Main.Option.const_reload_x_zoom = (int)(Main.Option.const_reload_x* Main.Zoom);
         Main.Option.const_reload_y_zoom = (int)(Main.Option.const_reload_y* Main.Zoom);
     }
-    public static void ZoomConstTransport(){
+    public void ZoomConstTransport(){
         for(Unit tr : Main.UnitList){
             tr.corpus_width_zoom = (int)(tr.corpus_width*Main.Zoom);
             tr.corpus_height_zoom = (int)(tr.corpus_height*Main.Zoom);
@@ -263,23 +263,6 @@ public class Keyboard extends InputAdapter{
                 tower.const_y_tower = (int)(tower.const_tower_y*Main.Zoom);
             }
 
-
-        }
-        for(Unit tr : Main.UnitList){
-            tr.corpus_width_zoom = (int)(tr.corpus_width*Main.Zoom);
-            tr.corpus_height_zoom = (int)(tr.corpus_height*Main.Zoom);
-            tr.width_tower_zoom = (int)(tr.width_tower *Main.Zoom);
-            tr.height_tower_zoom = (int)(tr.height_tower *Main.Zoom);
-            tr.const_x_corpus = (int)(tr.corpus_width_2*Main.Zoom);
-            tr.const_y_corpus = (int)(tr.corpus_height_2*Main.Zoom);
-            tr.const_x_tower = (int)(tr.const_tower_x*Main.Zoom);
-            tr.const_y_tower = (int)(tr.const_tower_y*Main.Zoom);
-            for (Unit tower : tr.tower_obj){
-                tower.width_tower_zoom = (int)(tower.width_tower *Main.Zoom);
-                tower.height_tower_zoom = (int)(tower.height_tower *Main.Zoom);
-                tower.const_x_tower = (int)(tower.const_tower_x*Main.Zoom);
-                tower.const_y_tower = (int)(tower.const_tower_y*Main.Zoom);
-            }
 
         }
         for(Unit tr : Main.DebrisList){
