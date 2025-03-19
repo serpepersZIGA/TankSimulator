@@ -30,10 +30,10 @@ public abstract class Particle {
     public int x_rend,y_rend,size_render;
     public float[]rgb;
 
-    protected void timer(int i, LinkedList<Particle> obj){
+    protected void timer(LinkedList<Particle> obj){
         this.time_delete -= 1;
         if(this.time_delete <= 0){
-            obj.remove(i);
+            obj.remove(this);
         }
     }
     protected void spawn_flame(){
@@ -101,11 +101,11 @@ public abstract class Particle {
         this.size_2 = this.size/2;
         this.size_3 = this.size_2/2;
     }
-    protected void size_rise_delete(int i){
+    protected void size_rise_delete(){
 
         this.size -= this.interval_rise_size;
         if(this.size < 4){
-            Main.LiquidList.remove(i);
+            Main.LiquidList.remove(this);
         }
         this.size_2 = this.size/2;
         this.size_3 = this.size_2/2;

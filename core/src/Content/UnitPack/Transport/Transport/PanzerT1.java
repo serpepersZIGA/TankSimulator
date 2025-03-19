@@ -49,7 +49,7 @@ public class PanzerT1 extends Unit {
         this.height_tower = 55;
         this.speed_tower = 1;this.speed_rotation = 1;
         this.sound_fire = Main.ContentSound.acid_attack;
-        fire = FireRegister.FireBull;
+        fire = FireRegister.FireBullet;
         functional.Add(RegisterFunctionalComponent.MotorControl);
         functional.Add(Main.RegisterFunctionalComponent.TowerXY);
         functional.Add(RegisterFunctionalComponent.TowerIteration);

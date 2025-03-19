@@ -21,7 +21,7 @@ public class FlameParticle extends Particle {
         super.color_fire();
         super.move_particle();
         this.update();
-        super.timer(i, Main.FlameParticleList);
+        super.timer(Main.FlameParticleList);
     }
     public void update(){
         float[]xy = Main.RC.render_objZoom(this.x,this.y);

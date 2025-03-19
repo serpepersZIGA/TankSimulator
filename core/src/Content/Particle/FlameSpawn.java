@@ -22,6 +22,6 @@ public class FlameSpawn extends Particle {
         sound_play();
         center_render();
         Block.LightingAir(x_rend,y_rend,rgb);
-        timer(i,Main.FlameSpawnList);
+        timer(Main.FlameSpawnList);
     }
 }

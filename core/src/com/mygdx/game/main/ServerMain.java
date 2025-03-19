@@ -9,7 +9,7 @@ import com.mygdx.game.build.BuildType;
 import com.mygdx.game.build.PacketBuildingServer;
 import com.mygdx.game.method.CycleTimeDay;
 import com.mygdx.game.method.SoundPlay;
-import Content.Soldat.SoldatBull;
+import Content.UnitPack.Soldat.SoldatBullet;
 import Content.Soldat.SoldatFlamse;
 import com.mygdx.game.soldat.SoldatPacket;
 import com.mygdx.game.object_map.ObjectMapAssets;
@@ -47,7 +47,7 @@ public class ServerMain extends Listener {
         Server.getKryo().register(SoldatPacket.class);
         Server.getKryo().register(DebrisPacket.class);
         Server.getKryo().register(SoldatFlamse.class);
-        Server.getKryo().register(SoldatBull.class);
+        Server.getKryo().register(SoldatBullet.class);
         Server.getKryo().register(UnitType.class);
         Server.getKryo().register(Bang.class);
         Server.getKryo().register(FlameSpawn.class);

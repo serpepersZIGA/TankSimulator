@@ -32,7 +32,7 @@ public class TowerBullTankEnemy extends Unit {
         this.difference_2 = difference_2;
         this.width_tower = 15;
         this.height_tower = 20;
-        fire = FireRegister.FireBull;
+        fire = FireRegister.FireBullet;
         functional.Add(RegisterFunctionalComponent.FireControl);
         data_tower();
         x_tower =7;

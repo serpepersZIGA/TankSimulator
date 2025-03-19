@@ -2,8 +2,7 @@ package com.mygdx.game.unit;
 
 import Content.Bull.*;
 import Content.Particle.Blood;
-import Content.Soldat.SoldatBull;
-import Content.Soldat.SoldatFlamse;
+import Content.UnitPack.Soldat.SoldatBullet;
 import Content.UnitPack.Soldat.SoldatFlame;
 import Content.UnitPack.Transport.Transport.DebrisTransport;
 import com.badlogic.gdx.audio.Sound;
@@ -27,10 +26,10 @@ import java.util.ArrayList;
 
 import static Content.Bull.BullRegister.PacketBull;
 import static com.mygdx.game.main.Main.*;
-import static com.mygdx.game.method.Method.detection_near_transport;
-import static com.mygdx.game.method.Method.detection_near_transport_i;
+import static com.mygdx.game.method.Method.*;
 import static com.mygdx.game.method.Option.SoundConst;
 import static com.mygdx.game.method.pow2.pow2;
+import static com.mygdx.game.unit.ClassUnit.SupportTransport;
 import static java.lang.StrictMath.*;
 import static java.sql.Types.NULL;
 
@@ -38,7 +37,7 @@ public abstract class Unit {
     public TypeCollision collision = TypeCollision.rect;
     public UnitType type_unit;
     public static boolean AIScan;
-    public static ClassUnit classUnit = ClassUnit.Transport;
+    public ClassUnit classUnit = ClassUnit.Transport;
     public float x, y;
     public int  difference,difference_2,hp,max_hp,time_spawn_soldat,time_spawn_soldat_max,x_rend,y_rend,x_tower_rend,y_tower_rend, id_unit, x_tower,y_tower,
     time_max_sound_motor = 20,time_sound_motor = time_max_sound_motor,nConnect;
@@ -83,6 +82,7 @@ public abstract class Unit {
     public Sprite tower_img,corpus_img;
     public Fire fire;
     public Controller control;
+    public int HPTriggerHill;
     public Unit(){
 
     }
@@ -98,17 +98,12 @@ public abstract class Unit {
         }
         this.reload = this.reload_max;
         this.hp = this.max_hp;
+        this.HPTriggerHill = this.max_hp/3;
         this.time_spawn_soldat = this.time_spawn_soldat_max;
         this.corpus_width_2 = this.corpus_width/2;
         this.corpus_height_2 = this.corpus_height/2;
         corpus_height_3 = (float) (corpus_height_2/1.5);
         corpus_width_3 = (float)(corpus_width_2*1.2);
-        if(Main.UnitList == this.allyList){
-            this.enemyList = Main.UnitList;
-        }
-        else if(Main.UnitList == this.allyList){
-            this.enemyList = Main.UnitList;
-        }
         if(tower_img != null){
             this.difference_x = this.difference - this.x_tower;
             this.difference_y = this.difference - this.y_tower;
@@ -130,6 +125,7 @@ public abstract class Unit {
         this.id_unit = 10000+rand.rand(89999);
         this.reload = this.reload_max;
         this.hp = this.max_hp;
+        this.HPTriggerHill = this.max_hp/3;
         this.time_spawn_soldat = this.time_spawn_soldat_max;
         this.corpus_width_2 = this.corpus_width/2;
         this.corpus_height_2 = this.corpus_height/2;
@@ -145,12 +141,6 @@ public abstract class Unit {
     }
     protected final void data_tower(){
         classUnit = ClassUnit.Tower;
-        if(Main.UnitList == this.allyList){
-            this.enemyList = Main.UnitList;
-        }
-        else if(Main.UnitList == this.allyList){
-            this.enemyList = Main.UnitList;
-        }
         this.reload = this.reload_max;
         this.difference_x = this.difference - this.x_tower;
         this.difference_y = this.difference - this.y_tower;
@@ -282,13 +272,16 @@ public abstract class Unit {
             this.rotation_tower -= this.speed_rotation;
             this.rotation_corpus -= this.speed_rotation;
         }
-
-        if (this.speed > 0 && !this.press_w && !this.press_s) {
-            this.speed -= this.slowing;
-            if (this.speed< Unit.speed_minimum){this.speed = 0;}
-        } else if (this.speed < 0 && !this.press_w && !this.press_s) {
-            this.speed += this.slowing;
-            if (this.speed> Unit.speed_minimum){this.speed = 0;}
+        if(!this.press_w && !this.press_s) {
+            if (this.speed > 0.5) {
+                this.speed -= this.slowing;
+                //if (this.speed< Unit.speed_minimum){this.speed = 0;}
+            } else if (this.speed < -0.5) {
+                this.speed += this.slowing;
+                //if (this.speed> Unit.speed_minimum){this.speed = 0;}
+            } else{
+                this.speed = 0;
+            }
         }
         move_xy_transport();
         press_w = false;
@@ -341,14 +334,6 @@ public abstract class Unit {
     protected void blade_helicopter(){
         this.rotation_tower += speed_tower;
     }
-    //public void
-    public void FireBotControl(){
-        //System.out.println(this.sost_fire_bot+"  "+this.trigger_attack);
-        if(this.reload_bot() & this.sost_fire_bot && this.trigger_attack){
-            fire.FireIteration(this);
-            reload = reload_max;
-        }
-    }
     public void bull_packets(int i1, int i2){
         PacketBull.get(i1).x = this.fire_x;
         PacketBull.get(i1).y = this.fire_y;
@@ -362,11 +347,12 @@ public abstract class Unit {
 
     protected void motor_bot_bypass() {
 
-        Unit unit = less_hp_bot();
-        if(unit != null) {
+        Object[]ObjList = less_hp_bot();
+        if(ObjList[0] != null) {
+            Unit unit = (Unit) ObjList[0];
             g = (float) (atan2(this.y - unit.y, this.x - unit.x) / 3.1415926535f * 180f);
             g -= 90;
-            AITransport(g,unit);
+            AITransport(g,unit, (Float) ObjList[1]);
         }
     }
     public boolean reload_bot(){
@@ -400,6 +386,7 @@ public abstract class Unit {
         if(this.reload_bot() && this.left_mouse){
             fire.FireIteration(this);
             reload = reload_max;
+            this.left_mouse = false;
         }
     }
 
@@ -585,7 +572,7 @@ public abstract class Unit {
         }
     }
 
-    private void AITransport(float g, Unit Target) {
+    private void AITransport(float g, Unit Target,float rad) {
         if (ai_sost == 0) {
             if (null != findIntersection(this.tower_x, this.tower_y, Target.tower_x, Target.tower_y)) {
                 Ai.pathAIAStar(this,Target,this.tower_x,this.tower_y);
@@ -605,7 +592,7 @@ public abstract class Unit {
                 }
             }
             else{
-                float rad = (float) sqrt(pow2((x - Target.x)) + pow2(y - Target.y));
+                //float rad = (float) sqrt(pow2((x - Target.x)) + pow2(y - Target.y));
                 rotation_bot(g);
                 motor_bot_base(rad, this.behavior);
             }
@@ -715,11 +702,9 @@ public abstract class Unit {
         }
 
     }
-    private Unit less_hp_bot(){
-        Unit unit;
-        if (this.hp > this.max_hp / 3 && this.medic_help == 0) {
-            unit = detection_near_transport_i(this);
-            return unit;
+    private Object[] less_hp_bot(){
+        if (this.hp > HPTriggerHill && this.medic_help == 0) {
+            return DetectionNearTransport(this);
 
         } else{
             this.behavior_buffer = this.behavior;
@@ -730,32 +715,30 @@ public abstract class Unit {
                 this.behavior = this.behavior_buffer;
             }
             Unit unit2 = null;
-            int radius = NULL;
+            float radius = 0;
             for (Unit unitSupport : UnitList) {
-                if(this != unitSupport && classUnit == ClassUnit.SupportTransport) {
-                    if (radius == NULL || radius > g) {
+                if(this != unitSupport && unitSupport.classUnit == SupportTransport) {
+                    g = (float) sqrt(pow2.pow2(unitSupport.x - this.x) + pow2.pow2(unitSupport.y - this.y));
+                    if (radius == 0 || radius > g) {
                         unit2 = unitSupport;
-                        radius = (int) g;
+                        radius = g;
 
                     }
                 }
             }
             if(unit2 != null){
-                return unit2;
+                return new Object[]{unit2,radius};
             }
-            unit = detection_near_transport_i(this);
-            return unit;
+            return DetectionNearTransport(this);
         }
 
     }
     protected void corpus_corpus(ArrayList<Unit>obj_2){
-        boolean z;
         for (Unit unit : obj_2) {
             if (unit != this) {
-                z = rectCollision((int) this.x, (int) this.y, (int) this.corpus_width, (int) this.corpus_height, this.rotation_corpus, (int) unit.x,
-                        (int) unit.y, (int) unit.corpus_width, (int) unit.corpus_height, unit.rotation_corpus);
-
-                if (z && unit.priority_paint == this.priority_paint) {
+                if (rectCollision((int) this.x, (int) this.y, (int) this.corpus_width, (int) this.corpus_height,this.rotation_corpus,
+                        (int) unit.x,(int) unit.y, (int) unit.corpus_width, (int) unit.corpus_height, unit.rotation_corpus)
+                        && unit.priority_paint == this.priority_paint) {
                     SoundPlay.sound(Main.ContentSound.hit, 1f - ((float) sqrt(pow2(this.x_rend) + pow2(this.y_rend)) / SoundConst));
                     MethodCollision(unit);
                     physicCollision(unit);
@@ -869,13 +852,11 @@ public abstract class Unit {
 
     }
     private void damage_temperature(){
-        if(this.t > 25){
-            this.hp -= this.t/2;
-            this.t -=2;
-        }
-        else if(this.t<-25){
-            this.hp += this.t/2;
-            this.t +=2;
+        if(abs(this.t) > 25){
+            this.hp -= abs(this.t/10);
+            this.t -=0.5;
+            this.green_len = ((float) this.hp / this.max_hp) * Option.size_x_indicator;
+
         }
     }
     public void transportDelete(){
@@ -935,58 +916,35 @@ public abstract class Unit {
     private static boolean z = false;
     private static int render_x_max,render_x_min,render_y_max,render_y_min;
     public void build_corpus(){
-        switch((int) corpus_height) {
-            case (0):{
-                int xBlock= (int) (x/ width_block)-1;
-                int yBlock= (int) (y/ height_block)-1;
-                if(BlockList2D.get(yBlock).get(xBlock).passability){
-                    if(x<BlockList2D.get(yBlock).get(xBlock).x_center){
-                        x-= SpeedCollision;
-                    }
-                    else{
-                        x+= SpeedCollision;
-                    }
-                    if(y<BlockList2D.get(yBlock).get(xBlock).y_center){
-                        y-= SpeedCollision;
-                    }
-                    else{
-                        y+= SpeedCollision;
-                    }
-                }
-            }
-            break;
-            default:
-            render_x_max = (int) ((x + BorderDetected) / Main.width_block);
-            render_x_min = (int) (((x - BorderDetected) / Main.width_block));
-            if (render_x_min < 0) {
-                render_x_min = 0;
-            }
-            if (render_x_max > RC.block_i_x_max) {
-                render_x_max = RC.block_i_x_max;
-            }
-            render_y_max = (int) ((y + BorderDetected) / Main.height_block);
-            render_y_min = (int) ((y - BorderDetected) / Main.height_block);
-            if (render_y_min < 0) {
-                render_y_min = 0;
-            }
-            if (render_y_max > RC.block_i_y_max) {
-                render_y_max = RC.block_i_y_max;
-            }
+        render_x_max = (int) ((x + BorderDetected) / Main.width_block);
+        render_x_min = (int) (((x - BorderDetected) / Main.width_block));
+        if (render_x_min < 0) {
+            render_x_min = 0;
+        }
+        if (render_x_max > RC.block_i_x_max) {
+            render_x_max = RC.block_i_x_max;
+        }
+        render_y_max = (int) ((y + BorderDetected) / Main.height_block);
+        render_y_min = (int) ((y - BorderDetected) / Main.height_block);
+        if (render_y_min < 0) {
+            render_y_min = 0;
+        }
+        if (render_y_max > RC.block_i_y_max) {
+            render_y_max = RC.block_i_y_max;
+        }
 
-            for (int iy = render_y_min; iy < render_y_max; iy++) {
-                for (int ix = render_x_min; ix < render_x_max; ix++) {
-                    if (BlockList2D.get(iy).get(ix).passability) {
-                        z = rectCollision((int) this.x, (int) this.y, (int) this.corpus_width, (int) this.corpus_height, this.rotation_corpus, BlockList2D.get(iy).get(ix).x, BlockList2D.get(iy).get(ix).y,
-                                width_block, height_block, 0);
-                        if (z) {
-                            if (this.speed > 2 || this.speed < -2) {
-                                SoundPlay.sound(Main.ContentSound.break_wooden, 1 - ((float) sqrt(pow2(this.x_rend) + pow2(this.y_rend)) / SoundConst));
-                            }
-                            MethodCollision(BlockList2D.get(iy).get(ix).x, BlockList2D.get(iy).get(ix).y);
+        for (int iy = render_y_min; iy < render_y_max; iy++) {
+            for (int ix = render_x_min; ix < render_x_max; ix++) {
+                if (BlockList2D.get(iy).get(ix).passability) {
+                    if (rectCollision((int) this.x, (int) this.y, (int) this.corpus_width, (int) this.corpus_height, this.rotation_corpus, BlockList2D.get(iy).get(ix).x, BlockList2D.get(iy).get(ix).y,
+                            width_block, height_block, 0)) {
+                        if (this.speed > 2 || this.speed < -2) {
+                            SoundPlay.sound(Main.ContentSound.break_wooden, 1 - ((float) sqrt(pow2(this.x_rend) + pow2(this.y_rend)) / SoundConst));
                         }
-                    } else {
-                        BlockList2D.get(iy).get(ix).objMap.Collision.collision(this, ix, iy);
+                        MethodCollision(BlockList2D.get(iy).get(ix).x, BlockList2D.get(iy).get(ix).y);
                     }
+                } else {
+                    BlockList2D.get(iy).get(ix).objMap.Collision.collision(this, ix, iy);
                 }
             }
         }
@@ -1040,33 +998,29 @@ public abstract class Unit {
         }
     }
     protected void move_debris(){
-        this.x -= move.move_sin(this.speed,-this.rotation_corpus);
-        this.y -= move.move_cos(this.speed,-this.rotation_corpus);
-        if(this.speed<0){
-            this.speed +=this.acceleration;
-            if(this.speed >-this.acceleration &&this.speed <this.acceleration){
-                this.speed = 0;
-            }
-        }
-        else if(this.speed>0){
-            this.speed -=acceleration;
-            if(this.speed >-this.acceleration &&this.speed <this.acceleration){
-                this.speed = 0;
+        if(speed != 0) {
+            this.x -= move.move_sin(this.speed, -this.rotation_corpus);
+            this.y -= move.move_cos(this.speed, -this.rotation_corpus);
+
+            if (this.speed < -0.5) {
+                this.speed += this.acceleration;
+            } else if (this.speed > 0.5) {
+                this.speed -= acceleration;
+            } else {
+                speed = 0;
             }
         }
     }
     protected void inertia_xy() {
-        this.x += move.move_sin(this.speed_inert,-this.rotation_inert);
-        this.y += move.move_cos(this.speed_inert,-this.rotation_inert);
-        if (this.speed_inert > 0.1) {
-            this.speed_inert -= this.acceleration;
-            if (this.speed_inert < acceleration && this.speed_inert > -acceleration) {
-                this.speed_inert = 0;
-            }
-        } else if (this.speed_inert < -0.1) {
-            this.speed_inert += acceleration;
-            if (this.speed_inert < acceleration && this.speed_inert > -acceleration) {
-                this.speed_inert = 0;
+        if(speed_inert!= 0) {
+            this.x -= move.move_sin(this.speed_inert, -this.rotation_inert);
+            this.y -= move.move_cos(this.speed_inert, -this.rotation_inert);
+            if (this.speed_inert > 0.5) {
+                this.speed_inert -= this.acceleration;
+            } else if (this.speed_inert < -0.5) {
+                this.speed_inert += this.acceleration;
+            } else {
+                speed_inert = 0;
             }
         }
     }
@@ -1087,17 +1041,16 @@ public abstract class Unit {
         if(unit != null) {
             g = (float) (atan2(this.y - unit.y, this.x - unit.x) / 3.1415926535 * 180);
             g -= 90;
-            AITransport(g, unit);
+            AITransport(g, unit, (Float)sp[1]);
         }
     }
     public void spawn_soldat(){
         this.time_spawn_soldat -= 1;
         if(this.time_spawn_soldat <= 0){
-            int z = rand.rand(2);
             this.time_spawn_soldat = this.time_spawn_soldat_max;
-            switch(z){
+            switch(rand.rand(2)){
                 case 0:{
-                    //UnitList.add(new SoldatFlame(this.x,this.y,this.team,true));
+                    UnitList.add(new SoldatBullet(this.x,this.y,this.team,true));
                     break;
                 }
                 case 1:{

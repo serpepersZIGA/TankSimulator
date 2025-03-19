@@ -64,6 +64,22 @@ public class Method {
         }
         return ind;
     }
+    public static Object[] DetectionNearTransport(Unit objBot) {
+        Unit ind = null;
+        float g;
+        float radius = 0;
+        for (Unit unit : UnitList) {
+            if(unit.team !=objBot.team) {
+                g = (float) sqrt(pow2.pow2(objBot.x - unit.x) + pow2.pow2(objBot.y - unit.y));
+                if (radius == 0 || radius > g) {
+                    ind = unit;
+                    radius = g;
+
+                }
+            }
+        }
+        return new Object[]{ind,radius};
+    }
     public static Object[] detection_near_transport(Unit objBot) {
         Unit ind = null;
         int radius = 0;
@@ -82,14 +98,15 @@ public class Method {
     }
     public static Object[] detectionNearSupportTransport(Unit objBot) {
         Unit ind = null;
-        int radius = 0;
-        double g;
+        float radius = 0;
+        float g;
         for (Unit unit : UnitList) {
             if(unit.team == objBot.team & unit != objBot) {
-                g = sqrt(pow2.pow2(objBot.x - unit.x)) + pow2.pow2(objBot.y - unit.y);
+                g = (float) sqrt(pow2.pow2(objBot.x - unit.x) + pow2.pow2(objBot.y - unit.y));
+                //float rad = (float) sqrt(pow2((x - Target.x)) + pow2(y - Target.y));
                 if (radius > g || radius == 0) {
                     ind = unit;
-                    radius = (int) g;
+                    radius = g;
 
                 }
             }

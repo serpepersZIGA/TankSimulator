@@ -42,7 +42,7 @@ public class PlayerCannonBullTank extends Unit {
         this.t = 0;
         this.sound_fire = Main.ContentSound.cannon;
         this.speed_tower = 1;this.speed_rotation = 1;
-        fire = FireRegister.FireBull;
+        fire = FireRegister.FireBullet;
         functional.Add(RegisterFunctionalComponent.MotorControl);
         functional.Add(RegisterFunctionalComponent.TowerXY);
         functional.Add(RegisterFunctionalComponent.TowerIteration);

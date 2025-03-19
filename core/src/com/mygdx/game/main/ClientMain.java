@@ -21,7 +21,7 @@ import com.mygdx.game.bull.Bullet;
 import com.mygdx.game.method.CycleTimeDay;
 import com.mygdx.game.object_map.ObjectLoad;
 import com.mygdx.game.method.SoundPlay;
-import Content.Soldat.SoldatBull;
+import Content.UnitPack.Soldat.SoldatBullet;
 import Content.Soldat.SoldatFlamse;
 import com.mygdx.game.soldat.SoldatPacket;
 import com.mygdx.game.object_map.MapObject;
@@ -60,7 +60,7 @@ public class ClientMain extends Listener{
         Client.getKryo().register(SoldatPacket.class);
         Client.getKryo().register(DebrisPacket.class);
         Client.getKryo().register(SoldatFlamse.class);
-        Client.getKryo().register(SoldatBull.class);
+        Client.getKryo().register(SoldatBullet.class);
         Client.getKryo().register(UnitType.class);
         Client.getKryo().register(Bang.class);
         Client.getKryo().register(FlameSpawn.class);

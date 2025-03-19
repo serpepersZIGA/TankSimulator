@@ -1,8 +1,8 @@
 package com.mygdx.game.main;
 import Content.Particle.*;
-import Content.Soldat.SoldatBull;
 import Content.UnitPack.Soldat.SoldatFlame;
 import Content.UnitPack.Transport.Transport.PanzerFlameT1;
+import Content.UnitPack.Transport.Transport.TrackRemountT1;
 import Content.UnitPack.Transport.Transport.TrackSoldatT1;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
@@ -140,8 +140,8 @@ public class Main extends ApplicationAdapter {
 		UnitList.add(new PanzerFlameT1(2200,2000,Main.UnitList,true,(byte)2));
 		UnitList.get(0).control = Main.RegisterControl.controllerBot;
 		UnitList.add(new SoldatFlame(1200,200,(byte)2,true));
-//		UnitList.add(new TrackRemountT1(2700,2000,Main.UnitList,true,(byte)2));
-//		UnitList.get(1).control = Main.RegisterControl.controllerBotSupport;
+		UnitList.add(new TrackRemountT1(2700,2000,Main.UnitList,true,(byte)2));
+		UnitList.get(1).control = Main.RegisterControl.controllerBotSupport;
 		UnitList.add(new TrackSoldatT1(2700,2000,Main.UnitList,true,(byte)2));
 		LiquidList.add(new Acid(200,200));
 		LiquidList.add(new Blood(200,200));

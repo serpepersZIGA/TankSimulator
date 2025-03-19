@@ -26,7 +26,7 @@ public class Acid extends Particle {
         float[]xy = Main.RC.render_objZoom(this.x,this.y);
         Main.Render.setColor(r,g,b,0.1f);
         Main.Render.circle(xy[0],xy[1],(int)(size*Main.Zoom),(int)size);
-        size_rise_delete(i);
+        size_rise_delete();
     }
 
 }

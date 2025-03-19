@@ -30,7 +30,7 @@ public class TowerBullTankPlayer extends Unit {
         this.team = team;
         this.difference = difference;
         this.difference_2 = difference_2;
-        fire = FireRegister.FireBull;
+        fire = FireRegister.FireBullet;
         functional.Add(RegisterFunctionalComponent.FireControl);
         data_tower();
         this.width_tower = 15;

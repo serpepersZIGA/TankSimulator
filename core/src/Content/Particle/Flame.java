@@ -28,7 +28,7 @@ public class Flame extends Particle {
         //super.flame_physic(i, Main.flame_obj);
         create_flame_particle(Main.FlameParticleList);
         this.update();
-        timer(i, Main.FlameList);
+        timer(Main.FlameList);
 
     }
     public void update(){

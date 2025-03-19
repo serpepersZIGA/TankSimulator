@@ -18,7 +18,7 @@ public class Blood extends Particle {
         liquid_const();
     }
     public void all_action(int i){
-        super.size_rise_delete(i);
+        super.size_rise_delete();
         float[]xy = Main.RC.render_objZoom(this.x,this.y);
         Main.Render.setColor(r,g,b,0.1f);
         Main.Render.circle(xy[0],xy[1],(int)(size*Main.Zoom),(int)size);

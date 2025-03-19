@@ -1,7 +1,4 @@
 package Content.UnitPack.Soldat;
-
-import Content.UnitPack.Transport.Tower.TowerBullTankEnemy;
-import Content.UnitPack.Transport.Tower.TowerFlameEnemy;
 import com.mygdx.game.main.Main;
 import com.mygdx.game.method.RenderMethod;
 import com.mygdx.game.method.rand;
@@ -9,16 +6,12 @@ import com.mygdx.game.unit.ClassUnit;
 import com.mygdx.game.unit.CollisionUnit.TypeCollision;
 import com.mygdx.game.unit.Unit;
 import com.mygdx.game.unit.UnitType;
-import com.mygdx.game.unit.Fire.FireRegister;
 
-import static com.mygdx.game.main.Main.ContentSound;
-import static com.mygdx.game.main.Main.EventData;
-import static com.mygdx.game.main.Main.RegisterControl;
+import static com.mygdx.game.main.Main.*;
 import static com.mygdx.game.main.Main.RegisterFunctionalComponent;
 
-
-public class SoldatFlame extends Unit {
-    public SoldatFlame(float x, float y, byte team, boolean host){
+public class SoldatBullet extends Unit {
+    public SoldatBullet(float x, float y, byte team, boolean host){
         classUnit = ClassUnit.Soldat;
         this.type_unit = UnitType.SoldatFlame;
         collision = TypeCollision.circle;
@@ -26,10 +19,10 @@ public class SoldatFlame extends Unit {
         this.speed_inert = 0;
         this.max_speed = 4;this.min_speed = -4;
         this.max_hp = 150;
-        this.damage = 10;
+        this.damage = 32;
         this.host = host;
         this.armor = 5;
-        this.penetration = 2;
+        this.penetration = 7;
         this.acceleration = 0.2f;
         this.behavior = (byte) (2+ rand.rand(1));
         this.reload_max = 2;
@@ -46,8 +39,8 @@ public class SoldatFlame extends Unit {
         this.corpus_width = 20;
         this.corpus_height = 20;
         this.speed_rotation = 3;
-        this.sound_fire = ContentSound.flame_attack;
-        fire = FireRegister.FireFlame;
+        this.sound_fire = ContentSound.machinegun;
+        fire = FireRegister.FireBullet;
         control = RegisterControl.controllerSoldatBot;
         functional.Add(RegisterFunctionalComponent.SoldatCorrect);
         functional.Add(RegisterFunctionalComponent.SoldatControl);
