@@ -133,76 +133,80 @@ public class ClientMain extends Listener{
             }
             CycleTimeDay.lightTotal = ((PackerServer) p).TotalLight;
             PacketUnit = ((PackerServer) p).player;
+            i = 0;
             if (PacketUnit.size() == Main.UnitList.size()) {
-                for (i = 0; i < PacketUnit.size(); i++) {
-                    player_data(i);
+                for (TransportPacket pack : PacketUnit) {
+                    player_data(pack);
+                    i++;
                 }
             } else {
                 Main.UnitList.clear();
-                for (i = 0; i < PacketUnit.size(); i++) {
-                    switch (PacketUnit.get(i).name) {
+                for (TransportPacket pack : PacketUnit) {
+                    switch (pack.name) {
                         case PlayerFlameT1:
-                            Main.UnitList.add(new PlayerCannonFlame(0, 0, Main.UnitList, PacketUnit.get(i).host,(byte)1));
+                            Main.UnitList.add(new PlayerCannonFlame(0, 0, Main.UnitList, pack.host,(byte)1));
                             Main.UnitList.get(Main.UnitList.size() - 1).control = RegisterControl.controllerBot;
                             break;
                         case PlayerMortarT1:
-                            Main.UnitList.add(new PlayerCannonMortar(0, 0, Main.UnitList, PacketUnit.get(i).host,(byte)1));
+                            Main.UnitList.add(new PlayerCannonMortar(0, 0, Main.UnitList, pack.host,(byte)1));
                             Main.UnitList.get(Main.UnitList.size() - 1).control = RegisterControl.controllerBot;
                             break;
                         case PlayerT1:
-                            Main.UnitList.add(new PlayerCannonBullTank(0, 0, Main.UnitList, PacketUnit.get(i).host,(byte)1));
+                            Main.UnitList.add(new PlayerCannonBullTank(0, 0, Main.UnitList, pack.host,(byte)1));
                             Main.UnitList.get(Main.UnitList.size() - 1).control = RegisterControl.controllerBot;
                             break;
                         case PlayerAcidT1:
-                            Main.UnitList.add(new PlayerCannonAcid(0, 0, Main.UnitList, PacketUnit.get(i).host,(byte)1));
+                            Main.UnitList.add(new PlayerCannonAcid(0, 0, Main.UnitList, pack.host,(byte)1));
                             Main.UnitList.get(Main.UnitList.size() - 1).control = RegisterControl.controllerBot;
                             break;
                         case PanzerFlameT1:
-                            UnitList.add(new PanzerFlameT1(0, 0, UnitList,PacketUnit.get(i).host,(byte)2));
+                            UnitList.add(new PanzerFlameT1(0, 0, UnitList,pack.host,(byte)2));
                             Main.UnitList.get(Main.UnitList.size() - 1).control = RegisterControl.controllerBot;
                             break;
                         case PanzerMortarT1:
-                            UnitList.add(new PanzerMortarT1(0, 0, UnitList,PacketUnit.get(i).host,(byte)2));
+                            UnitList.add(new PanzerMortarT1(0, 0, UnitList,pack.host,(byte)2));
                             Main.UnitList.get(Main.UnitList.size() - 1).control = RegisterControl.controllerBot;
                             break;
                         case PanzerT1:
-                            UnitList.add(new PanzerT1(0, 0, UnitList,PacketUnit.get(i).host,(byte)2));
+                            UnitList.add(new PanzerT1(0, 0, UnitList,pack.host,(byte)2));
                             Main.UnitList.get(Main.UnitList.size() - 1).control = RegisterControl.controllerBot;
                             break;
                         case PanzerAcidT1:
-                            UnitList.add(new PanzerAcidT1(0, 0, UnitList,PacketUnit.get(i).host,(byte)2));
+                            UnitList.add(new PanzerAcidT1(0, 0, UnitList,pack.host,(byte)2));
                             Main.UnitList.get(Main.UnitList.size() - 1).control = RegisterControl.controllerBot;
                             break;
                         case TrackRemountT1:
-                            UnitList.add(new TrackRemountT1(0, 0, UnitList,PacketUnit.get(i).host,(byte)2));
+                            UnitList.add(new TrackRemountT1(0, 0, UnitList,pack.host,(byte)2));
                             Main.UnitList.get(Main.UnitList.size() - 1).control = RegisterControl.controllerBotSupport;
                             break;
                         case TrackSoldatT1:
-                            UnitList.add(new TrackSoldatT1(0, 0, UnitList,PacketUnit.get(i).host,(byte)2));
+                            UnitList.add(new TrackSoldatT1(0, 0, UnitList,pack.host,(byte)2));
                             Main.UnitList.get(Main.UnitList.size() - 1).control = RegisterControl.controllerSoldatTransport;
                             break;
                         case SoldatFlame:
-                            UnitList.add(new SoldatFlame(0, 0,(byte)2,PacketUnit.get(i).host));
+                            UnitList.add(new SoldatFlame(0, 0,(byte)2,pack.host));
                             Main.UnitList.get(Main.UnitList.size() - 1).control = RegisterControl.controllerSoldatBot;
                             break;
                     }
-                    if(PacketUnit.get(i).PlayerConf) {
+                    if(pack.PlayerConf) {
                         Main.UnitList.get(Main.UnitList.size() - 1).control = RegisterControl.controllerPlayer;
                     }
-                    player_data(i);
+                    player_data_add(pack);
                 }
                 KeyboardObj.ZoomConstTransport();
             }
             PacketDebris = ((PackerServer) p).debris;
             if (PacketDebris.size() == DebrisList.size()) {
-                for (int i = 0; i < DebrisList.size(); i++) {
-                    debris_data(i);
+                i=0;
+                for (Unit debris :DebrisList) {
+                    debris_data(debris);
+                    i++;
                 }
             } else {
                 DebrisList.clear();
-                for (int i = 0; i < PacketDebris.size(); i++) {
-                    debris_create(i, PacketDebris.get(i).x, PacketDebris.get(i).y, PacketDebris.get(i).rotation);
-                    debris_data(i);
+                for (DebrisPacket packetDebris : PacketDebris) {
+                    debris_create(i, packetDebris.x, packetDebris.y, packetDebris.rotation);
+                    debris_data_add(packetDebris);
                 }
                 KeyboardObj.ZoomConstTransport();
             }
@@ -212,7 +216,7 @@ public class ClientMain extends Listener{
             for (PacketMapObject packetMapObject : PacketMapObjects) {
                 BlockList2D.get(packetMapObject.iy).get(packetMapObject.ix).objMap
                         = new VoidObject();
-                KeyboardObj.zoom_const();
+                //KeyboardObj.zoom_const();
             }
 
 
@@ -285,20 +289,41 @@ public class ClientMain extends Listener{
         this.i += 1;
     }
 
-    private void player_data(int i) {
-        Main.UnitList.get(i).type_unit = PacketUnit.get(i).name;
-        Main.UnitList.get(i).x = PacketUnit.get(i).x;
-        Main.UnitList.get(i).y = PacketUnit.get(i).y;
-        Main.UnitList.get(i).rotation_corpus = PacketUnit.get(i).rotation_corpus;
-        Main.UnitList.get(i).reload = PacketUnit.get(i).reload;
-        Main.UnitList.get(i).hp = PacketUnit.get(i).hp;
-        Main.UnitList.get(i).team = PacketUnit.get(i).team;
-        Main.UnitList.get(i).speed = PacketUnit.get(i).speed;
-        Main.UnitList.get(i).host = PacketUnit.get(i).host;
-        Main.UnitList.get(i).nConnect = PacketUnit.get(i).IDClient;
-        Main.UnitList.get(i).rotation_tower = PacketUnit.get(i).rotation_tower;
-        for (int i2 = 0; i2< UnitList.get(i).tower_obj.size(); i2++) {
-            Main.UnitList.get(i).tower_obj.get(i2).rotation_tower = PacketUnit.get(i).rotation_tower_2.get(i2);
+    private void player_data(TransportPacket pack) {
+        Unit transport = Main.UnitList.get(i);
+        transport.type_unit = pack.name;
+        transport.x = pack.x;
+        transport.y = pack.y;
+        transport.rotation_corpus = pack.rotation_corpus;
+        transport.reload = pack.reload;
+        transport.hp = pack.hp;
+        transport.team = pack.team;
+        transport.speed = pack.speed;
+        transport.host = pack.host;
+        transport.nConnect = pack.IDClient;
+        transport.rotation_tower = pack.rotation_tower;
+        for (int i2 = 0; i2< transport.tower_obj.size(); i2++) {
+            transport.tower_obj.get(i2).rotation_tower =
+                    pack.rotation_tower_2.get(i2);
+        }
+
+    }
+    private void player_data_add(TransportPacket pack) {
+        Unit transport = Main.UnitList.get(Main.UnitList.size()-1);
+        transport.type_unit = pack.name;
+        transport.x = pack.x;
+        transport.y = pack.y;
+        transport.rotation_corpus = pack.rotation_corpus;
+        transport.reload = pack.reload;
+        transport.hp = pack.hp;
+        transport.team = pack.team;
+        transport.speed = pack.speed;
+        transport.host = pack.host;
+        transport.nConnect = pack.IDClient;
+        transport.rotation_tower = pack.rotation_tower;
+        for (int i2 = 0; i2< transport.tower_obj.size(); i2++) {
+            transport.tower_obj.get(i2).rotation_tower =
+                    pack.rotation_tower_2.get(i2);
         }
 
     }
@@ -317,11 +342,19 @@ public class ClientMain extends Listener{
             UnitList.get(i).tower_obj.get(i2).rotation_tower = PacketUnit.get(i).rotation_tower_2.get(i2);
         }
     }
-    private void debris_data(int i){
-        DebrisList.get(i).type_unit = PacketDebris.get(i).name;
-        DebrisList.get(i).x = PacketDebris.get(i).x;
-        DebrisList.get(i).y = PacketDebris.get(i).y;
-        DebrisList.get(i).rotation_corpus = PacketDebris.get(i).rotation;
+    private void debris_data(Unit debris){
+        DebrisPacket pack = PacketDebris.get(i);
+        debris.type_unit = pack.name;
+        debris.x = pack.x;
+        debris.y = pack.y;
+        debris.rotation_corpus = pack.rotation;
+    }
+    private void debris_data_add(DebrisPacket packet){
+        Unit debris = DebrisList.get(DebrisList.size()-1);
+        debris.type_unit = packet.name;
+        debris.x = packet.x;
+        debris.y = packet.y;
+        debris.rotation_corpus = packet.rotation;
     }
     private void soldat_data(int i) {
         SoldatList.get(i).name = PacketSoldat.get(i).name;

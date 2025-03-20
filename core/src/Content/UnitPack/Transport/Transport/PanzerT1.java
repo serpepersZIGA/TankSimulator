@@ -16,7 +16,6 @@ public class PanzerT1 extends Unit {
     public PanzerT1(float x, float y, ArrayList<Unit> tr,boolean host, byte team){
         this.type_unit = UnitType.PanzerT1;
         this.x = x;this.y = y;
-        this.speed_inert = 0;this.speed = 0;
         this.max_speed = 4;this.min_speed = -4;
         this.damage = 100;
         this.penetration = 20;
@@ -24,15 +23,12 @@ public class PanzerT1 extends Unit {
         this.armor = 50;
         this.allyList = tr;
         this.acceleration = 0.2f;
-        this.rotation_tower = 0;
-        this.rotation_corpus = 70;
         this.tower_x = 0;
         this.tower_y = 0;
         this.medic_help = 0;
         this.height = 1;
         this.behavior = 3;
         this.reload_max = 180;
-        this.t = 0;
         this.x_tower = 15;
         this.y_tower = 20;
         this.distance_target = 150;
