@@ -60,7 +60,6 @@ public class SoldatFlame extends Unit {
         super.all_action();
         control.ControllerIteration(this);
         functional.FunctionalIterationAnHost(this);
-        //fire.FireIteration(this);
         EventClear.EventIteration(this);
     }
     @Override

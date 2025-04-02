@@ -10,7 +10,6 @@ import com.mygdx.game.build.PacketBuildingServer;
 import com.mygdx.game.method.CycleTimeDay;
 import com.mygdx.game.method.SoundPlay;
 import Content.UnitPack.Soldat.SoldatBullet;
-import Content.Soldat.SoldatFlamse;
 import com.mygdx.game.soldat.SoldatPacket;
 import com.mygdx.game.object_map.ObjectMapAssets;
 import com.mygdx.game.object_map.PacketMapObject;
@@ -45,7 +44,6 @@ public class ServerMain extends Listener {
         Server.getKryo().register(SoundPlay.class);
         Server.getKryo().register(SoldatPacket.class);
         Server.getKryo().register(DebrisPacket.class);
-        Server.getKryo().register(SoldatFlamse.class);
         Server.getKryo().register(SoldatBullet.class);
         Server.getKryo().register(UnitType.class);
         Server.getKryo().register(Bang.class);
@@ -73,6 +71,8 @@ public class ServerMain extends Listener {
 
         Server.getKryo().register(PacketMapObject.class);
         Server.getKryo().register(ObjectMapAssets.class);
+
+        Server.getKryo().register(PacketUnitUpdate.class);
 
         //Регистрируем порт
         try {
@@ -104,7 +104,7 @@ public class ServerMain extends Listener {
         PacketBuildingServer.ObjectMapPack.clear();
         PacketBuildingServer.BuildPack.clear();
         //KeyboardObj.ZoomConstTransport();
-        KeyboardObj.zoom_const();
+        //KeyboardObj.zoom_const();
 
     }
     public void PacketObjectMapServer(int ix,int iy,ArrayList<PacketMapObject>YMap){

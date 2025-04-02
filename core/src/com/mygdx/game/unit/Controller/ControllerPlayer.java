@@ -59,6 +59,7 @@ public class ControllerPlayer extends Controller {
             }
     }
     public void ControllerIterationClientAnClient(Unit unit){
+        //System.out.println(unit.tower_x+" "+unit.tower_y);
         Main.RC.x = unit.tower_x;
         Main.RC.y = unit.tower_y;
         PacketClient.press_w = Keyboard.PressW;

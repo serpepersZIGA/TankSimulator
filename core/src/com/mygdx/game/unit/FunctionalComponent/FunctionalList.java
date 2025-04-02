@@ -10,6 +10,9 @@ public class FunctionalList {
     public void Add(FunctionalComponent component){
         functional.add(component);
     }
+    public void Remove(FunctionalComponent component){
+        functional.remove(component);
+    }
     public void FunctionalIterationAnHost(Unit unit){
         for(FunctionalComponent func : functional){
             func.FunctionalIterationAnHost(unit);

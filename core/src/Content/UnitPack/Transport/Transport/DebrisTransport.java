@@ -7,6 +7,7 @@ import com.mygdx.game.unit.Unit;
 import com.mygdx.game.unit.UnitType;
 
 import static com.mygdx.game.main.Main.ContentImage;
+import static com.mygdx.game.main.Main.RegisterFunctionalComponent;
 
 public class DebrisTransport extends Unit {
 
@@ -26,6 +27,8 @@ public class DebrisTransport extends Unit {
         this.allyList = Main.DebrisList;
         this.max_hp = 10000;
         this.armor = 5;
+        functional.Add(RegisterFunctionalComponent.MoveDebris);
+        functional.Add(RegisterFunctionalComponent.BuildCollision);
         if(this.corpus_img == null){
             this.corpus_img = ContentImage.corpus_enemy;
             this.corpus_width = 50;
@@ -40,8 +43,7 @@ public class DebrisTransport extends Unit {
         super.all_action();
         super.corpus_corpus(Main.UnitList);
         super.corpus_corpus(Main.DebrisList);
-        build_corpus();
-        move_debris();
+        functional.FunctionalIterationAnHost(this);
         center_render();
         RenderMethod.transorm_img(this.x_rend,this.y_rend,this.corpus_width_zoom,this.corpus_height_zoom,this.rotation_corpus,this.corpus_img,const_x_corpus,const_y_corpus);
         debrisDelete();

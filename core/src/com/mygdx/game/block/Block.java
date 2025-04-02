@@ -21,7 +21,6 @@ public abstract class Block {
 
     public UpdateBlock render_block;
     public MapObject objMap;
-    private int i;
     public boolean passability,AiClose;
     private float r;
     private float g;

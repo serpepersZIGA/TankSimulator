@@ -2,11 +2,13 @@ package com.mygdx.game.unit;
 
 import Content.UnitPack.Transport.Transport.*;
 import com.mygdx.game.main.Main;
+import com.mygdx.game.main.PacketUnitUpdate;
 
 import java.util.ArrayList;
 
 public class TransportRegister {
     public static ArrayList<TransportPacket> PacketUnit = new ArrayList<>();
+    public static PacketUnitUpdate packetUnitUpdate = new PacketUnitUpdate();
     public static ArrayList<DebrisPacket> PacketDebris = new ArrayList<>();
     public static Unit PlayerCannonFlame, PlayerCannonMortar, PlayerCannonBullTank, PlayerCannonAcid,
             PanzerMortarT1, PanzerFlameT1, PanzerAcidT1, PanzerT1, TrackRemountT1, TrackSoldatT1, Helicopter_t1;
@@ -23,7 +25,7 @@ public class TransportRegister {
 
         TrackRemountT1 = new TrackRemountT1(0,0, Main.UnitList,true,(byte)2);
         TrackSoldatT1 = new TrackSoldatT1(0,0, Main.UnitList,true,(byte)2);
-        Helicopter_t1 = new HelicopterT1(0,0, Main.UnitList,true,(byte)2);
+        Helicopter_t1 = new HelicopterT1(0,0,(byte)2,true);
 
 
     }

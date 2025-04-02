@@ -30,6 +30,7 @@ import static com.mygdx.game.method.Method.*;
 import static com.mygdx.game.method.Option.SoundConst;
 import static com.mygdx.game.method.pow2.pow2;
 import static com.mygdx.game.unit.ClassUnit.SupportTransport;
+import static com.mygdx.game.unit.TransportRegister.packetUnitUpdate;
 import static java.lang.StrictMath.*;
 import static java.sql.Types.NULL;
 
@@ -89,13 +90,6 @@ public abstract class Unit {
     protected final void data(){
         path = new ArrayList<>();
         this.id_unit = 10000+rand.rand(89999);
-        for(int i = 0; i<this.allyList.size()-1; i++){
-            if(this.allyList.get(i).id_unit == this.id_unit){
-                while (this.id_unit == this.allyList.get(i).id_unit) {
-                    this.id_unit = 10000+rand.rand(89999);
-                }
-            }
-        }
         this.reload = this.reload_max;
         this.hp = this.max_hp;
         this.HPTriggerHill = this.max_hp/3;
@@ -106,7 +100,11 @@ public abstract class Unit {
         corpus_width_3 = (float)(corpus_width_2*1.2);
         if(tower_img != null){
             this.difference_x = this.difference - this.x_tower;
-            this.difference_y = this.difference - this.y_tower;
+            if(difference_2 != 0) {
+                this.difference_y = this.difference_2 - this.y_tower;
+            }else {
+                this.difference_y = this.difference - this.y_tower;
+            }
             this.tower_width_2 = this.width_tower/2;
             this.tower_height_2 = this.height_tower/2;
             this.const_x_tower = (int)(const_tower_x*Main.Zoom);
@@ -143,7 +141,11 @@ public abstract class Unit {
         classUnit = ClassUnit.Tower;
         this.reload = this.reload_max;
         this.difference_x = this.difference - this.x_tower;
-        this.difference_y = this.difference - this.y_tower;
+        if(difference_2 != 0) {
+            this.difference_y = this.difference_2 - this.y_tower;
+        }else {
+            this.difference_y = this.difference - this.y_tower;
+        }
         this.tower_width_2 = this.width_tower /2;
         this.tower_height_2 = this.height_tower /2;
         this.width_tower_zoom = (int)(width_tower *Main.Zoom);
@@ -160,7 +162,7 @@ public abstract class Unit {
     }
     public final void tower_iteration(Unit unit){
         for (Unit Tower : tower_obj){
-            Tower.tower_action();
+            //Tower.tower_action();
             Tower.functional.FunctionalIterationAnHost(Tower);
             Tower.x = unit.x;
             Tower.y = unit.y;
@@ -189,7 +191,6 @@ public abstract class Unit {
 
 
     }
-
     private void peaceful_behavior(){
         this.time_relocation-= 1;
         if(this.time_relocation<0){
@@ -573,7 +574,7 @@ public abstract class Unit {
     }
 
     private void AITransport(float g, Unit Target,float rad) {
-        if (ai_sost == 0) {
+        if (AIScan) {
             if (null != findIntersection(this.tower_x, this.tower_y, Target.tower_x, Target.tower_y)) {
                 Ai.pathAIAStar(this,Target,this.tower_x,this.tower_y);
             } else {
@@ -690,16 +691,17 @@ public abstract class Unit {
             this.speed = 0;
         }
     }
-    protected void helicopter_ii(){
-        if (this.enemyList.size()!= 0) {
-            Object[]sp = detection_near_transport(this);
+    public void helicopter_ii(){
+        Object[]sp = detection_near_transport(this);
+        if(sp[0] != null) {
             Unit unit = (Unit) sp[0];
             g = (float) (atan2(this.y - unit.y, this.x - unit.x) / 3.1415926535 * 180);
             g -= 90;
             rotation_bot(g);
-            motor_bot_base((int)sp[1], this.behavior);
-            speed_balance();
+            motor_bot_base((int) sp[1], this.behavior);
         }
+        speed_balance();
+
 
     }
     private Object[] less_hp_bot(){
@@ -865,8 +867,9 @@ public abstract class Unit {
             Main.DebrisList.add(new DebrisTransport(this.x,this.y,this.rotation_corpus,this.speed,this.rotation_inert,this.speed_inert,
                     this.corpus_img,this.corpus_width,this.corpus_height,this.type_unit));
             eventDead();
-            UnitList.remove(this);
-            EnumerationList = true;
+            packetUnitUpdate.ConfUnitList = true;
+            ClearUnitList.add(this);
+            //UnitList.remove(this);
             return;
         }
         this.crite_life = true;
@@ -875,8 +878,10 @@ public abstract class Unit {
     }
     protected void debrisDelete(){
         if(this.hp<0){
-            DebrisList.remove(this);
-            EnumerationList = true;
+            ClearDebrisList.add(this);
+            packetUnitUpdate.ConfDebrisList = true;
+            //DebrisList.remove(this);
+
         }
     }
     public void eventDead(){
@@ -997,7 +1002,7 @@ public abstract class Unit {
             this.y += 2;
         }
     }
-    protected void move_debris(){
+    public void move_debris(){
         if(speed != 0) {
             this.x -= move.move_sin(this.speed, -this.rotation_corpus);
             this.y -= move.move_cos(this.speed, -this.rotation_corpus);
@@ -1048,6 +1053,7 @@ public abstract class Unit {
         this.time_spawn_soldat -= 1;
         if(this.time_spawn_soldat <= 0){
             this.time_spawn_soldat = this.time_spawn_soldat_max;
+            packetUnitUpdate.ConfUnitList = true;
             switch(rand.rand(2)){
                 case 0:{
                     UnitList.add(new SoldatBullet(this.x,this.y,this.team,true));
@@ -1150,7 +1156,7 @@ public abstract class Unit {
         }
     }
     public void AISoldatPath(Unit iEnemy){
-        if (ai_sost == 0) {
+        if (AIScan) {
             if (null != findIntersection(x,y, iEnemy.tower_x, iEnemy.tower_y)) {
                 path.clear();
                 Ai.pathAIAStar(this,iEnemy, x, y);
@@ -1180,7 +1186,9 @@ public abstract class Unit {
         if(this.hp <0){
             for(int i1 =0;i1<12;i1++){
                 Main.LiquidList.add(new Blood(this.x+i1, this.y));}
-            UnitList.remove(this);
+            packetUnitUpdate.ConfUnitList = true;
+            ClearUnitList.add(this);
+            //UnitList.remove(this);
             EnumerationList = true;
         }
     }

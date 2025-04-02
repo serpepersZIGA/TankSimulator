@@ -2,8 +2,10 @@ package com.mygdx.game.unit.FunctionalComponent;
 
 public class FunctionalComponentRegister {
     public FunctionalComponent TowerXY,MotorControl,BuildCollision,Hill,SoldatSpawn,TowerIteration,FireControl;
-    public FunctionalComponent SoldatControl,SoldatCorrect;
+    public FunctionalComponent SoldatControl,SoldatCorrect,WorkBlade,MoveDebris;
     public FunctionalComponentRegister(){
+        MoveDebris = new ComponentMoveDebris();
+        WorkBlade = new ComponentWorkBlade();
         FireControl = new ComponentFireControl();
         SoldatCorrect = new ComponentSoldatCorrect();
         TowerXY = new ComponentTowerXY();

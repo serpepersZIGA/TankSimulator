@@ -13,17 +13,16 @@ import static java.lang.StrictMath.atan2;
 import static java.lang.StrictMath.sqrt;
 
 public class Method {
-    public static float tower(double x, double y, double x_2, double y_2, float rotation_tower, float speed_tower) {
-        double gh = atan2(y - y_2, x - x_2) / 3.1415926535 *180;
-        gh +=90;
-        if(gh>180 && rotation_tower<0){
-            gh= -90;
+    public static float tower(float x, float y, float x_2, float y_2, float rotation_tower, float speed_tower) {
+        int gh = (int) (atan2(y - y_2, x - x_2) / 3.1415926535 *180);
+        if(gh>130 && rotation_tower<-50){
+            gh= -180;
         }
-        if(gh<0 && rotation_tower>180){
-            gh= 270;
+        if(gh<-50 && rotation_tower>130){
+            gh= 180;
         }
-        if (rotation_tower > 269){rotation_tower = -89;}
-        else if (rotation_tower < -89){rotation_tower = 269;}
+        if (rotation_tower > 179){rotation_tower = -179;}
+        else if (rotation_tower < -179){rotation_tower = 179;}
         if (rotation_tower < gh) {
             rotation_tower += speed_tower;
         } else if (rotation_tower > gh) {
@@ -45,8 +44,9 @@ public class Method {
     public static float[]tower_xy_2(float x,float y,float fire_x,float fire_y,float difference,float difference_2,float rotation){
         float tower_x = difference_rotation_sin(x+fire_x,difference,rotation);
         float tower_y = difference_rotation_cos(y+fire_y,difference,rotation);
-        tower_x = difference_rotation_sin(tower_x,difference_2,rotation-90);
-        tower_y = difference_rotation_cos(tower_y,difference_2,rotation-90);
+        float rotationX = rotation-90;
+        tower_x = difference_rotation_sin(tower_x,difference_2,rotationX);
+        tower_y = difference_rotation_cos(tower_y,difference_2,rotationX);
         return new float[]{tower_x,tower_y};
     }
     public static Unit detection_near_transport_i(Unit objBot) {
@@ -83,10 +83,10 @@ public class Method {
     public static Object[] detection_near_transport(Unit objBot) {
         Unit ind = null;
         int radius = 0;
-        double g;
+        float g;
         for (Unit unit : UnitList) {
             if(unit.team != objBot.team) {
-                g = sqrt(pow2.pow2(objBot.x - unit.x) + pow2.pow2(objBot.y - unit.y));
+                g = (float) sqrt(pow2.pow2(objBot.x - unit.x) + pow2.pow2(objBot.y - unit.y));
                 if (radius > g || radius == 0) {
                     ind = unit;
                     radius = (int) g;

@@ -10,9 +10,6 @@ import static java.lang.StrictMath.abs;
 import static java.lang.StrictMath.sqrt;
 
 public abstract class CollisionFunctional{
-    public static void CollisionRectRect(){
-
-    }
     public static void physicCollision(Unit unit,Unit unit2){
         float x = unit2.x+unit2.corpus_width_2;
         float y = unit2.y+unit2.corpus_height_2;

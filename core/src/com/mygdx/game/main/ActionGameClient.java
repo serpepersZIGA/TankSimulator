@@ -4,10 +4,12 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import Content.Particle.Acid;
 import Content.Particle.FlameSpawn;
 import com.mygdx.game.method.Keyboard;
+import com.mygdx.game.unit.DebrisPacket;
 import com.mygdx.game.unit.Unit;
 
 import static com.mygdx.game.main.Main.*;
 import static com.mygdx.game.main.ClientMain.Client;
+import static com.mygdx.game.unit.TransportRegister.*;
 
 
 public class ActionGameClient extends com.mygdx.game.main.ActionGame {
@@ -88,7 +90,7 @@ public class ActionGameClient extends com.mygdx.game.main.ActionGame {
         }
         for(i = 0;i< UnitList.size();i++) {
             Unit unit = UnitList.get(i);
-            unit.UpdateUnit();
+            //Main_client.player_data(unit);
             if(unit.host || unit.nConnect != IDClient) {
                 unit.all_action_client_2();
             }
@@ -96,9 +98,24 @@ public class ActionGameClient extends com.mygdx.game.main.ActionGame {
                 unit.all_action_client_1();
             }
         }
+        for(i = 0;i< UnitList.size();i++) {
+            Unit unit = UnitList.get(i);
+            if(unit.height == 1) {
+                unit.UpdateUnit();
+                unit.update();
+            }
+        }
+        for(i = 0;i< UnitList.size();i++) {
+            Unit unit = UnitList.get(i);
+            if(unit.height == 2) {
+                unit.UpdateUnit();
+                unit.update();
+            }
+        }
 
         for (Unit debris : DebrisList){
             debris.all_action_client();
+            //Main_client.debris_data(debris);
         }
         RC.BuildingIteration();
         Batch.draw(textureBuffer,-20,1,1,1);
@@ -111,12 +128,6 @@ public class ActionGameClient extends com.mygdx.game.main.ActionGame {
                 Main.BulletList.get(i).all_action(i);
             }
         }
-        for (i= 0; i< Main.UnitList.size(); i++){
-            Main.UnitList.get(i).update();
-        }
-        for (i= 0; i< UnitList.size(); i++){
-            UnitList.get(i).update();
-        }
         for (i= 0; i< AirList.size(); i++){
             for(int i2= 0; i2< AirList.get(i).size(); i2++) {
                 AirList.get(i).get(i2).all_action();
@@ -128,5 +139,21 @@ public class ActionGameClient extends com.mygdx.game.main.ActionGame {
         if(flame_spawn_time < 0){flame_spawn_time=flame_spawn_time_max;}
         Render.end();
         Batch.end();
+        //PackUpdateUnit();
+    }
+    public static void PackUpdateUnit(){
+        if(packetUnitUpdate.ConfUnitList){
+            Main_client.UnitCreate();
+            packetUnitUpdate.ConfUnitList = false;
+        }
+        if(packetUnitUpdate.ConfDebrisList){
+            DebrisList.clear();
+            for (DebrisPacket packetDebris : PacketDebris) {
+                Main_client.debris_create(packetDebris);
+                Main_client.debris_data_add(packetDebris);
+            }
+            KeyboardObj.ZoomConstTransport();
+            packetUnitUpdate.ConfDebrisList = false;
+        }
     }
 }

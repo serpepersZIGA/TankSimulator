@@ -4,13 +4,15 @@ import com.mygdx.game.method.RenderMethod;
 
 import java.util.ArrayList;
 import com.mygdx.game.main.Main;
+import com.mygdx.game.unit.Fire.FireFlame;
+import com.mygdx.game.unit.Fire.FireRegister;
 import com.mygdx.game.unit.Unit;
 import com.mygdx.game.unit.UnitType;
 
-import static com.mygdx.game.main.Main.RegisterFunctionalComponent;
+import static com.mygdx.game.main.Main.*;
 
 public class HelicopterT1 extends Unit {
-    public HelicopterT1(float x, float y, ArrayList<Unit>tr,boolean host,byte team){
+    public HelicopterT1(float x, float y,byte team,boolean host){
         this.type_unit = UnitType.HelicopterT1;
         this.corpus_img = Main.ContentImage.helicopter_enemy_t1;
         this.tower_img = Main.ContentImage.helicopter_blade;
@@ -24,7 +26,6 @@ public class HelicopterT1 extends Unit {
         this.speed_inert = 0;this.speed = 0;
         this.max_speed = 6;this.min_speed = -6;
         this.damage = 200;
-        this.allyList = tr;
         this.penetration = 20;
         this.max_hp = 850;
         this.armor = 50;
@@ -43,9 +44,14 @@ public class HelicopterT1 extends Unit {
 
         this.speed_rotation = 3;
         functional.Add(RegisterFunctionalComponent.MotorControl);
-        functional.Add(Main.RegisterFunctionalComponent.TowerXY);
+        functional.Add(RegisterFunctionalComponent.WorkBlade);
+        functional.Add(RegisterFunctionalComponent.TowerXY);
         functional.Add(RegisterFunctionalComponent.BuildCollision);
         functional.Add(RegisterFunctionalComponent.FireControl);
+        fire = FireRegister.FireMortar;
+        control = RegisterControl.controllerHelicopter;
+        //control = RegisterControl.controllerBot;
+        EventClear = EventData.eventDeadTransport;
         data();
         this.difference = 42;
         speed_tower = 10;
@@ -57,29 +63,34 @@ public class HelicopterT1 extends Unit {
     }
     public void all_action() {
         super.all_action();
-        super.helicopter_ii();
-        super.bot_bull_tank_fire_not_tower();
-        super.tower_xy();
-        super.blade_helicopter();
-        center_render();
-        RenderMethod.transorm_img(this.x_rend, this.y_rend,this.corpus_width_zoom,this.corpus_height_zoom,this.rotation_corpus,this.corpus_img,const_x_corpus,const_y_corpus);
-        //tower_iteration_bot_client(i);
-        RenderMethod.transorm_img(this.x_tower_rend,this.y_tower_rend,this.width_tower_zoom,this.height_tower_zoom,this.rotation_tower,this.tower_img,const_x_tower,const_y_tower
-        );
-        super.transportDelete();
+        control.ControllerIteration(this);
+        functional.FunctionalIterationAnHost(this);
+        EventClear.EventIteration(this);
 
     }
     public void all_action_client() {
         super.all_action_client();
-        super.tower_xy();
-        center_render();
-        RenderMethod.transorm_img(this.x_rend, this.y_rend,this.corpus_width_zoom,this.corpus_height_zoom,this.rotation_corpus,this.corpus_img,const_x_corpus,const_y_corpus);
-        RenderMethod.transorm_img(this.x_tower_rend,this.y_tower_rend,this.width_tower_zoom,this.height_tower_zoom,this.rotation_tower,this.tower_img,const_x_tower,const_y_tower
-        );
+        control.ControllerIterationClientAnHost(this);
+        functional.FunctionalIterationClientAnHost(this);
+        EventClear.EventIteration(this);
+    }
+    public void all_action_client_1() {
+        super.all_action_client_1();
+        control.ControllerIterationClientAnClient(this);
+        functional.FunctionalIterationAnClient(this);
+    }
+    public void all_action_client_2() {
+        super.all_action_client_2();
+        functional.FunctionalIterationOtherAnClient(this);
     }
     public void update(){
         indicator_reload();
         indicator_hp_2();
+    }
+    public void UpdateUnit(){
+        center_render();
+        RenderMethod.transorm_img(this.x_rend, this.y_rend,this.corpus_width_zoom,this.corpus_height_zoom,this.rotation_corpus,this.corpus_img,const_x_corpus,const_y_corpus);
+        RenderMethod.transorm_img(this.x_tower_rend,this.y_tower_rend,this.width_tower_zoom,this.height_tower_zoom,this.rotation_tower,this.tower_img,const_x_tower,const_y_tower);
     }
 
 

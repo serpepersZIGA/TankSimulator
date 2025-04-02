@@ -70,7 +70,6 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
             catch(Exception ignored){
 
             }
-
         }
         //boolean[]mouse_e = new metod.mouse_control().mouse_event();
         //Main.player_obj.get(1).all_action_client(Main.left_mouse_client, Main.right_mouse_client, Main.mouse_x_client,
@@ -117,15 +116,29 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
         }
         for(i = 0;i< UnitList.size();i++) {
             Unit unit = UnitList.get(i);
-            unit.UpdateUnit();
             packet_player_server(unit);
-            if(unit.host || unit.control == RegisterControl.controllerBot
+            if (unit.host || unit.control == RegisterControl.controllerBot
                     || unit.control == RegisterControl.controllerBotSupport
-                    || unit.control == RegisterControl.controllerSoldatTransport) {
+                    || unit.control == RegisterControl.controllerSoldatTransport
+                    || unit.control == RegisterControl.controllerSoldatBot
+                    || unit.control == RegisterControl.controllerHelicopter) {
                 unit.all_action();
-            }
-            else{
+            } else {
                 unit.all_action_client();
+            }
+        }
+        for(i = 0;i< UnitList.size();i++) {
+            Unit unit = UnitList.get(i);
+            if(unit.height == 1) {
+                unit.UpdateUnit();
+                unit.update();
+            }
+        }
+        for(i = 0;i< UnitList.size();i++) {
+            Unit unit = UnitList.get(i);
+            if(unit.height == 2) {
+                unit.UpdateUnit();
+                unit.update();
             }
         }
         RC.BuildingIteration();
@@ -138,9 +151,6 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
             if(Main.BulletList.get(i).height == 2) {
                 Main.BulletList.get(i).all_action(i);
             }
-        }
-        for(Unit unit : UnitList) {
-            unit.update();
         }
         for (i= 0; i< AirList.size(); i++){
             for(int i2= 0; i2< AirList.get(i).size(); i2++) {
@@ -159,13 +169,28 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
         Collision.CollisionIterationGlobal();
     }
     private void server_packet() {
-        if(EnumerationList){
-            for (i = 0; i < Main.UnitList.size(); i++) {
-                packet_player_server(Main.UnitList.get(i));
+        if(packetUnitUpdate.ConfUnitList || packetUnitUpdate.ConfDebrisList){
+            Server.sendToAllTCP(packetUnitUpdate);
+            if(packetUnitUpdate.ConfUnitList){
+                for(Unit unit : ClearUnitList){
+                    UnitList.remove(unit);
+                }
+                ClearUnitList.clear();
             }
-            PacketUnit.clear();
-            EnumerationList = false;
+            else if(packetUnitUpdate.ConfDebrisList){
+                for(Unit unit : ClearDebrisList){
+                    DebrisList.remove(unit);
+                }
+                ClearDebrisList.clear();
+            }
         }
+//        if(EnumerationList){
+//            for (i = 0; i < Main.UnitList.size(); i++) {
+                //packet_player_server(Main.UnitList.get(i));
+//            }
+//            PacketUnit.clear();
+//            EnumerationList = false;
+//        }
         PacketServer.debris = PacketDebris;
         PacketServer.player = PacketUnit;
         PacketServer.bull = PacketBull;
@@ -174,6 +199,8 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
         PacketServer.TotalLight = CycleTimeDay.lightTotal;
         Server.sendToAllUDP(PacketServer);
         MapObject.PacketMapObjects.clear();
+        packetUnitUpdate.ConfDebrisList = false;
+        packetUnitUpdate.ConfUnitList = false;
         PacketUnit.clear();
         PacketBull.clear();
         PacketSoldat.clear();

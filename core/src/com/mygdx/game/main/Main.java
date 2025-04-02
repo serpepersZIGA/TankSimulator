@@ -1,6 +1,7 @@
 package com.mygdx.game.main;
 import Content.Particle.*;
 import Content.UnitPack.Soldat.SoldatFlame;
+import Content.UnitPack.Transport.Transport.HelicopterT1;
 import Content.UnitPack.Transport.Transport.PanzerFlameT1;
 import Content.UnitPack.Transport.Transport.TrackRemountT1;
 import Content.UnitPack.Transport.Transport.TrackSoldatT1;
@@ -117,6 +118,8 @@ public class Main extends ApplicationAdapter {
 	public static FireRegister FireRegister;
 	public static FunctionalComponentRegister RegisterFunctionalComponent;
 	public static CollisionMethodGlobal Collision;
+	public static ArrayList<Unit> ClearUnitList = new ArrayList<>();
+	public static ArrayList<Unit> ClearDebrisList = new ArrayList<>();
 
 
 
@@ -137,12 +140,14 @@ public class Main extends ApplicationAdapter {
 		//SoldatList.add(new SoldatBull(1200,200, UnitList));
 		MapScan.MapInput("Map/maps/MapBase.mapt");
 		MapAllLoad.MapCount();
-		UnitList.add(new PanzerFlameT1(2200,2000,Main.UnitList,true,(byte)2));
-		UnitList.get(0).control = Main.RegisterControl.controllerBot;
-		UnitList.add(new SoldatFlame(1200,200,(byte)2,true));
-		UnitList.add(new TrackRemountT1(2700,2000,Main.UnitList,true,(byte)2));
-		UnitList.get(1).control = Main.RegisterControl.controllerBotSupport;
-		UnitList.add(new TrackSoldatT1(2700,2000,Main.UnitList,true,(byte)2));
+//		UnitList.add(new PanzerFlameT1(2200,2000,Main.UnitList,true,(byte)2));
+//		UnitList.get(0).control = Main.RegisterControl.controllerBot;
+//		UnitList.add(new TrackRemountT1(2700,2000,Main.UnitList,true,(byte)2));
+//		UnitList.get(1).control = Main.RegisterControl.controllerBotSupport;
+//		UnitList.add(new SoldatFlame(1200,200,(byte)2,true));
+		//UnitList.add(new HelicopterT1(1200,2000,Main.UnitList,true,(byte)2));
+
+		//UnitList.add(new TrackSoldatT1(2700,2000,Main.UnitList,true,(byte)2));
 		LiquidList.add(new Acid(200,200));
 		LiquidList.add(new Blood(200,200));
 		FlameSpawnList.add(new FlameSpawn(200,200));

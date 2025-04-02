@@ -41,6 +41,7 @@ public class AI {
                 ArrayList<int[]>pathAi = IterationPath.get(i2);
                 x = pathAi.get(pathAi.size()-1)[0];
                 y = pathAi.get(pathAi.size()-1)[1];
+                //CloseBlockList.add(new int[]{(int)x,(int)y});
                 OpenBlockList.clear();
                 xTotal = x + 1;
                 if (!BlockList2D.get((int) y).get((int) xTotal).passability & !BlockList2D.get((int) y).get((int) xTotal).AiClose) {
@@ -67,11 +68,14 @@ public class AI {
                             ai.path = (ArrayList<int[]>) pathAi.clone();
                             ai.path.add(new int[]{(int) ints[0], (int) ints[1]});
 
-//                            for (ArrayList<Block> blockY : BlockList2D) {
-//                                for (Block block : blockY) {
-//                                    block.render_block = UpdateRegister.GrassUpdate;
-//                                }
-//                            }
+                            for (ArrayList<Block> blockY : BlockList2D) {
+                                for (Block block : blockY) {
+                                    block.render_block = UpdateRegister.GrassUpdate;
+                                }
+                            }
+                            for (int[] block : ai.path) {
+                                BlockList2D.get(block[1]).get(block[0]).render_block = UpdateRegister.Update3;
+                            }
                             for (int[] intss : CloseBlockList) {
                                 BlockList2D.get(intss[1]).get(intss[0]).AiClose = false;
                             }
@@ -183,15 +187,9 @@ public class AI {
                 CloseBlockList.add(new int[]{(int)x,(int)y});
                 ai.path.add(new int[]{(int)x, (int)y});
                 TotalIndex = 2;
-                System.out.println(OpenBlockList.size());
-                System.out.println(target_xy[0]+"Target"+target_xy[1]);
-                System.out.println(ai.path.get(ai.path.size() - 1)[0] + " " + ai.path.get(ai.path.size() - 1)[1]);
             }
             else{
-                System.out.println(OpenBlockList.size());
-                System.out.println(target_xy[0]+"Target"+target_xy[1]);
                 if(ai.path.size()!= 0) {
-                    System.out.println(ai.path.get(ai.path.size() - 1)[0] + " " + ai.path.get(ai.path.size() - 1)[1]);
                     ai.path.remove(ai.path.size()-1);
                 }
                 TotalIndex += 1;

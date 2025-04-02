@@ -6,7 +6,7 @@ public class ComponentTowerAuxiliaryIteration extends FunctionalComponent{
     public void FunctionalIterationAnHost(Unit unit){
         //unit.tower_iteration(unit);
         for (Unit Tower : unit.tower_obj){
-            Tower.tower_action();
+            //Tower.tower_action();
             Tower.functional.FunctionalIterationAnHost(Tower);
             Tower.x = unit.x;
             Tower.y = unit.y;
@@ -15,7 +15,7 @@ public class ComponentTowerAuxiliaryIteration extends FunctionalComponent{
     }
     public void FunctionalIterationClientAnHost(Unit unit){
         for (Unit Tower : unit.tower_obj){
-            Tower.tower_action();
+            //Tower.tower_action();
             Tower.functional.FunctionalIterationClientAnHost(Tower);
             Tower.x = unit.x;
             Tower.y = unit.y;

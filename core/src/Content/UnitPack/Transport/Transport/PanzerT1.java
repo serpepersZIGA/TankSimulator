@@ -57,10 +57,10 @@ public class PanzerT1 extends Unit {
         this.tower_obj.add(new TowerFlameEnemy(18,55,52,12,4,2,65,12,2, this.id_unit,
                 (byte)1,this.team,Main.ContentImage.tower_enemy_auxiliary_1,this.allyList, Main.ContentSound.flame_attack));
         this.difference = 18;
-        const_tower_x = (int)(width_tower/2);
-        const_tower_y = 21;
-        this.tower_x_const = (int) (corpus_width/2)-(width_tower/2);
-        this.tower_y_const = (int) (corpus_height/2)-(height_tower/2)+7;
+        const_tower_x = 34;
+        const_tower_y = 17;
+        this.tower_x_const = (int) (corpus_width/2)-(width_tower/2)-6;
+        this.tower_y_const = (int) (corpus_height/2)-(height_tower/2);
         center_render();
 
 
@@ -95,6 +95,7 @@ public class PanzerT1 extends Unit {
     public void UpdateUnit(){
         center_render();
         RenderMethod.transorm_img(this.x_rend,this.y_rend,this.corpus_width_zoom,this.corpus_height_zoom,this.rotation_corpus,this.corpus_img,const_x_corpus,const_y_corpus);
+        for(Unit Tower : tower_obj){Tower.UpdateTower();}
         RenderMethod.transorm_img(this.x_tower_rend,this.y_tower_rend,this.width_tower_zoom,this.height_tower_zoom,this.rotation_tower,this.tower_img,const_x_tower,const_y_tower
         );
     }
