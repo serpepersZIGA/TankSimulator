@@ -42,8 +42,8 @@ public class PlayerCannonMortar extends Unit {
 
         this.corpus_width = 50;
         this.corpus_height = 129;
-        this.width_tower = 35;
-        this.height_tower = 55;
+        this.width_tower = 55;
+        this.height_tower = 35;
         functional.Add(RegisterFunctionalComponent.MotorControl);
         functional.Add(RegisterFunctionalComponent.TowerIteration);
         functional.Add(Main.RegisterFunctionalComponent.TowerXY);

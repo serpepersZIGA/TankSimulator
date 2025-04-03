@@ -40,8 +40,8 @@ public class PlayerCannonFlame extends Unit {
 
         this.corpus_width = 50;
         this.corpus_height = 129;
-        this.width_tower = 35;
-        this.height_tower = 55;
+        this.width_tower = 55;
+        this.height_tower = 35;
         this.speed_tower = 1;this.speed_rotation = 1;
         this.sound_fire = Main.ContentSound.flame_attack;
         fire = FireRegister.FireFlame;

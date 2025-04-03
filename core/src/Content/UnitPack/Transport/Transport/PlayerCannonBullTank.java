@@ -35,8 +35,8 @@ public class PlayerCannonBullTank extends Unit {
         this.corpus_img = Main.ContentImage.corpus_player;
         this.corpus_width = 50;
         this.corpus_height = 129;
-        this.width_tower = 35;
-        this.height_tower = 55;
+        this.width_tower = 55;
+        this.height_tower = 35;
         this.x_tower = 15;
         this.y_tower = 20;
         this.t = 0;
