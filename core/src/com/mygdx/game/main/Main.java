@@ -39,18 +39,23 @@ import com.mygdx.game.soldat.SoldatRegister;
 import Data.DataSound;
 import com.mygdx.game.unit.*;
 import com.mygdx.game.unit.CollisionUnit.CollisionMethodGlobal;
+import com.mygdx.game.unit.Controller.ControllerBot;
 import com.mygdx.game.unit.Controller.RegisterController;
 import com.mygdx.game.unit.Fire.FireRegister;
 import com.mygdx.game.unit.FunctionalComponent.FunctionalComponentRegister;
 import com.mygdx.game.unit.PlayerSpawnList.PlayerAllLoad;
 import com.mygdx.game.unit.SpawnPlayer.PlayerSpawnData;
 import com.mygdx.game.unit.SpawnPlayer.PlayerSpawnListData;
+import com.mygdx.game.unit.moduleUnit.RegisterModuleCannon;
+import com.mygdx.game.unit.moduleUnit.RegisterModuleCorpus;
+import com.mygdx.game.unit.moduleUnit.RegisterModuleEngine;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
 import static com.mygdx.game.unit.SpawnPlayer.PlayerSpawnListData.PlayerSpawnCannonVoid;
+import static com.mygdx.game.unit.TransportRegister.PlayerCannonFlameA1;
 
 
 public class Main extends ApplicationAdapter {
@@ -140,8 +145,9 @@ public class Main extends ApplicationAdapter {
 		//SoldatList.add(new SoldatBull(1200,200, UnitList));
 		MapScan.MapInput("Map/maps/MapBase.mapt");
 		MapAllLoad.MapCount();
-//		UnitList.add(new PanzerFlameT1(2200,2000,Main.UnitList,true,(byte)2));
-//		UnitList.get(0).control = Main.RegisterControl.controllerBot;
+		PlayerCannonFlameA1.UnitAdd(1200,1200,true, (byte) 2, RegisterControl.controllerBot);
+		//UnitList.add(new PanzerFlameT1(2200,2000,true,(byte)2));
+		//UnitList.get(0).control = Main.RegisterControl.controllerBot;
 //		UnitList.add(new TrackRemountT1(2700,2000,Main.UnitList,true,(byte)2));
 //		UnitList.get(1).control = Main.RegisterControl.controllerBotSupport;
 //		UnitList.add(new SoldatFlame(1200,200,(byte)2,true));
@@ -222,7 +228,6 @@ public class Main extends ApplicationAdapter {
 		textureBuffer = new Texture("image/infantry/soldat_enemy.png");
 		ContentImage = new DataImage();
 		ContentSound = new DataSound();
-		new PlayerSpawnListData();
 		Collision = new CollisionMethodGlobal();
 		FireRegister = new FireRegister();
 		RegisterControl = new RegisterController();
@@ -237,16 +242,21 @@ public class Main extends ApplicationAdapter {
 		InputWindow = new InputWindow();
 		EventData = new EventRegister();
 
+		new RegisterModuleCannon();
+		new RegisterModuleEngine();
+		new RegisterModuleCorpus();
+		new PlayerSpawnListData();
+
 		KeyboardObj = new Keyboard();
 		Keyboard.ZoomMaxMin();
 		Gdx.input.setInputProcessor(KeyboardObj);
 		field(160, 160);
 		Option = new Option();
-		spawn_object();
 		KeyboardObj.zoom_const();
 		Ai = new AI();
 		TransportRegister = new TransportRegister();
 		SoldatRegister = new SoldatRegister();
+		spawn_object();
 		ButtonList.add(new Play(100,600,400,120,"PLAY",(byte)0));
 		ButtonList.add(new PlayHost(100,800,400,120,"HOST",(byte)1));
 		ButtonList.add(new PlayClient(100,600,400,120,"CONNECT",(byte)1));

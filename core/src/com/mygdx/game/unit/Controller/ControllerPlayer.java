@@ -25,7 +25,7 @@ public class ControllerPlayer extends Controller {
         Main.RC.y = unit.tower_y;
         unit.TowerControlPlayer();
         for(Unit Tower : unit.tower_obj){
-            Tower.left_mouse = Keyboard.RightMouse;
+            Tower.left_mouse = Keyboard.LeftMouse;
             Tower.TargetX = Keyboard.MouseX;
             Tower.TargetY = Keyboard.MouseY;
             Tower.TowerControlPlayer();
@@ -33,30 +33,30 @@ public class ControllerPlayer extends Controller {
 
     }
     public void ControllerIterationClientAnHost(Unit unit){
-        for (Packet_client pack : Clients) {
-            if (pack != null) {
-                if (pack.IDClient == unit.nConnect) {
-                    unit.left_mouse = pack.left_mouse;
-                    unit.right_mouse = pack.right_mouse;
-                    unit.press_w = pack.press_w;
-                    unit.press_a = pack.press_a;
-                    unit.press_s = pack.press_s;
-                    unit.press_d = pack.press_d;
-                    unit.TargetX = pack.mouse_x;
-                    unit.TargetY = pack.mouse_y;
-                    unit.TowerControlPlayerClient();
-                    unit.FireControl();
-                    for (Unit Tower : unit.tower_obj) {
-                        Tower.left_mouse = pack.right_mouse;
-                        Tower.TargetX = pack.mouse_x;
-                        Tower.TargetY = pack.mouse_y;
-                        Tower.TowerControlPlayerClient();
-                        Tower.FireControl();
-                    }
-                    return;
-                }
-            }
-            }
+//        for (Packet_client pack : Clients) {
+//            if (pack != null) {
+//                if (pack.IDClient == unit.nConnect) {
+//                    unit.left_mouse = pack.left_mouse;
+//                    unit.right_mouse = pack.right_mouse;
+//                    unit.press_w = pack.press_w;
+//                    unit.press_a = pack.press_a;
+//                    unit.press_s = pack.press_s;
+//                    unit.press_d = pack.press_d;
+//                    unit.TargetX = pack.mouse_x;
+//                    unit.TargetY = pack.mouse_y;
+//                    unit.TowerControlPlayerClient();
+//                    //unit.FireControl();
+//                    for (Unit Tower : unit.tower_obj) {
+//                        Tower.left_mouse = pack.left_mouse;
+//                        Tower.TargetX = pack.mouse_x;
+//                        Tower.TargetY = pack.mouse_y;
+//                        Tower.TowerControlPlayerClient();
+//                        Tower.FireControl();
+//                    }
+//                    return;
+//                }
+//            }
+//        }
     }
     public void ControllerIterationClientAnClient(Unit unit){
         //System.out.println(unit.tower_x+" "+unit.tower_y);

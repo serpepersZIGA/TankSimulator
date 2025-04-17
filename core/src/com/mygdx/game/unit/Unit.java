@@ -16,6 +16,10 @@ import com.mygdx.game.unit.CollisionUnit.TypeCollision;
 import com.mygdx.game.unit.Controller.Controller;
 import com.mygdx.game.unit.Fire.Fire;
 import com.mygdx.game.unit.FunctionalComponent.FunctionalList;
+import com.mygdx.game.unit.moduleUnit.Cannon;
+import com.mygdx.game.unit.moduleUnit.Corpus;
+import com.mygdx.game.unit.moduleUnit.Engine;
+import com.mygdx.game.unit.moduleUnit.Soldat;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -23,6 +27,7 @@ import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import static Content.Bull.BullRegister.PacketBull;
 import static com.mygdx.game.main.Main.*;
@@ -32,20 +37,28 @@ import static com.mygdx.game.method.pow2.pow2;
 import static com.mygdx.game.unit.ClassUnit.SupportTransport;
 import static com.mygdx.game.unit.TransportRegister.packetUnitUpdate;
 import static java.lang.StrictMath.*;
-import static java.sql.Types.NULL;
 
-public abstract class Unit {
+public abstract class Unit implements Cloneable{
+    public static ArrayList<Object[]> IDList = new ArrayList<>();
+    public String ID;
     public TypeCollision collision = TypeCollision.rect;
     public UnitType type_unit;
+    public int[][]TowerXY;
+    public int SizeBullet,TimeBullet,TimeBulletRand;
+    public float SpeedBullet;
     public static boolean AIScan;
     public ClassUnit classUnit = ClassUnit.Transport;
     public float x, y;
+    public Corpus CorpusUnit;
+    public Engine EngineUnit;
+    public ArrayList<Cannon> CannonUnitList = new ArrayList<>();
+    public Cannon CannonUnit;
     public int  difference,difference_2,hp,max_hp,time_spawn_soldat,time_spawn_soldat_max,x_rend,y_rend,x_tower_rend,y_tower_rend, id_unit, x_tower,y_tower,
     time_max_sound_motor = 20,time_sound_motor = time_max_sound_motor,nConnect;
     public Sound sound_fire;
     public float fire_x;
     public float fire_y;
-    public float max_speed=4, min_speed=-4,damage,penetration,damage_fragment,penetration_fragment,t,t_damage,armor,reload_max,acceleration=0.2f,speed,speed_inert, rotation_inert, rotation_tower, speed_tower=0.2f, speed_rotation=0.2f
+    public float max_speed=4, min_speed=-4,damage,penetration,damage_fragment,penetration_fragment,t,t_damage,armor,reload_max,acceleration=0.2f,speed, SpeedInert, RotationInert, rotation_tower, speed_tower=0.2f, speed_rotation=0.2f
             , rotation_corpus,tower_x,tower_y
             , tower_x_const, tower_y_const, tower_width_2, tower_height_2,reload,corpus_width,corpus_height,corpus_width_2,corpus_height_2,
             hill, width_tower, height_tower, TargetX, TargetY,corpus_height_3,corpus_width_3;
@@ -73,7 +86,7 @@ public abstract class Unit {
     public static int ai_sost = 200;
     public EventGame EventClear = EventData.eventDeadTransport;
     public ArrayList<int[]>path;
-    public ArrayList<Unit> allyList, enemyList,tower_obj = new ArrayList<>();
+    public ArrayList<Unit> tower_obj;
     public int const_x_corpus,const_y_corpus,const_x_tower,const_y_tower,const_tower_x = 7,const_tower_y = 10;
     public boolean sost_fire_bot,guidance,left_mouse,right_mouse,trigger_attack,trigger_fire;
     public boolean press_w;
@@ -82,12 +95,120 @@ public abstract class Unit {
     public boolean press_d;
     public Sprite tower_img,corpus_img;
     public Fire fire;
-    public Controller control;
+    public Controller control = RegisterControl.controllerVoid;
     public int HPTriggerHill;
     public Unit(){
+    }
+    public Unit(float x, float y,boolean host, byte team){
 
     }
+    public Unit(float x, float y, float rotation, float speed, float inert_rotation,
+                float inert_speed, Sprite corpus, float width, float height, UnitType type){
+        this.x = x;
+        this.y = y;
+        this.rotation_corpus = rotation;
+        this.speed = speed;
+        this.RotationInert = inert_rotation;
+        this.SpeedInert = inert_speed;
+        this.corpus_img = corpus;
+        this.corpus_width = width;
+        this.corpus_height = height;
+        this.type_unit = type;
+
+    }
+    public Unit(String str,Corpus corpus, Engine engine, ArrayList<Cannon> cannon, int[][]TowerXY){
+        this.CorpusUnit = corpus.CorpusAdd();
+        this.EngineUnit = engine.EngineAdd();
+        this.CannonUnitList = cannon;
+        this.TowerXY = TowerXY;
+//        for(int i = 0;i<cannon.size();i++){
+//            tower_obj.add(new UnitPattern(cannon.get(i).CannonAdd(this,TowerXY[i][0],TowerXY[i][1]),this));
+//        }
+    }
+    public Unit(Soldat soldat){
+
+    }
+    public Unit(Corpus corpus,float x,float y,float rotation,float speed,float SpeedInert,float RotationInert){
+        this.x = x;
+        this.y = y;
+        this.rotation_corpus = rotation;
+        this.speed = speed;
+        this.SpeedInert = SpeedInert;
+        this.RotationInert = RotationInert;
+        this.CorpusUnit = corpus.CorpusAdd();
+
+
+    }
+    public void UnitDelete(){
+        for(Object[] ID : IDList){
+            if(Objects.equals(ID[1], this.ID)){
+                Unit unit = (Unit) ID[0];
+                DebrisList.add(new UnitPattern(unit.CorpusUnit,this.ID,x,y,rotation_corpus,speed,SpeedInert,RotationInert));
+                DebrisList.get(DebrisList.size()-1).EventClear = EventData.eventDeadDebris;
+            }
+        }
+
+    }
+    public Unit(Cannon cannon,Unit unit){
+        this.CannonUnit = cannon;
+    }
+    public void UnitAdd(int x, int y, boolean host, byte team, Controller controller){
+        try {
+            Unit unitAdd = (Unit) this.clone();
+            unitAdd.x = x;
+            unitAdd.y = y;
+            unitAdd.host = host;
+            unitAdd.team = team;
+            unitAdd.control = controller;
+            unitAdd.tower_obj = new ArrayList<>();
+            for(int i = 0;i<CannonUnitList.size();i++){
+                unitAdd.tower_obj.add(new UnitPattern(CannonUnitList.get(i).
+                        CannonAdd(unitAdd,unitAdd.TowerXY[i][0],unitAdd.TowerXY[i][1]),unitAdd));
+            }
+
+            for(Unit cannons : unitAdd.tower_obj){
+                cannons.team = team;
+            }
+//            for(Unit cannons : tower_obj){
+//                unitAdd.tower_obj.add((Unit) cannons.clone());
+//                //cannons.team = team;
+//            }
+//            for(int i = 0;i<unitAdd.CannonUnitList.size();i++){
+//                unitAdd.tower_obj.add(new UnitPattern(unitAdd.CannonUnitList.get(i).CannonAdd(unitAdd,unitAdd.TowerXY[i][0],unitAdd.TowerXY[i][1]),unitAdd));
+//            }
+//            for(Unit cannons : unitAdd.tower_obj){
+//                cannons.team = team;
+//            }
+
+            UnitList.add(unitAdd);
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public Unit UnitAdd(int x, int y,boolean host,byte team){
+        Unit unitAdd;
+        try {
+            unitAdd = (Unit) this.clone();
+            unitAdd.x = x;
+            unitAdd.y = y;
+            unitAdd.host = host;
+            unitAdd.tower_obj = new ArrayList<>();
+            for(int i = 0;i<unitAdd.CannonUnitList.size();i++){
+                unitAdd.tower_obj.add(new UnitPattern(unitAdd.CannonUnitList.get(i).
+                        CannonAdd(unitAdd,unitAdd.TowerXY[i][0],unitAdd.TowerXY[i][1]),unitAdd));
+            }
+            for(Unit cannons : unitAdd.tower_obj){
+                cannons.team = team;
+            }
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
+        //System.out.println(unitAdd);
+        //System.out.println(unitAdd==this);
+        return unitAdd;
+    }
     protected final void data(){
+        //tower_obj = new ArrayList<>();
         path = new ArrayList<>();
         this.id_unit = 10000+rand.rand(89999);
         this.reload = this.reload_max;
@@ -318,7 +439,7 @@ public abstract class Unit {
         }
     }
     private boolean enemy_fire_not_tower(){
-        if(this.enemyList.size() != 0) {
+        if(UnitList.size() != 0) {
             Unit unit = detection_near_transport_i(this);
             return fire_bot_not_tower(unit.x,unit.y);
         }
@@ -399,11 +520,10 @@ public abstract class Unit {
         this.tower_x = xy[0];this.tower_y = xy[1];}
     protected boolean fire_bot(double obj_x,double obj_y){
         g = (float) (atan2(this.tower_y - obj_y,this.tower_x-obj_x ) / 3.1415926535f * 180f);
-        return abs(g - (rotation_tower-90)) < 20;
+        return abs(g - (rotation_tower)) < 20;
     }
     protected boolean fire_bot_not_tower(double obj_x,double obj_y){
         g = (float) (atan2(this.tower_y - obj_y,this.tower_x-obj_x ) / 3.1415926535f * 180f);
-        g -=90;
         sost_fire_bot = abs(g-rotation_corpus)<20;
         if(reload_bot() & sost_fire_bot){
             this.reload = this.reload_max;
@@ -735,7 +855,7 @@ public abstract class Unit {
         }
 
     }
-    protected void corpus_corpus(ArrayList<Unit>obj_2){
+    public void corpus_corpus(ArrayList<Unit> obj_2){
         for (Unit unit : obj_2) {
             if (unit != this) {
                 if (rectCollision((int) this.x, (int) this.y, (int) this.corpus_width, (int) this.corpus_height,this.rotation_corpus,
@@ -864,8 +984,9 @@ public abstract class Unit {
     public void transportDelete(){
         if(this.hp>0)return;
         if(this.crite_life){
-            Main.DebrisList.add(new DebrisTransport(this.x,this.y,this.rotation_corpus,this.speed,this.rotation_inert,this.speed_inert,
-                    this.corpus_img,this.corpus_width,this.corpus_height,this.type_unit));
+//            Main.DebrisList.add(new DebrisTransport(this.x,this.y,this.rotation_corpus,this.speed,this.RotationInert,this.SpeedInert,
+//                    this.corpus_img,this.corpus_width,this.corpus_height,this.type_unit));
+            UnitDelete();
             eventDead();
             packetUnitUpdate.ConfUnitList = true;
             ClearUnitList.add(this);
@@ -874,6 +995,16 @@ public abstract class Unit {
         }
         this.crite_life = true;
         this.hp = this.max_hp/2;
+
+    }
+    public void DebrisDelete() {
+        if (this.hp > 0) return;
+        eventDead();
+        packetUnitUpdate.ConfDebrisList = true;
+        ClearDebrisList.add(this);
+
+
+
 
     }
     protected void debrisDelete(){
@@ -958,22 +1089,22 @@ public abstract class Unit {
         if(this.x< unit.x) {
             this.x -= 2;
             unit.x += 2;
-            this.speed_inert += unit.speed*0.5;
-            unit.speed_inert += this.speed*0.5;
+            this.SpeedInert += unit.speed*0.5;
+            unit.SpeedInert += this.speed*0.5;
             this.speed *= -0.8;
             unit.speed *= -0.8;
-            this.rotation_inert = unit.rotation_corpus;
-            unit.rotation_inert = this.rotation_corpus;
+            this.RotationInert = unit.rotation_corpus;
+            unit.RotationInert = this.rotation_corpus;
         }
         else if(this.x> unit.x) {
             this.x += 2;
             unit.x -= 2;
-            this.speed_inert += unit.speed*0.5;
-            unit.speed_inert += this.speed*0.5;
+            this.SpeedInert += unit.speed*0.5;
+            unit.SpeedInert += this.speed*0.5;
             this.speed *= -0.5;
             unit.speed *= -0.7;
-            this.rotation_inert = unit.rotation_corpus;
-            unit.rotation_inert = this.rotation_corpus;
+            this.RotationInert = unit.rotation_corpus;
+            unit.RotationInert = this.rotation_corpus;
         }
         if(this.y< unit.y) {
             this.y -= 2;
@@ -988,12 +1119,12 @@ public abstract class Unit {
         if(this.x<x) {
             this.x -= 2;
             this.speed *= -0.8;
-            this.speed_inert *= -0.8;
+            this.SpeedInert *= -0.8;
         }
         else if(this.x>x) {
             this.x += 2;
             this.speed *= -0.8;
-            this.speed_inert *= -0.8;
+            this.SpeedInert *= -0.8;
         }
         if(this.y<y) {
             this.y -= 2;
@@ -1017,15 +1148,15 @@ public abstract class Unit {
         }
     }
     protected void inertia_xy() {
-        if(speed_inert!= 0) {
-            this.x -= move.move_sin(this.speed_inert, -this.rotation_inert);
-            this.y -= move.move_cos(this.speed_inert, -this.rotation_inert);
-            if (this.speed_inert > 0.5) {
-                this.speed_inert -= this.acceleration;
-            } else if (this.speed_inert < -0.5) {
-                this.speed_inert += this.acceleration;
+        if(SpeedInert != 0) {
+            this.x -= move.move_sin(this.SpeedInert, -this.RotationInert);
+            this.y -= move.move_cos(this.SpeedInert, -this.RotationInert);
+            if (this.SpeedInert > 0.5) {
+                this.SpeedInert -= this.acceleration;
+            } else if (this.SpeedInert < -0.5) {
+                this.SpeedInert += this.acceleration;
             } else {
-                speed_inert = 0;
+                SpeedInert = 0;
             }
         }
     }
@@ -1056,11 +1187,11 @@ public abstract class Unit {
             packetUnitUpdate.ConfUnitList = true;
             switch(rand.rand(2)){
                 case 0:{
-                    UnitList.add(new SoldatBullet(this.x,this.y,this.team,true));
+                    UnitList.add(new SoldatBullet(this.x,this.y,true,this.team));
                     break;
                 }
                 case 1:{
-                    UnitList.add(new SoldatFlame(this.x,this.y,this.team,true));
+                    UnitList.add(new SoldatFlame(this.x,this.y,true,this.team));
                     break;
                 }
                 //case 3->{soldat.add(new soldat_(this.x,this.y));}
@@ -1209,16 +1340,25 @@ public abstract class Unit {
     public void all_action(){
         damage_temperature();
         inertia_xy();
+        control.ControllerIteration(this);
+        functional.FunctionalIterationAnHost(this);
+        EventClear.EventIteration(this);
     }
     public void all_action_client(){
         HPSynchronization();
+        control.ControllerIterationClientAnHost(this);
+        functional.FunctionalIterationClientAnHost(this);
+        EventClear.EventIteration(this);
 
     }
     public void all_action_client_1(){
         HPSynchronization();
+        control.ControllerIterationClientAnClient(this);
+        functional.FunctionalIterationAnClient(this);
     }
     public void all_action_client_2(){
         HPSynchronization();
+        functional.FunctionalIterationAnClient(this);
     }
     public void tower_action_client(float x,float y,float rotation,boolean sost_fire_bot){
 

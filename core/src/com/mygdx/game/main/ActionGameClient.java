@@ -112,6 +112,10 @@ public class ActionGameClient extends com.mygdx.game.main.ActionGame {
                 unit.update();
             }
         }
+        for(i = 0;i< DebrisList.size();i++) {
+            DebrisList.get(i).UpdateUnit();
+
+        }
 
         for (Unit debris : DebrisList){
             debris.all_action_client();

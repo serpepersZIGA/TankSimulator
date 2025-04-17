@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class TransportPacket {
     public float x,y,rotation_corpus,rotation_tower,reload;
     public UnitType name;
+    public String ID;
     public byte team;
     public int hp;
     public float speed;

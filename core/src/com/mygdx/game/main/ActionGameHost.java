@@ -113,6 +113,8 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
             Unit debris = DebrisList.get(i);
             packet_debris_server(debris);
             debris.all_action();
+            debris.corpus_corpus(Main.UnitList);
+            debris.corpus_corpus(Main.DebrisList);
         }
         for(i = 0;i< UnitList.size();i++) {
             Unit unit = UnitList.get(i);
@@ -140,6 +142,12 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
                 unit.UpdateUnit();
                 unit.update();
             }
+        }
+        for(i = 0;i< DebrisList.size();i++) {
+            Unit unit = DebrisList.get(i);
+            unit.UpdateUnit();
+            //unit.update();
+
         }
         RC.BuildingIteration();
         Batch.draw(textureBuffer,-20,1,1,1);
@@ -222,6 +230,7 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
         pack.speed = unit.speed;
         pack.host = unit.host;
         pack.IDClient = unit.nConnect;
+        pack.ID = unit.ID;
         for (Unit Tower : unit.tower_obj){
             pack.rotation_tower_2.add(Tower.rotation_tower);
         }
@@ -229,7 +238,7 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
     private void packet_debris_server(Unit unit){
         PacketDebris.add(new DebrisPacket());
         DebrisPacket pack = PacketDebris.get(i);
-        pack.name = unit.type_unit;
+        pack.UnitID = unit.ID;
         pack.x = unit.x;
         pack.y = unit.y;
         pack.rotation = unit.rotation_corpus;

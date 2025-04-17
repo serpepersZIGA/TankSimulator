@@ -54,10 +54,10 @@ public class Method {
         int radius = 0;
         for (Unit unit : UnitList) {
             if(unit.team !=objBot.team) {
-                double g = sqrt(pow2.pow2(objBot.x - unit.x) + pow2.pow2(objBot.y - unit.y));
+                int g = (int) sqrt(pow2.pow2(objBot.x - unit.x) + pow2.pow2(objBot.y - unit.y));
                 if (radius == 0 || radius > g) {
                     ind = unit;
-                    radius = (int) g;
+                    radius = g;
 
                 }
             }

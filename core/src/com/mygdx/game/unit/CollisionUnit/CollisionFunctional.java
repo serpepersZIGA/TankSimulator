@@ -3,8 +3,6 @@ package com.mygdx.game.unit.CollisionUnit;
 import com.mygdx.game.method.Method;
 import com.mygdx.game.unit.Unit;
 
-import java.util.ArrayList;
-
 import static com.mygdx.game.method.pow2.pow2;
 import static java.lang.StrictMath.abs;
 import static java.lang.StrictMath.sqrt;
@@ -114,22 +112,22 @@ public abstract class CollisionFunctional{
         if(unit2.x< unit.x) {
             unit2.x -= 2;
             unit.x += 2;
-            unit2.speed_inert += unit.speed*0.5;
-            unit.speed_inert += unit2.speed*0.5;
+            unit2.SpeedInert += unit.speed*0.5;
+            unit.SpeedInert += unit2.speed*0.5;
             unit2.speed *= -0.8;
             unit.speed *= -0.8;
-            unit2.rotation_inert = unit.rotation_corpus;
-            unit.rotation_inert = unit2.rotation_corpus;
+            unit2.RotationInert = unit.rotation_corpus;
+            unit.RotationInert = unit2.rotation_corpus;
         }
         else if(unit2.x>= unit.x) {
             unit2.x += 2;
             unit.x -= 2;
-            unit2.speed_inert += unit.speed*0.5;
-            unit.speed_inert += unit2.speed*0.5;
+            unit2.SpeedInert += unit.speed*0.5;
+            unit.SpeedInert += unit2.speed*0.5;
             unit2.speed *= -0.5;
             unit.speed *= -0.5;
-            unit2.rotation_inert = unit.rotation_corpus;
-            unit.rotation_inert = unit2.rotation_corpus;
+            unit2.RotationInert = unit.rotation_corpus;
+            unit.RotationInert = unit2.rotation_corpus;
         }
         if(unit2.y< unit.y) {
             unit2.y -= 2;

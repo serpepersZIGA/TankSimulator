@@ -17,6 +17,7 @@ import com.mygdx.game.unit.DebrisPacket;
 import Content.UnitPack.Transport.Transport.DebrisTransport;
 import com.mygdx.game.unit.SpawnPlayer.*;
 import com.mygdx.game.unit.TransportPacket;
+import com.mygdx.game.unit.Unit;
 import com.mygdx.game.unit.UnitType;
 
 import java.io.IOException;
@@ -129,15 +130,39 @@ public class ServerMain extends Listener {
     //Используется когда клиент отправляет пакет серверу
     public void received(Connection c, Object p){
         if(p instanceof Packet_client) {
-            for (int i = 0;i<Clients.size();i++) {
-                Packet_client pack = Clients.get(i);
-                if(pack.IDClient == ((Packet_client) p).IDClient){
-                    Clients.remove(pack);
-                    Clients.add((Packet_client)p);
+            Packet_client pack = (Packet_client)p;
+            for (Unit unit : UnitList) {
+                if (pack.IDClient == unit.nConnect) {
+                    unit.left_mouse = pack.left_mouse;
+                    unit.right_mouse = pack.right_mouse;
+                    unit.press_w = pack.press_w;
+                    unit.press_a = pack.press_a;
+                    unit.press_s = pack.press_s;
+                    unit.press_d = pack.press_d;
+                    unit.TargetX = pack.mouse_x;
+                    unit.TargetY = pack.mouse_y;
+                    unit.TowerControlPlayerClient();
+                    //unit.FireControl();
+                    for (Unit Tower : unit.tower_obj) {
+                        Tower.left_mouse = pack.left_mouse;
+                        Tower.TargetX = pack.mouse_x;
+                        Tower.TargetY = pack.mouse_y;
+                        Tower.TowerControlPlayerClient();
+                        Tower.FireControl();
+                    }
                     return;
                 }
+
             }
-            Clients.add((Packet_client) p);
+
+//            for (Packet_client pack : Clients) {
+//                if(pack.IDClient == ((Packet_client) p).IDClient){
+//                    Clients.remove(pack);
+//                    Clients.add((Packet_client)p);
+//                    return;
+//                }
+//            }
+//            Clients.add((Packet_client) p);
         }
         else if(p instanceof PlayerSpawnData){
             nConnect += 1;

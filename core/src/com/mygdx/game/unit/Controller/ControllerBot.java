@@ -6,7 +6,7 @@ public class ControllerBot extends Controller{
     public void ControllerIteration(Unit unit){
         unit.behavior_bot();
         unit.bot_fire();
-        unit.FireControl();
+        //unit.FireControl();
         unit.tower_ii();
         unit.TowerControlBot();
         for (Unit Tower : unit.tower_obj){

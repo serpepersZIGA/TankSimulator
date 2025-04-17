@@ -8,7 +8,7 @@ import static com.mygdx.game.main.Main.UnitList;
 
 public class SpawnPlayerCannonAcid extends PlayerSpawnData{
     public void SpawnPlayer(boolean host){
-        UnitList.add(new PanzerAcidT1(200,200, UnitList,host,(byte)1));
+        UnitList.add(new PanzerAcidT1(200,200,host,(byte)1));
         UnitList.get(UnitList.size()-1).control = Main.RegisterControl.controllerPlayer;
         UnitList.get(UnitList.size()-1).PlayerConf = true;
     }

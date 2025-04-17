@@ -6,6 +6,8 @@ import com.mygdx.game.main.Main;
 import com.mygdx.game.unit.Unit;
 import com.mygdx.game.unit.UnitType;
 
+import java.util.ArrayList;
+
 import static com.mygdx.game.main.Main.ContentImage;
 import static com.mygdx.game.main.Main.RegisterFunctionalComponent;
 
@@ -21,12 +23,12 @@ public class DebrisTransport extends Unit {
         this.corpus_height = height;
         this.rotation_corpus = rotation;
         this.speed = speed;
-        this.speed_inert = inert_speed;
-        this.rotation_inert = inert_rotation;
+        this.SpeedInert = inert_speed;
+        this.RotationInert = inert_rotation;
         this.corpus_img = corpus;
-        this.allyList = Main.DebrisList;
         this.max_hp = 10000;
         this.armor = 5;
+        this.tower_obj = new ArrayList<>();
         functional.Add(RegisterFunctionalComponent.MoveDebris);
         functional.Add(RegisterFunctionalComponent.BuildCollision);
         if(this.corpus_img == null){

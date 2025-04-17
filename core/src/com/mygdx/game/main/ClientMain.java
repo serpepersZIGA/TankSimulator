@@ -10,6 +10,7 @@ import com.esotericsoftware.kryonet.Client;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
@@ -257,26 +258,25 @@ public class ClientMain extends Listener {
     }
 
     public void player_data(Unit unit) {
-            TransportPacket packet = PacketUnit.get(i);
-            unit.type_unit = packet.name;
-            unit.x = packet.x;
-            unit.y = packet.y;
-            unit.rotation_corpus = packet.rotation_corpus;
-            unit.reload = packet.reload;
-            unit.hp = packet.hp;
-            unit.team = packet.team;
-            unit.speed = packet.speed;
-            unit.host = packet.host;
-            unit.nConnect = packet.IDClient;
-            unit.rotation_tower = packet.rotation_tower;
-            for (int i2 = 0; i2 < unit.tower_obj.size(); i2++) {
-                unit.tower_obj.get(i2).rotation_tower = packet.rotation_tower_2.get(i2);
-            }
+        TransportPacket packet = PacketUnit.get(i);
+        unit.type_unit = packet.name;
+        unit.x = packet.x;
+        unit.y = packet.y;
+        unit.rotation_corpus = packet.rotation_corpus;
+        unit.reload = packet.reload;
+        unit.hp = packet.hp;
+        unit.team = packet.team;
+        unit.speed = packet.speed;
+        unit.host = packet.host;
+        unit.nConnect = packet.IDClient;
+        unit.rotation_tower = packet.rotation_tower;
+        for (int i2 = 0; i2 < unit.tower_obj.size(); i2++) {
+            unit.tower_obj.get(i2).rotation_tower = packet.rotation_tower_2.get(i2);
+        }
 
     }
 
-    public void player_data_add(TransportPacket pack) {
-        Unit transport = Main.UnitList.get(Main.UnitList.size() - 1);
+    public void player_data_add(TransportPacket pack,Unit transport) {
         transport.type_unit = pack.name;
         transport.x = pack.x;
         transport.y = pack.y;
@@ -313,7 +313,7 @@ public class ClientMain extends Listener {
 
     public void debris_data(Unit debris) {
         DebrisPacket pack = PacketDebris.get(i);
-        debris.type_unit = pack.name;
+        debris.ID = pack.UnitID;
         debris.x = pack.x;
         debris.y = pack.y;
         debris.rotation_corpus = pack.rotation;
@@ -322,7 +322,7 @@ public class ClientMain extends Listener {
 
     public void debris_data_add(DebrisPacket packet) {
         Unit debris = DebrisList.get(DebrisList.size() - 1);
-        debris.type_unit = packet.name;
+        debris.ID = packet.UnitID;
         debris.x = packet.x;
         debris.y = packet.y;
         debris.rotation_corpus = packet.rotation;
@@ -350,114 +350,92 @@ public class ClientMain extends Listener {
     }
 
     public void debris_create(DebrisPacket debris) {
-        switch (debris.name) {
-            case PanzerFlameT1:
-                DebrisList.add(new DebrisTransport(debris.x, debris.y, debris.rotation, 0, 0, 0, PanzerFlameT1.corpus_img,
-                        PanzerFlameT1.corpus_width, PanzerFlameT1.corpus_height, UnitType.PanzerFlameT1));
+        for(Object[] obj :Unit.IDList) {
+            if(Objects.equals(obj[1], debris.UnitID)){
+                Unit unit = (Unit)obj[0];
+                DebrisList.add(new UnitPattern(unit.CorpusUnit, (String) obj[1],debris.x,debris.y,debris.rotation,0,0,0));
                 break;
-            case PanzerMortarT1:
-                DebrisList.add(new DebrisTransport(debris.x, debris.y, debris.rotation, 0, 0, 0, PanzerMortarT1.corpus_img,
-                        PanzerMortarT1.corpus_width, PanzerMortarT1.corpus_height, UnitType.PanzerMortarT1));
-                break;
-            case PanzerT1:
-                DebrisList.add(new DebrisTransport(debris.x, debris.y, debris.rotation, 0, 0, 0, PanzerT1.corpus_img,
-                        PanzerT1.corpus_width, PanzerT1.corpus_height, UnitType.PanzerT1));
-                break;
-            case PanzerAcidT1:
-                DebrisList.add(new DebrisTransport(debris.x, debris.y, debris.rotation, 0, 0, 0, PanzerAcidT1.corpus_img,
-                        PanzerAcidT1.corpus_width, PanzerAcidT1.corpus_height, UnitType.PanzerAcidT1));
-                break;
-            case TrackRemountT1:
-                DebrisList.add(new DebrisTransport(debris.x, debris.y, debris.rotation, 0, 0, 0, TrackRemountT1.corpus_img,
-                        TrackRemountT1.corpus_width, TrackRemountT1.corpus_height, UnitType.TrackRemountT1));
-                break;
-            case TrackSoldatT1:
-                DebrisList.add(new DebrisTransport(debris.x, debris.y, debris.rotation, 0, 0, 0, TrackSoldatT1.corpus_img,
-                        TrackSoldatT1.corpus_width, TrackSoldatT1.corpus_height, UnitType.TrackSoldatT1));
-                break;
-
-            case PlayerFlameT1:
-                DebrisList.add(new DebrisTransport(debris.x, debris.y, debris.rotation, 0, 0, 0, PlayerCannonFlame.corpus_img,
-                        PlayerCannonFlame.corpus_width, PlayerCannonFlame.corpus_height, UnitType.PlayerFlameT1));
-                break;
-            case PlayerT1:
-                DebrisList.add(new DebrisTransport(debris.x, debris.y, debris.rotation, 0, 0, 0, PlayerCannonBullTank.corpus_img,
-                        PlayerCannonBullTank.corpus_width, PlayerCannonBullTank.corpus_height, UnitType.PlayerT1));
-                break;
-            case PlayerAcidT1:
-                DebrisList.add(new DebrisTransport(debris.x, debris.y, debris.rotation, 0, 0, 0, PlayerCannonAcid.corpus_img,
-                        PlayerCannonAcid.corpus_width, PlayerCannonAcid.corpus_height, UnitType.PlayerAcidT1));
-                break;
-            case PlayerMortarT1:
-                DebrisList.add(new DebrisTransport(debris.x, debris.y, debris.rotation, 0, 0, 0, PlayerCannonMortar.corpus_img,
-                        PlayerCannonMortar.corpus_width, PlayerCannonMortar.corpus_height, UnitType.PlayerMortarT1));
-                break;
-            case HelicopterT1:
-                DebrisList.add(new DebrisTransport(debris.x, debris.y, debris.rotation, 0, 0, 0, Helicopter_t1.corpus_img,
-                        Helicopter_t1.corpus_width, Helicopter_t1.corpus_height, UnitType.HelicopterT1));
-                break;
+            }
         }
     }
 
     public void UnitCreate() {
-        Main.UnitList.clear();
+        UnitList.clear();
+//        for (TransportPacket pack : PacketUnit) {
+//
+//            switch (pack.name) {
+//                case PlayerFlameT1:
+//                    Main.UnitList.add(new PlayerCannonFlame(0, 0, pack.host, (byte) 1));
+//                    Main.UnitList.get(Main.UnitList.size() - 1).control = RegisterControl.controllerBot;
+//                    break;
+//                case PlayerMortarT1:
+//                    Main.UnitList.add(new PlayerCannonMortar(0, 0, pack.host, (byte) 1));
+//                    Main.UnitList.get(Main.UnitList.size() - 1).control = RegisterControl.controllerBot;
+//                    break;
+//                case PlayerT1:
+//                    Main.UnitList.add(new PlayerCannonBullTank(0, 0, pack.host, (byte) 1));
+//                    Main.UnitList.get(Main.UnitList.size() - 1).control = RegisterControl.controllerBot;
+//                    break;
+//                case PlayerAcidT1:
+//                    Main.UnitList.add(new PlayerCannonAcid(0, 0, pack.host, (byte) 1));
+//                    Main.UnitList.get(Main.UnitList.size() - 1).control = RegisterControl.controllerBot;
+//                    break;
+//                case PanzerFlameT1:
+//                    UnitList.add(new PanzerFlameT1(0, 0, pack.host, (byte) 2));
+//                    Main.UnitList.get(Main.UnitList.size() - 1).control = RegisterControl.controllerBot;
+//                    break;
+//                case PanzerMortarT1:
+//                    UnitList.add(new PanzerMortarT1(0, 0, pack.host, (byte) 2));
+//                    Main.UnitList.get(Main.UnitList.size() - 1).control = RegisterControl.controllerBot;
+//                    break;
+//                case PanzerT1:
+//                    UnitList.add(new PanzerT1(0, 0,pack.host, (byte) 2));
+//                    Main.UnitList.get(Main.UnitList.size() - 1).control = RegisterControl.controllerBot;
+//                    break;
+//                case PanzerAcidT1:
+//                    UnitList.add(new PanzerAcidT1(0, 0, pack.host, (byte) 2));
+//                    Main.UnitList.get(Main.UnitList.size() - 1).control = RegisterControl.controllerBot;
+//                    break;
+//                case TrackRemountT1:
+//                    UnitList.add(new TrackRemountT1(0, 0, pack.host, (byte) 2));
+//                    Main.UnitList.get(Main.UnitList.size() - 1).control = RegisterControl.controllerBotSupport;
+//                    break;
+//                case TrackSoldatT1:
+//                    UnitList.add(new TrackSoldatT1(0, 0, pack.host, (byte) 2));
+//                    Main.UnitList.get(Main.UnitList.size() - 1).control = RegisterControl.controllerSoldatTransport;
+//                    break;
+//                case SoldatFlame:
+//                    UnitList.add(new SoldatFlame(0, 0,pack.host, (byte) 2));
+//                    Main.UnitList.get(Main.UnitList.size() - 1).control = RegisterControl.controllerSoldatBot;
+//                    break;
+//                case HelicopterT1:
+//                    UnitList.add(new HelicopterT1(0, 0,pack.host, (byte) 2));
+//                    Main.UnitList.get(Main.UnitList.size() - 1).control = RegisterControl.controllerHelicopter;
+//                    break;
+//            }
+//            if (pack.PlayerConf) {
+//                Main.UnitList.get(Main.UnitList.size() - 1).control = RegisterControl.controllerPlayer;
+//                Main.UnitList.get(Main.UnitList.size() - 1).nConnect = pack.IDClient;
+//            }
+//            player_data_add(pack);
+//        }
+//        KeyboardObj.ZoomConstTransport();
+        Unit unit = null;
         for (TransportPacket pack : PacketUnit) {
+            for(Object[] obj :Unit.IDList) {
+                if(Objects.equals(obj[1], pack.ID)){
+                    unit = (Unit)obj[0];
 
-            switch (pack.name) {
-                case PlayerFlameT1:
-                    Main.UnitList.add(new PlayerCannonFlame(0, 0, Main.UnitList, pack.host, (byte) 1));
-                    Main.UnitList.get(Main.UnitList.size() - 1).control = RegisterControl.controllerBot;
+                    UnitList.add(unit.UnitAdd(0,0,pack.host,pack.team));
+                    UnitList.get(UnitList.size() - 1).control = RegisterControl.controllerBot;
+                    player_data_add(pack,unit);
                     break;
-                case PlayerMortarT1:
-                    Main.UnitList.add(new PlayerCannonMortar(0, 0, Main.UnitList, pack.host, (byte) 1));
-                    Main.UnitList.get(Main.UnitList.size() - 1).control = RegisterControl.controllerBot;
-                    break;
-                case PlayerT1:
-                    Main.UnitList.add(new PlayerCannonBullTank(0, 0, Main.UnitList, pack.host, (byte) 1));
-                    Main.UnitList.get(Main.UnitList.size() - 1).control = RegisterControl.controllerBot;
-                    break;
-                case PlayerAcidT1:
-                    Main.UnitList.add(new PlayerCannonAcid(0, 0, Main.UnitList, pack.host, (byte) 1));
-                    Main.UnitList.get(Main.UnitList.size() - 1).control = RegisterControl.controllerBot;
-                    break;
-                case PanzerFlameT1:
-                    UnitList.add(new PanzerFlameT1(0, 0, UnitList, pack.host, (byte) 2));
-                    Main.UnitList.get(Main.UnitList.size() - 1).control = RegisterControl.controllerBot;
-                    break;
-                case PanzerMortarT1:
-                    UnitList.add(new PanzerMortarT1(0, 0, UnitList, pack.host, (byte) 2));
-                    Main.UnitList.get(Main.UnitList.size() - 1).control = RegisterControl.controllerBot;
-                    break;
-                case PanzerT1:
-                    UnitList.add(new PanzerT1(0, 0, UnitList, pack.host, (byte) 2));
-                    Main.UnitList.get(Main.UnitList.size() - 1).control = RegisterControl.controllerBot;
-                    break;
-                case PanzerAcidT1:
-                    UnitList.add(new PanzerAcidT1(0, 0, UnitList, pack.host, (byte) 2));
-                    Main.UnitList.get(Main.UnitList.size() - 1).control = RegisterControl.controllerBot;
-                    break;
-                case TrackRemountT1:
-                    UnitList.add(new TrackRemountT1(0, 0, UnitList, pack.host, (byte) 2));
-                    Main.UnitList.get(Main.UnitList.size() - 1).control = RegisterControl.controllerBotSupport;
-                    break;
-                case TrackSoldatT1:
-                    UnitList.add(new TrackSoldatT1(0, 0, UnitList, pack.host, (byte) 2));
-                    Main.UnitList.get(Main.UnitList.size() - 1).control = RegisterControl.controllerSoldatTransport;
-                    break;
-                case SoldatFlame:
-                    UnitList.add(new SoldatFlame(0, 0, (byte) 2, pack.host));
-                    Main.UnitList.get(Main.UnitList.size() - 1).control = RegisterControl.controllerSoldatBot;
-                    break;
-                case HelicopterT1:
-                    UnitList.add(new HelicopterT1(0, 0, (byte) 2, pack.host));
-                    Main.UnitList.get(Main.UnitList.size() - 1).control = RegisterControl.controllerHelicopter;
-                    break;
+                }
             }
             if (pack.PlayerConf) {
-                Main.UnitList.get(Main.UnitList.size() - 1).control = RegisterControl.controllerPlayer;
-                Main.UnitList.get(Main.UnitList.size() - 1).nConnect = pack.IDClient;
+                UnitList.get(UnitList.size() - 1).control = RegisterControl.controllerPlayer;
+                UnitList.get(UnitList.size() - 1).nConnect = pack.IDClient;
             }
-            player_data_add(pack);
         }
         KeyboardObj.ZoomConstTransport();
     }
