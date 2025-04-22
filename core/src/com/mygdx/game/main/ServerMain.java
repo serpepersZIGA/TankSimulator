@@ -139,16 +139,13 @@ public class ServerMain extends Listener {
                     unit.press_a = pack.press_a;
                     unit.press_s = pack.press_s;
                     unit.press_d = pack.press_d;
-                    unit.TargetX = pack.mouse_x;
-                    unit.TargetY = pack.mouse_y;
-                    unit.TowerControlPlayerClient();
+                    unit.TargetX = pack.mouse_x- RC.width_2;
+                    unit.TargetY = pack.mouse_y- RC.height_2;
                     //unit.FireControl();
                     for (Unit Tower : unit.tower_obj) {
                         Tower.left_mouse = pack.left_mouse;
-                        Tower.TargetX = pack.mouse_x;
-                        Tower.TargetY = pack.mouse_y;
-                        Tower.TowerControlPlayerClient();
-                        Tower.FireControl();
+                        Tower.TargetX = unit.TargetX+ Tower.tower_x;
+                        Tower.TargetY = unit.TargetY+ Tower.tower_y;
                     }
                     return;
                 }

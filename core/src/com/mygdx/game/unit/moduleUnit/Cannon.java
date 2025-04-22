@@ -56,7 +56,7 @@ public class Cannon extends moduleUnit implements Cloneable{
         this.TowerX = TowerX;
         this.TowerY = TowerY;
         this.image =  image;
-        this.functional = functional;
+        this.functional = functional.clone();
         this.sound = sound;
         //IDList.add(ID);
 
@@ -88,7 +88,7 @@ public class Cannon extends moduleUnit implements Cloneable{
         this.TowerX = TowerX;
         this.TowerY = TowerY;
         this.image =  image;
-        this.functional = functional;
+        this.functional = functional.clone();
         this.sound = sound;
     }
     public Cannon CannonAdd(Unit unit,int differenceX,int differenceY){

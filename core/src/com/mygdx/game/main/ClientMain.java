@@ -138,6 +138,7 @@ public class ClientMain extends Listener {
                         break;
                 }
             }
+            PacketBull.clear();
 
             CycleTimeDay.lightTotal = ((PackerServer) p).TotalLight;
             PacketUnit = ((PackerServer) p).player;

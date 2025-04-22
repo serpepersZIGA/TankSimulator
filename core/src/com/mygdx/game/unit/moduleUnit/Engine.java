@@ -17,7 +17,7 @@ public class Engine extends moduleUnit implements Cloneable{
         this.MinSpeed = MinSpeed;
         this.Acceleration = Acceleration;
         this.SpeedRotation = SpeedRotation;
-        this.functional = functional;
+        this.functional = functional.clone();
     }
     public Engine EngineAdd(){
         try {

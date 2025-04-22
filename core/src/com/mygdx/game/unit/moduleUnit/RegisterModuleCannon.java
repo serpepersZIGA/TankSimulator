@@ -12,6 +12,7 @@ public class RegisterModuleCannon {
     public RegisterModuleCannon(){
         FunctionalList func = new FunctionalList();
         func.Add(RegisterFunctionalComponent.TowerXY);
+        func.Add(RegisterFunctionalComponent.TowerControl);
         func.Add(RegisterFunctionalComponent.FireControl);
         CannonFlame = new Cannon(55,35,34,17,1f,
                  20,6,0,0,1.5f,2

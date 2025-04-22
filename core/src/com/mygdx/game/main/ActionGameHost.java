@@ -134,6 +134,9 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
             if(unit.height == 1) {
                 unit.UpdateUnit();
                 unit.update();
+                for (Unit tower : unit.tower_obj){
+                    tower.updateTower();
+                }
             }
         }
         for(i = 0;i< UnitList.size();i++) {
@@ -141,6 +144,9 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
             if(unit.height == 2) {
                 unit.UpdateUnit();
                 unit.update();
+                for (Unit tower : unit.tower_obj){
+                    tower.updateTower();
+                }
             }
         }
         for(i = 0;i< DebrisList.size();i++) {

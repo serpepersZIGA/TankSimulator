@@ -15,10 +15,10 @@ import static java.lang.StrictMath.sqrt;
 public class Method {
     public static float tower(float x, float y, float x_2, float y_2, float rotation_tower, float speed_tower) {
         int gh = (int) (atan2(y - y_2, x - x_2) / 3.1415926535 *180);
-        if(gh>130 && rotation_tower<-50){
+        if(gh>50 && rotation_tower<-50){
             gh= -180;
         }
-        if(gh<-50 && rotation_tower>130){
+        if(gh<-50 && rotation_tower>50){
             gh= 180;
         }
         if (rotation_tower > 179){rotation_tower = -179;}

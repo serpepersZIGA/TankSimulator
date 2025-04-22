@@ -1,15 +1,11 @@
 package com.mygdx.game.unit.Controller;
 
 import com.mygdx.game.main.Main;
-import com.mygdx.game.main.Packet_client;
 import com.mygdx.game.method.Keyboard;
 import com.mygdx.game.unit.Unit;
 
-import java.util.ConcurrentModificationException;
-
 import static com.mygdx.game.main.ClientMain.Client;
-import static com.mygdx.game.main.Main.Clients;
-import static com.mygdx.game.main.Main.PacketClient;
+import static com.mygdx.game.main.Main.*;
 
 public class ControllerPlayer extends Controller {
     public void ControllerIteration(Unit unit){
@@ -19,16 +15,14 @@ public class ControllerPlayer extends Controller {
         unit.press_a = Keyboard.PressA;
         unit.press_s = Keyboard.PressS;
         unit.press_d = Keyboard.PressD;
-        unit.TargetX = Keyboard.MouseX;
-        unit.TargetY = Keyboard.MouseY;
+        unit.TargetX = Keyboard.MouseX- RC.width_2;
+        unit.TargetY = Keyboard.MouseY- RC.height_2;
         Main.RC.x = unit.tower_x;
         Main.RC.y = unit.tower_y;
-        unit.TowerControlPlayer();
         for(Unit Tower : unit.tower_obj){
             Tower.left_mouse = Keyboard.LeftMouse;
-            Tower.TargetX = Keyboard.MouseX;
-            Tower.TargetY = Keyboard.MouseY;
-            Tower.TowerControlPlayer();
+            Tower.TargetX = unit.TargetX+Tower.tower_x;
+            Tower.TargetY = unit.TargetY+Tower.tower_y;
         }
 
     }

@@ -5,13 +5,16 @@ import com.mygdx.game.unit.Unit;
 
 import java.util.ArrayList;
 
-public class FunctionalList {
+public class FunctionalList implements Cloneable{
     public ArrayList<FunctionalComponent> functional= new ArrayList<>();
     public void Add(FunctionalComponent component){
         functional.add(component);
     }
     public void Remove(FunctionalComponent component){
         functional.remove(component);
+    }
+    public void Clear(){
+        functional.clear();
     }
     public void FunctionalIterationAnHost(Unit unit){
         for(FunctionalComponent func : functional){
@@ -31,6 +34,17 @@ public class FunctionalList {
     public void FunctionalIterationOtherAnClient(Unit unit){
         for(FunctionalComponent func : functional){
             func.FunctionalIterationOtherAnClient(unit);
+        }
+    }
+
+    @Override
+    public FunctionalList clone() {
+        try {
+            FunctionalList clone = (FunctionalList) super.clone();
+            // TODO: copy mutable state here, so the clone can't change the internals of the original
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
         }
     }
 }

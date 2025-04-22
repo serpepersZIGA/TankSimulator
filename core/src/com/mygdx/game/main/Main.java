@@ -56,6 +56,7 @@ import java.util.LinkedList;
 
 import static com.mygdx.game.unit.SpawnPlayer.PlayerSpawnListData.PlayerSpawnCannonVoid;
 import static com.mygdx.game.unit.TransportRegister.PlayerCannonFlameA1;
+import static com.mygdx.game.unit.TransportRegister.PlayerCannonFlameA2;
 
 
 public class Main extends ApplicationAdapter {
@@ -145,7 +146,7 @@ public class Main extends ApplicationAdapter {
 		//SoldatList.add(new SoldatBull(1200,200, UnitList));
 		MapScan.MapInput("Map/maps/MapBase.mapt");
 		MapAllLoad.MapCount();
-		PlayerCannonFlameA1.UnitAdd(1200,1200,true, (byte) 2, RegisterControl.controllerBot);
+		PlayerCannonFlameA2.UnitAdd(1200,1200,true, (byte) 2, RegisterControl.controllerBot);
 		//UnitList.add(new PanzerFlameT1(2200,2000,true,(byte)2));
 		//UnitList.get(0).control = Main.RegisterControl.controllerBot;
 //		UnitList.add(new TrackRemountT1(2700,2000,Main.UnitList,true,(byte)2));

@@ -2,17 +2,16 @@ package com.mygdx.game.unit.FunctionalComponent;
 
 import com.mygdx.game.unit.Unit;
 
-public class ComponentTowerXY extends FunctionalComponent{
+public class ComponentTowerControl extends FunctionalComponent{
     public void FunctionalIterationAnHost(Unit unit){
-        unit.TowerXY2();
+        unit.TowerControl();
     }
     public void FunctionalIterationClientAnHost(Unit unit){
-        unit.TowerXY2();
+        unit.TowerControl();
+
     }
     public void FunctionalIterationAnClient(Unit unit){
-        unit.TowerXY2();
     }
     public void FunctionalIterationOtherAnClient(Unit unit){
-        unit.TowerXY2();
     }
 }

@@ -4,10 +4,10 @@ import Content.Bull.*;
 import Content.Particle.Blood;
 import Content.UnitPack.Soldat.SoldatBullet;
 import Content.UnitPack.Soldat.SoldatFlame;
-import Content.UnitPack.Transport.Transport.DebrisTransport;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.mygdx.game.Event.EventGame;
+import com.mygdx.game.bull.Bullet;
 import com.mygdx.game.main.Main;
 import com.mygdx.game.method.*;
 import Content.Particle.FlameSpawn;
@@ -346,12 +346,15 @@ public abstract class Unit implements Cloneable{
         //bypass_build(Main.build,this.x_relocation,this.y_relocation,this.rotation_relocation,g_right,g_left,i);
 
     }
-    public final void tower_ii() {
+    public final void TowerAI() {
         if (this.trigger_attack) {
             Unit unit = detection_near_transport_i(this);
             if(unit != null) {
                 this.TargetX = unit.tower_x;
                 this.TargetY = unit.tower_y;
+
+                this.sost_fire_bot = fire_bot(unit.tower_x, unit.tower_y);
+                //this.left_mouse = sost_fire_bot & trigger_fire;
             }
 
         } else {
@@ -421,14 +424,28 @@ public abstract class Unit implements Cloneable{
         this.x += move.move_sin2(this.speed, rotation_corpus2);
         this.y += move.move_cos2(this.speed, rotation_corpus2);
     }
-    public void TowerControlPlayer() {
-        this.rotation_tower = Method.tower(this.x_tower_rend+this.tower_width_2,this.y_tower_rend+this.tower_height_2,TargetX,TargetY, this.rotation_tower, this.speed_tower);
+    public void TowerControl() {
+        tower(this.tower_x,this.tower_y,TargetX,TargetY, this.speed_tower);
     }
-    public void TowerControlPlayerClient() {
-        this.rotation_tower = Method.tower(RC.width_2,RC.height_2,TargetX,TargetY, this.rotation_tower, this.speed_tower);
-    }
-    public void TowerControlBot() {
-        this.rotation_tower = Method.tower(this.tower_x,this.tower_y,TargetX,TargetY, this.rotation_tower, this.speed_tower);
+    public void tower(float x, float y, float x_2, float y_2, float speed_tower) {
+        int gh = (int) (atan2(y - y_2, x - x_2) / 3.1415926535 *180);
+        if(gh>50 && rotation_tower<-50){
+            gh= -180;
+        }
+        if(gh<-50 && rotation_tower>50){
+            gh= 180;
+        }
+        if (rotation_tower > 179){rotation_tower = -179;}
+        else if (rotation_tower < -179){rotation_tower = 179;}
+        if (rotation_tower < gh) {
+            rotation_tower += speed_tower;
+        } else if (rotation_tower > gh) {
+            rotation_tower -= speed_tower;
+        }
+        if(abs(rotation_tower-gh)<20 & trigger_fire){
+            left_mouse = true;
+        }
+
     }
 
     public void bot_fire(){
@@ -457,14 +474,18 @@ public abstract class Unit implements Cloneable{
         this.rotation_tower += speed_tower;
     }
     public void bull_packets(int i1, int i2){
-        PacketBull.get(i1).x = this.fire_x;
-        PacketBull.get(i1).y = this.fire_y;
-        PacketBull.get(i1).rotation = BulletList.get(i2).rotation;
-        PacketBull.get(i1).time = BulletList.get(i2).time;
-        PacketBull.get(i1).speed = BulletList.get(i2).speed;
-        PacketBull.get(i1).height = BulletList.get(i2).height;
-        PacketBull.get(i1).type = BulletList.get(i2).type;
-        PacketBull.get(i1).team = this.team;
+        BullPacket bullPack = PacketBull.get(i1);
+        Bullet bullet = BulletList.get(i2);
+        if(bullet != null) {
+            bullPack.x = this.fire_x;
+            bullPack.y = this.fire_y;
+            bullPack.team = this.team;
+            bullPack.rotation = bullet.rotation;
+            bullPack.time = bullet.time;
+            bullPack.speed = bullet.speed;
+            bullPack.height = bullet.height;
+            bullPack.type = bullet.type;
+        }
     }
 
     protected void motor_bot_bypass() {
@@ -499,10 +520,10 @@ public abstract class Unit implements Cloneable{
     }
     protected void indicator_reload(){
         green_len_reload = (this.reload/this.reload_max)* Option.size_x_indicator;
-        Render.setColor(Option.reload_r_indicator, Option.reload_g_indicator, Option.reload_b_indicator,1);
-        Render.rect((this.x_rend- Option.const_reload_x_zoom),(this.y_rend- Option.const_reload_y_zoom), Option.size_x_indicator_zoom, Option.size_y_indicator_zoom);
-        Render.setColor(Option.reload_2_r_indicator, Option.reload_2_g_indicator, Option.reload_2_b_indicator,1);
-        Render.rect((this.x_rend- Option.const_reload_x_zoom),(this.y_rend- Option.const_reload_y_zoom),(int)(green_len_reload* Main.Zoom), Option.size_y_indicator_zoom);
+        Render.setColor(Option.reload_r_indicator, Option.reload_g_indicator, Option.reload_b_indicator,0.3f);
+        Render.rect((this.x_tower_rend+ width_tower-Option.size_x_indicator),(this.y_tower_rend- height_tower), Option.size_x_indicator_zoom, Option.size_y_indicator_zoom);
+        Render.setColor(Option.reload_2_r_indicator, Option.reload_2_g_indicator, Option.reload_2_b_indicator,0.3f);
+        Render.rect((this.x_tower_rend+ width_tower-Option.size_x_indicator),(this.y_tower_rend- height_tower),(int)(green_len_reload* Main.Zoom), Option.size_y_indicator_zoom);
     }
     public void FireControl(){
         if(this.reload_bot() && this.left_mouse){
@@ -512,13 +533,13 @@ public abstract class Unit implements Cloneable{
         }
     }
 
-    public void tower_xy(){
+    public void TowerXY(){
     float []xy = Method.tower_xy(this.x,this.y,this.tower_x_const,this.tower_y_const,this.difference,-this.rotation_corpus);
         this.tower_x = xy[0];this.tower_y = xy[1];}
     public void TowerXY2(){
         float []xy = Method.tower_xy_2(this.x,this.y,this.tower_x_const,this.tower_y_const,this.difference,this.difference_2,-this.rotation_corpus);
         this.tower_x = xy[0];this.tower_y = xy[1];}
-    protected boolean fire_bot(double obj_x,double obj_y){
+    protected boolean fire_bot(float obj_x,float obj_y){
         g = (float) (atan2(this.tower_y - obj_y,this.tower_x-obj_x ) / 3.1415926535f * 180f);
         return abs(g - (rotation_tower)) < 20;
     }
@@ -1373,11 +1394,13 @@ public abstract class Unit implements Cloneable{
 
     }
     public void tower_action(){
-        this.update();
 
     }
 
     public void update(){
+
+    }
+    public void updateTower(){
 
     }
     protected void center_render(){

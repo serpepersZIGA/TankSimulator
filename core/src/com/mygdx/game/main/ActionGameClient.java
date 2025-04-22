@@ -3,6 +3,7 @@ package com.mygdx.game.main;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import Content.Particle.Acid;
 import Content.Particle.FlameSpawn;
+import com.mygdx.game.bull.Bullet;
 import com.mygdx.game.method.Keyboard;
 import com.mygdx.game.unit.DebrisPacket;
 import com.mygdx.game.unit.Unit;
@@ -76,8 +77,11 @@ public class ActionGameClient extends com.mygdx.game.main.ActionGame {
         for (i = 0; i< Main.FlameParticleList.size(); i++){
             Main.FlameParticleList.get(i).all_action(i);}
         for (i = 0; i< Main.BulletList.size(); i++){
-            if(Main.BulletList.get(i).height == 1) {
-                Main.BulletList.get(i).all_action(i);
+            Bullet bullet = Main.BulletList.get(i);
+            if(bullet != null) {
+                if (bullet.height == 1) {
+                    bullet.all_action(i);
+                }
             }
         }
         Render.end();
@@ -128,8 +132,11 @@ public class ActionGameClient extends com.mygdx.game.main.ActionGame {
         Render.begin(ShapeRenderer.ShapeType.Filled);
 
         for (i = 0; i< Main.BulletList.size(); i++){
-            if(Main.BulletList.get(i).height == 2) {
-                Main.BulletList.get(i).all_action(i);
+            Bullet bullet = Main.BulletList.get(i);
+            if(bullet != null) {
+                if (bullet.height == 2) {
+                    bullet.all_action(i);
+                }
             }
         }
         for (i= 0; i< AirList.size(); i++){
