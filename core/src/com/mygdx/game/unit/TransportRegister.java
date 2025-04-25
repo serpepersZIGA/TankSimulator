@@ -16,7 +16,7 @@ public class TransportRegister {
     public static ArrayList<DebrisPacket> PacketDebris = new ArrayList<>();
     public static Unit PlayerCannonFlame, PlayerCannonMortar, PlayerCannonBullTank, PlayerCannonAcid,
             PanzerMortarT1, PanzerFlameT1, PanzerAcidT1, PanzerT1, TrackRemountT1, TrackSoldatT1, Helicopter_t1
-            ,PlayerCannonFlameA1,PlayerCannonFlameA2;
+            ,PlayerCannonFlameA1,PlayerCannonFlameA2,PlayerCannonMortarA1,PlayerCannonMachineGunA1;
     public TransportRegister() {
         PlayerCannonFlame = new PlayerCannonFlame(0,0,false,(byte)1);
         PlayerCannonMortar = new PlayerCannonMortar(0,0,false,(byte)1);
@@ -37,8 +37,20 @@ public class TransportRegister {
         list.add(RegisterModuleCannon.CannonFlame);
         PlayerCannonFlameA1 = new UnitPattern("PanzFlA1",
                 RegisterModuleCorpus.CorpusT1, RegisterModuleEngine.Engine1E,list,new int[][]{{-12,52},{12,52},{1,18}});
+        list = new ArrayList<>();
+        list.add(RegisterModuleCannon.CannonFlameAuxiliary);
+        list.add(RegisterModuleCannon.CannonFlameAuxiliary);
+        list.add(RegisterModuleCannon.CannonMortar);
+        PlayerCannonMortarA1 = new UnitPattern("PanzMortA1",
+                RegisterModuleCorpus.CorpusT1, RegisterModuleEngine.Engine1E,list,new int[][]{{-12,52},{12,52},{1,18}});
         PlayerCannonFlameA2 = new UnitPattern("PanzFlA2",
                 RegisterModuleCorpus.CorpusT1, RegisterModuleEngine.Engine2E,list,new int[][]{{-12,52},{12,52},{1,18}});
+        list = new ArrayList<>();
+        list.add(RegisterModuleCannon.CannonMachineGunAuxiliary);
+        list.add(RegisterModuleCannon.CannonMachineGunAuxiliary);
+        list.add(RegisterModuleCannon.CannonMachineGun);
+        PlayerCannonMachineGunA1 = new UnitPattern("PanzMachGunA1",
+                RegisterModuleCorpus.CorpusT1, RegisterModuleEngine.Engine1E,list,new int[][]{{-12,52},{12,52},{1,18}});
 
     }
 }
