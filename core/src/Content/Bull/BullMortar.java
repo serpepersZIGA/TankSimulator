@@ -6,6 +6,7 @@ import com.mygdx.game.main.Main;
 
 public class BullMortar extends Bullet {
     public BullMortar(float x, float y, float rotation, float damage, float penetration, float damage_fragment, float penetration_fragment, byte type_time, byte height){
+        super(x,y,rotation,damage,penetration,damage_fragment,penetration_fragment,type_time,height);
         this.x = x;this.y = y;
         this.damage = damage;this.penetration = penetration;
         this.speed = 6;
@@ -15,22 +16,22 @@ public class BullMortar extends Bullet {
         this.rotation = rotation;
         this.damage_fragment = damage_fragment;
         this.penetration_fragment = penetration_fragment;
-        this.amount_fragment = 15;
+        this.AmountFragment = 15;
+        BangSpawn = true;
 
         this.type_team = type_time;
         this.height = height;
         this.r = (float)1/255*236;
         this.g = (float)1/255*124;
         this.b = (float)1/255*38;
-        type = 3;
         speed_save();
         effectBullet = EffectBullet.Mortar;
     }
 
-    public void all_action(int i){
+    public void all_action(){
         super.bull_move_xy();
-        super.corpus_bull();
-        super.BullBuildMortar();
+        super.CorpusBullet();
+        super.BuildBulletCollision();
         super.fragments_create();
         this.update();
         super.clear();

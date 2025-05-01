@@ -1,6 +1,6 @@
-package com.mygdx.game.unit.FunctionalComponent;
+package com.mygdx.game.FunctionalComponent;
 
-import com.mygdx.game.main.Main;
+import com.mygdx.game.bull.Bullet;
 import com.mygdx.game.unit.Unit;
 
 import java.util.ArrayList;
@@ -34,6 +34,30 @@ public class FunctionalList implements Cloneable{
     public void FunctionalIterationOtherAnClient(Unit unit){
         for(FunctionalComponent func : functional){
             func.FunctionalIterationOtherAnClient(unit);
+        }
+    }
+
+
+
+
+    public void FunctionalIterationAnHost(Bullet bullet){
+        for(FunctionalComponent func : functional){
+            func.FunctionalIterationAnHost(bullet);
+        }
+    }
+    public void FunctionalIterationClientAnHost(Bullet bullet){
+        for(FunctionalComponent func : functional){
+            func.FunctionalIterationClientAnHost(bullet);
+        }
+    }
+    public void FunctionalIterationAnClient(Bullet bullet){
+        for(FunctionalComponent func : functional){
+            func.FunctionalIterationAnClient(bullet);
+        }
+    }
+    public void FunctionalIterationOtherAnClient(Bullet bullet){
+        for(FunctionalComponent func : functional){
+            func.FunctionalIterationOtherAnClient(bullet);
         }
     }
 

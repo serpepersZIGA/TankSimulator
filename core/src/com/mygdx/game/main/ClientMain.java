@@ -3,7 +3,6 @@ import Content.Build.BigBuildingWood1;
 import Content.Build.Home1;
 import Content.Bull.*;
 import Content.Particle.*;
-import Content.UnitPack.Soldat.SoldatFlame;
 import Content.UnitPack.Transport.Transport.*;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.esotericsoftware.kryonet.Client;
@@ -34,6 +33,7 @@ import com.mygdx.game.unit.SpawnPlayer.*;
 
 import static Content.Bull.BullRegister.PacketBull;
 import static com.mygdx.game.build.BuildRegister.PacketBuilding;
+import static com.mygdx.game.bull.BulletRegister.IDBullet;
 import static com.mygdx.game.main.Main.*;
 import static com.mygdx.game.soldat.SoldatRegister.PacketSoldat;
 import static com.mygdx.game.object_map.MapObject.PacketMapObjects;
@@ -107,35 +107,16 @@ public class ClientMain extends Listener {
 
     @Override
     public void received(Connection c, Object p) {
-        Main.IDClient = c.getID();
+        IDClient = c.getID();
         if (p instanceof PackerServer) {
             PacketBull = ((PackerServer) p).bull;
             for (BullPacket pack : PacketBull) {
-                switch (pack.type) {
-                    case 1:
-                        BulletList.add(new BullFlame(pack.x, pack.y,
-                                pack.rotation, 0.0F, 0.0F, 0, pack.team, pack.height));
-                        break;
-                    case 2:
-                        BulletList.add(new BullFragment(pack.x, pack.y,
-                                0.0F, 0.0f, pack.height));
-                        break;
-
-                    case 3:
-                        BulletList.add(new BullMortar(pack.x, pack.y,
-                                pack.rotation, 0.0f, 0f, 0f, 0f, pack.team
-                                , pack.height));
-                        break;
-                    case 4:
-                        BulletList.add(new BullAcid(pack.x, pack.y,
-                                pack.rotation, 0.0f, 0.0f, pack.team
-                                , pack.height));
-                        break;
-                    case 5:
-                        BulletList.add(new BullTank(pack.x, pack.y,
-                                pack.rotation, 0.0f, 0.0f, pack.team
-                                , pack.height));
-                        break;
+                for (Object[] obj :IDBullet){
+                    if(pack.ID == (int)obj[1]) {
+                        Bullet bullet = (Bullet) obj[0];
+                        bullet.BulletAdd(pack.x,pack.y,pack.rotation,0,0,0,0,
+                                pack.team, pack.height, 0,pack.speed,0, pack.time);
+                    }
                 }
             }
             PacketBull.clear();
@@ -143,8 +124,7 @@ public class ClientMain extends Listener {
             CycleTimeDay.lightTotal = ((PackerServer) p).TotalLight;
             PacketUnit = ((PackerServer) p).player;
             i = 0;
-            //UnitCreate();
-            //System.out.println(PacketUnit.size()+" "+UnitList.size());
+
             if(PacketUnit.size()== UnitList.size()) {
                 for (Unit unit : UnitList) {
                     player_data(unit);
@@ -156,11 +136,7 @@ public class ClientMain extends Listener {
             }
             PacketDebris = ((PackerServer) p).debris;
             i = 0;
-            //DebrisList.clear();
-//            for(DebrisPacket debris :PacketDebris){
-//                debris_create(debris);
-//                Main_client.debris_data_add(debris);
-//            }
+
             if(PacketDebris.size()== DebrisList.size()) {
                 for (Unit debris : DebrisList) {
                     debris_data(debris);
@@ -246,72 +222,41 @@ public class ClientMain extends Listener {
         }
     }
 
-    public void bull_data(BullPacket pack) {
-        Bullet bull = BulletList.get(this.i);
-        bull.x = pack.x;
-        bull.y = pack.y;
-        bull.rotation = pack.rotation;
-        bull.time = pack.time;
-        bull.height = pack.height;
-        bull.type = pack.type;
-        bull.type_team = pack.team;
-        this.i += 1;
-    }
-
     public void player_data(Unit unit) {
         TransportPacket packet = PacketUnit.get(i);
         unit.type_unit = packet.name;
         unit.x = packet.x;
         unit.y = packet.y;
         unit.rotation_corpus = packet.rotation_corpus;
-        unit.reload = packet.reload;
         unit.hp = packet.hp;
         unit.team = packet.team;
         unit.speed = packet.speed;
         unit.host = packet.host;
         unit.nConnect = packet.IDClient;
-        unit.rotation_tower = packet.rotation_tower;
         for (int i2 = 0; i2 < unit.tower_obj.size(); i2++) {
+
             unit.tower_obj.get(i2).rotation_tower = packet.rotation_tower_2.get(i2);
+            unit.tower_obj.get(i2).reload = packet.reloadTower.get(i2);
         }
 
     }
 
-    public void player_data_add(TransportPacket pack,Unit transport) {
+    public void UnitDataCreate(TransportPacket pack, Unit transport) {
         transport.type_unit = pack.name;
         transport.x = pack.x;
         transport.y = pack.y;
         transport.rotation_corpus = pack.rotation_corpus;
-        transport.reload = pack.reload;
         transport.hp = pack.hp;
         transport.team = pack.team;
         transport.speed = pack.speed;
         transport.host = pack.host;
         transport.nConnect = pack.IDClient;
-        transport.rotation_tower = pack.rotation_tower;
         for (int i2 = 0; i2 < transport.tower_obj.size(); i2++) {
-            transport.tower_obj.get(i2).rotation_tower =
-                    pack.rotation_tower_2.get(i2);
+            transport.tower_obj.get(i2).rotation_tower=pack.rotation_tower_2.get(i2);
+            transport.tower_obj.get(i2).reload=pack.reloadTower.get(i2);
         }
 
     }
-
-    public void enemy_data(int i) {
-        UnitList.get(i).type_unit = PacketUnit.get(i).name;
-        UnitList.get(i).x = PacketUnit.get(i).x;
-        UnitList.get(i).y = PacketUnit.get(i).y;
-        UnitList.get(i).rotation_corpus = PacketUnit.get(i).rotation_corpus;
-        UnitList.get(i).crite_life = PacketUnit.get(i).crite_life;
-        UnitList.get(i).rotation_tower = PacketUnit.get(i).rotation_tower;
-        UnitList.get(i).reload = PacketUnit.get(i).reload;
-        UnitList.get(i).hp = PacketUnit.get(i).hp;
-        UnitList.get(i).team = PacketUnit.get(i).team;
-        UnitList.get(i).speed = PacketUnit.get(i).speed;
-        for (int i2 = 0; i2 < PacketUnit.get(i).rotation_tower_2.size(); i2++) {
-            UnitList.get(i).tower_obj.get(i2).rotation_tower = PacketUnit.get(i).rotation_tower_2.get(i2);
-        }
-    }
-
     public void debris_data(Unit debris) {
         DebrisPacket pack = PacketDebris.get(i);
         debris.ID = pack.UnitID;
@@ -362,66 +307,7 @@ public class ClientMain extends Listener {
 
     public void UnitCreate() {
         UnitList.clear();
-//        for (TransportPacket pack : PacketUnit) {
-//
-//            switch (pack.name) {
-//                case PlayerFlameT1:
-//                    Main.UnitList.add(new PlayerCannonFlame(0, 0, pack.host, (byte) 1));
-//                    Main.UnitList.get(Main.UnitList.size() - 1).control = RegisterControl.controllerBot;
-//                    break;
-//                case PlayerMortarT1:
-//                    Main.UnitList.add(new PlayerCannonMortar(0, 0, pack.host, (byte) 1));
-//                    Main.UnitList.get(Main.UnitList.size() - 1).control = RegisterControl.controllerBot;
-//                    break;
-//                case PlayerT1:
-//                    Main.UnitList.add(new PlayerCannonBullTank(0, 0, pack.host, (byte) 1));
-//                    Main.UnitList.get(Main.UnitList.size() - 1).control = RegisterControl.controllerBot;
-//                    break;
-//                case PlayerAcidT1:
-//                    Main.UnitList.add(new PlayerCannonAcid(0, 0, pack.host, (byte) 1));
-//                    Main.UnitList.get(Main.UnitList.size() - 1).control = RegisterControl.controllerBot;
-//                    break;
-//                case PanzerFlameT1:
-//                    UnitList.add(new PanzerFlameT1(0, 0, pack.host, (byte) 2));
-//                    Main.UnitList.get(Main.UnitList.size() - 1).control = RegisterControl.controllerBot;
-//                    break;
-//                case PanzerMortarT1:
-//                    UnitList.add(new PanzerMortarT1(0, 0, pack.host, (byte) 2));
-//                    Main.UnitList.get(Main.UnitList.size() - 1).control = RegisterControl.controllerBot;
-//                    break;
-//                case PanzerT1:
-//                    UnitList.add(new PanzerT1(0, 0,pack.host, (byte) 2));
-//                    Main.UnitList.get(Main.UnitList.size() - 1).control = RegisterControl.controllerBot;
-//                    break;
-//                case PanzerAcidT1:
-//                    UnitList.add(new PanzerAcidT1(0, 0, pack.host, (byte) 2));
-//                    Main.UnitList.get(Main.UnitList.size() - 1).control = RegisterControl.controllerBot;
-//                    break;
-//                case TrackRemountT1:
-//                    UnitList.add(new TrackRemountT1(0, 0, pack.host, (byte) 2));
-//                    Main.UnitList.get(Main.UnitList.size() - 1).control = RegisterControl.controllerBotSupport;
-//                    break;
-//                case TrackSoldatT1:
-//                    UnitList.add(new TrackSoldatT1(0, 0, pack.host, (byte) 2));
-//                    Main.UnitList.get(Main.UnitList.size() - 1).control = RegisterControl.controllerSoldatTransport;
-//                    break;
-//                case SoldatFlame:
-//                    UnitList.add(new SoldatFlame(0, 0,pack.host, (byte) 2));
-//                    Main.UnitList.get(Main.UnitList.size() - 1).control = RegisterControl.controllerSoldatBot;
-//                    break;
-//                case HelicopterT1:
-//                    UnitList.add(new HelicopterT1(0, 0,pack.host, (byte) 2));
-//                    Main.UnitList.get(Main.UnitList.size() - 1).control = RegisterControl.controllerHelicopter;
-//                    break;
-//            }
-//            if (pack.PlayerConf) {
-//                Main.UnitList.get(Main.UnitList.size() - 1).control = RegisterControl.controllerPlayer;
-//                Main.UnitList.get(Main.UnitList.size() - 1).nConnect = pack.IDClient;
-//            }
-//            player_data_add(pack);
-//        }
-//        KeyboardObj.ZoomConstTransport();
-        Unit unit = null;
+        Unit unit;
         for (TransportPacket pack : PacketUnit) {
             for(Object[] obj :Unit.IDList) {
                 if(Objects.equals(obj[1], pack.ID)){
@@ -429,7 +315,7 @@ public class ClientMain extends Listener {
 
                     UnitList.add(unit.UnitAdd(0,0,pack.host,pack.team));
                     UnitList.get(UnitList.size() - 1).control = RegisterControl.controllerBot;
-                    player_data_add(pack,unit);
+                    UnitDataCreate(pack,unit);
                     break;
                 }
             }

@@ -1,11 +1,8 @@
 package com.mygdx.game.unit.moduleUnit;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.mygdx.game.unit.FunctionalComponent.FunctionalComponent;
-import com.mygdx.game.unit.FunctionalComponent.FunctionalList;
+import com.mygdx.game.FunctionalComponent.FunctionalList;
 import com.mygdx.game.unit.Unit;
-
-import java.util.ArrayList;
 
 public class Corpus extends moduleUnit implements Cloneable{
     public int max_hp,hp;

@@ -1,10 +1,5 @@
 package com.mygdx.game.main;
 import Content.Particle.*;
-import Content.UnitPack.Soldat.SoldatFlame;
-import Content.UnitPack.Transport.Transport.HelicopterT1;
-import Content.UnitPack.Transport.Transport.PanzerFlameT1;
-import Content.UnitPack.Transport.Transport.TrackRemountT1;
-import Content.UnitPack.Transport.Transport.TrackSoldatT1;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
@@ -17,6 +12,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.Event.EventRegister;
+import com.mygdx.game.FunctionalComponent.FunctionalBullet.FunctionalComponentBulletRegister;
 import com.mygdx.game.MapFunction.MapScan;
 import com.mygdx.game.block.Block;
 import com.mygdx.game.block.BlockMap;
@@ -24,6 +20,9 @@ import Content.Block.Air;
 import com.mygdx.game.build.*;
 import com.mygdx.game.bull.Bullet;
 import Data.DataImage;
+import com.mygdx.game.bull.BulletRegister;
+import com.mygdx.game.bull.Updater.UpdateRegister;
+import com.mygdx.game.bull.Updater.UpdaterBullet;
 import com.mygdx.game.menu.InputWindow;
 import com.mygdx.game.menu.MapAllLoad;
 import com.mygdx.game.menu.button.*;
@@ -39,10 +38,9 @@ import com.mygdx.game.soldat.SoldatRegister;
 import Data.DataSound;
 import com.mygdx.game.unit.*;
 import com.mygdx.game.unit.CollisionUnit.CollisionMethodGlobal;
-import com.mygdx.game.unit.Controller.ControllerBot;
 import com.mygdx.game.unit.Controller.RegisterController;
 import com.mygdx.game.unit.Fire.FireRegister;
-import com.mygdx.game.unit.FunctionalComponent.FunctionalComponentRegister;
+import com.mygdx.game.FunctionalComponent.FunctionalUnit.FunctionalComponentUnitRegister;
 import com.mygdx.game.unit.PlayerSpawnList.PlayerAllLoad;
 import com.mygdx.game.unit.SpawnPlayer.PlayerSpawnData;
 import com.mygdx.game.unit.SpawnPlayer.PlayerSpawnListData;
@@ -55,7 +53,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 import static com.mygdx.game.unit.SpawnPlayer.PlayerSpawnListData.PlayerSpawnCannonVoid;
-import static com.mygdx.game.unit.TransportRegister.PlayerCannonFlameA1;
 import static com.mygdx.game.unit.TransportRegister.PlayerCannonFlameA2;
 
 
@@ -121,8 +118,7 @@ public class Main extends ApplicationAdapter {
 	public static CycleTimeDay CycleDayNight;
 	public static int flame_spawn_time,flame_spawn_time_max = 20;
 	public static RegisterController RegisterControl;
-	public static FireRegister FireRegister;
-	public static FunctionalComponentRegister RegisterFunctionalComponent;
+	public static FunctionalComponentUnitRegister RegisterFunctionalComponent;
 	public static CollisionMethodGlobal Collision;
 	public static ArrayList<Unit> ClearUnitList = new ArrayList<>();
 	public static ArrayList<Unit> ClearDebrisList = new ArrayList<>();
@@ -224,13 +220,16 @@ public class Main extends ApplicationAdapter {
 
 	@Override
 	public void create () {
-		RegisterFunctionalComponent = new FunctionalComponentRegister();
+		RegisterFunctionalComponent = new FunctionalComponentUnitRegister();
+		FunctionalComponentBulletRegister.FunctionalComponentBulletRegisters();
+		UpdateRegister.UpdateBulletRegisterCreate();
 		VoidObj = new VoidObject();
 		textureBuffer = new Texture("image/infantry/soldat_enemy.png");
 		ContentImage = new DataImage();
 		ContentSound = new DataSound();
 		Collision = new CollisionMethodGlobal();
-		FireRegister = new FireRegister();
+		FireRegister.Create();
+		BulletRegister.BulletRegisterAdd();
 		RegisterControl = new RegisterController();
 		CycleDayNight = new CycleTimeDay(5,5,3,3,0.4f,0.9f);
 		BuildingRegister = new UpdateBuildingRegister();

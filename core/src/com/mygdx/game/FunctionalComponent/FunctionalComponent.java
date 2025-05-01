@@ -1,5 +1,6 @@
-package com.mygdx.game.unit.FunctionalComponent;
+package com.mygdx.game.FunctionalComponent;
 
+import com.mygdx.game.bull.Bullet;
 import com.mygdx.game.unit.Unit;
 
 public abstract class FunctionalComponent {
@@ -16,6 +17,21 @@ public abstract class FunctionalComponent {
 
     }
     public void FunctionalIterationOtherAnClient(Unit unit){
+
+    }
+
+
+
+    public void FunctionalIterationAnHost(Bullet bullet){
+
+    }
+    public void FunctionalIterationClientAnHost(Bullet bullet){
+
+    }
+    public void FunctionalIterationAnClient(Bullet bullet){
+
+    }
+    public void FunctionalIterationOtherAnClient(Bullet bullet){
 
     }
 }

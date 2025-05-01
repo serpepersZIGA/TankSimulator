@@ -15,7 +15,7 @@ import Content.Particle.Bang;
 import com.mygdx.game.unit.CollisionUnit.TypeCollision;
 import com.mygdx.game.unit.Controller.Controller;
 import com.mygdx.game.unit.Fire.Fire;
-import com.mygdx.game.unit.FunctionalComponent.FunctionalList;
+import com.mygdx.game.FunctionalComponent.FunctionalList;
 import com.mygdx.game.unit.moduleUnit.Cannon;
 import com.mygdx.game.unit.moduleUnit.Corpus;
 import com.mygdx.game.unit.moduleUnit.Engine;
@@ -45,7 +45,7 @@ public abstract class Unit implements Cloneable{
     public UnitType type_unit;
     public int[][]TowerXY;
     public int SizeBullet,TimeBullet,TimeBulletRand;
-    public float SpeedBullet;
+    public float SpeedBullet,SpeedBulletRand;
     public static boolean AIScan;
     public ClassUnit classUnit = ClassUnit.Transport;
     public float x, y;
@@ -82,7 +82,7 @@ public abstract class Unit implements Cloneable{
     protected int distance_target_2 = 230;
     public float difference_x,difference_y,green_len,green_len_reload;
     public float rotation_fire;
-    public int corpus_width_zoom, corpus_height_zoom,width_tower_zoom,height_tower_zoom;
+    public int corpus_width_zoom, corpus_height_zoom,width_tower_zoom,height_tower_zoom,AmountFragment;
     public static int ai_sost = 200;
     public EventGame EventClear = EventData.eventDeadTransport;
     public ArrayList<int[]>path;
@@ -484,7 +484,7 @@ public abstract class Unit implements Cloneable{
             bullPack.time = bullet.time;
             bullPack.speed = bullet.speed;
             bullPack.height = bullet.height;
-            bullPack.type = bullet.type;
+            bullPack.ID = bullet.ID;
         }
     }
 
@@ -1374,11 +1374,13 @@ public abstract class Unit implements Cloneable{
     }
     public void all_action_client_1(){
         HPSynchronization();
+        move_xy_transport();
         control.ControllerIterationClientAnClient(this);
         functional.FunctionalIterationAnClient(this);
     }
     public void all_action_client_2(){
         HPSynchronization();
+        move_xy_transport();
         functional.FunctionalIterationAnClient(this);
     }
     public void tower_action_client(float x,float y,float rotation,boolean sost_fire_bot){

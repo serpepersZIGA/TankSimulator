@@ -1,7 +1,6 @@
 package com.mygdx.game.unit.moduleUnit;
 
-import com.mygdx.game.unit.Fire.FireRegister;
-import com.mygdx.game.unit.FunctionalComponent.FunctionalList;
+import com.mygdx.game.FunctionalComponent.FunctionalList;
 
 import static com.mygdx.game.main.Main.ContentImage;
 import static com.mygdx.game.main.Main.RegisterFunctionalComponent;

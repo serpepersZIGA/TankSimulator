@@ -96,7 +96,7 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
             Main.FlameParticleList.get(i).all_action(i);}
         for (i = 0; i< Main.BulletList.size(); i++){
             if(Main.BulletList.get(i).height == 1) {
-                Main.BulletList.get(i).all_action(i);
+                Main.BulletList.get(i).all_action();
             }
         }
         Render.end();
@@ -163,7 +163,7 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
 
         for (i = 0; i< Main.BulletList.size(); i++){
             if(Main.BulletList.get(i).height == 2) {
-                Main.BulletList.get(i).all_action(i);
+                Main.BulletList.get(i).all_action();
             }
         }
         for (i= 0; i< AirList.size(); i++){
@@ -229,8 +229,6 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
         pack.y = unit.y;
         pack.PlayerConf = unit.PlayerConf;
         pack.rotation_corpus = unit.rotation_corpus;
-        pack.rotation_tower = unit.rotation_tower;
-        pack.reload = unit.reload;
         pack.hp = unit.hp;
         pack.team = unit.team;
         pack.speed = unit.speed;
@@ -238,6 +236,7 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
         pack.IDClient = unit.nConnect;
         pack.ID = unit.ID;
         for (Unit Tower : unit.tower_obj){
+            pack.reloadTower.add(Tower.reload);
             pack.rotation_tower_2.add(Tower.rotation_tower);
         }
     }

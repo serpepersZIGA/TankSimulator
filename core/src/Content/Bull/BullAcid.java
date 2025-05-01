@@ -8,6 +8,7 @@ import static Data.DataColor.*;
 
 public class BullAcid extends Bullet {
     public BullAcid(float x, float y, float rotation, float damage, float penetration, byte type_team, byte height){
+        super(x,y,rotation,damage,penetration,type_team,height);
         this.x = x;
         this.y = y;
         this.rotation = rotation;
@@ -16,19 +17,19 @@ public class BullAcid extends Bullet {
         this.type_team = type_team;
         this.height = height;
         r = AcidR;g =  AcidG; b = AcidB;
+        AcidSpawn = true;
         this.size = 8+rand.rand(8);
         this.size_render = (int)(size*Main.Zoom);
         this.speed = -5;
         this.time = 65+rand.rand(15);
-        type = 4;
         speed_save();
 
     }
-    public void all_action(int i){
+    public void all_action(){
         super.bull_move_xy();
-        super.corpus_bull();
-        super.BullBuildAcid();
-        super.bull_clear_time_acid();
+        super.CorpusBullet();
+        super.BuildBulletCollision();
+        super.bullClearTime();
         this.update();
         super.clear();
     }

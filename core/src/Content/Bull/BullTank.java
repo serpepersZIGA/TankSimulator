@@ -5,6 +5,7 @@ import com.mygdx.game.main.Main;
 
 public class BullTank extends Bullet {
     public BullTank(float x, float y, float rotation, float damage, float penetration, byte type_time, byte height){
+        super(x,y,rotation,damage,penetration,type_time,height);
         this.x = x;
         this.y = y;
         this.rotation = rotation;
@@ -20,15 +21,14 @@ public class BullTank extends Bullet {
         this.g = (float)1/256*165;
         this.b = (float)1/256*10;
         this.time = 220;
-        type = 5;
         speed_save();
     }
-    public void all_action(int i){
+    public void all_action(){
         super.bull_move_xy();
         //super.bull_clear_display();
-        super.bull_clear_time();
-        super.corpus_bull();
-        super.BullBuild();
+        super.bullClearTime();
+        super.CorpusBullet();
+        super.BuildBulletCollision();
         this.update();
         super.clear();
     }

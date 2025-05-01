@@ -123,14 +123,15 @@ public abstract class Soldat implements Serializable {
         }
     }
     public void bull_packets(int i1,int i2){
-        PacketBull.get(i1).x = this.x;
-        PacketBull.get(i1).y = this.y;
-        PacketBull.get(i1).rotation = BulletList.get(i2).rotation;
-        PacketBull.get(i1).time = BulletList.get(i2).time;
-        PacketBull.get(i1).speed = BulletList.get(i2).speed;
-        PacketBull.get(i1).height = BulletList.get(i2).height;
-        PacketBull.get(i1).type = BulletList.get(i2).type;
-        PacketBull.get(i1).team = this.team;
+        BullPacket pack = PacketBull.get(i1);
+        pack.x = this.x;
+        pack.y = this.y;
+        pack.rotation = BulletList.get(i2).rotation;
+        pack.time = BulletList.get(i2).time;
+        pack.speed = BulletList.get(i2).speed;
+        pack.height = BulletList.get(i2).height;
+        pack.ID = BulletList.get(i2).ID;
+        pack.team = this.team;
     }
     public void ii_soldat(float g, int iAi, int iEnemy){
         if (ai_sost == 0) {

@@ -1,4 +1,4 @@
-package com.mygdx.game.unit.FunctionalComponent;
+package com.mygdx.game.FunctionalComponent.FunctionalUnit;
 
 import com.mygdx.game.unit.Unit;
 

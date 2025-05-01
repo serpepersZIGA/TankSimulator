@@ -8,9 +8,9 @@ import com.mygdx.game.main.Main;
 import static Data.DataColor.*;
 
 public class BullFragment extends Bullet {
-    public int x2,y2;
 
     public BullFragment(float x, float y, float damage, float penetration, byte type_team){
+        super(x,y,damage,penetration,type_team);
         this.x = x;
         this.y = y;
         this.type_team = type_team;
@@ -27,13 +27,12 @@ public class BullFragment extends Bullet {
         this.g = MortarG;
         this.b = MortarB;
         this.time = 50+rand.rand(80);
-        type = 2;
     }
-    public void all_action(int i){
+    public void all_action(){
         super.bull_move_xy();
-        super.corpus_bull();
-        super.bull_clear_time();
-        super.BullBuild();
+        super.CorpusBullet();
+        super.bullClearTime();
+        super.BuildBulletCollision();
         this.update();
         super.clear();
     }

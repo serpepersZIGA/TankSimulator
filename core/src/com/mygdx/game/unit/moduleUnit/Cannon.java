@@ -3,11 +3,8 @@ package com.mygdx.game.unit.moduleUnit;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.mygdx.game.unit.Fire.Fire;
-import com.mygdx.game.unit.FunctionalComponent.FunctionalComponent;
-import com.mygdx.game.unit.FunctionalComponent.FunctionalList;
+import com.mygdx.game.FunctionalComponent.FunctionalList;
 import com.mygdx.game.unit.Unit;
-
-import java.util.ArrayList;
 
 public class Cannon extends moduleUnit implements Cloneable{
     public Fire fire;
@@ -27,7 +24,7 @@ public class Cannon extends moduleUnit implements Cloneable{
     public float fire_y;
     public FunctionalList functional = new FunctionalList();
     public float damage_fragment, penetration_fragment, TemperatureDamage;
-    public int differenceY, differenceX,TowerX,TowerY,XTower, YTower,CenterX,CenterY;
+    public int differenceY, differenceX,TowerX,TowerY,XTower, YTower,CenterX,CenterY,AmountFragment;
     public int XTowerRend,YTowerRend,TowerWidth2,TowerHeight2;
     public Sound sound;
     public Sprite image;
@@ -35,7 +32,8 @@ public class Cannon extends moduleUnit implements Cloneable{
     public Cannon(int WidthTower, int HeightTower, int ConstTowerX, int ConstTowerY, float SpeedRotationTower,
                   float damage, float penetration, float damage_fragment, float penetration_fragment, float TemperatureDamage,
                   int SizeBullet, int ReloadMax, float SpeedBullet, int TimeBullet,int TowerX,int TowerY, Fire fire, Sprite image,FunctionalList functional
-            ,Sound sound){
+            ,Sound sound,int AmountFragment){
+        this.AmountFragment = AmountFragment;
         this.WidthTower = WidthTower;
         this.HeightTower = HeightTower;
         WidthTower2 = WidthTower/2;
@@ -66,7 +64,8 @@ public class Cannon extends moduleUnit implements Cloneable{
                   float damage, float penetration
             , float damage_fragment, float penetration_fragment, float TemperatureDamage, int SizeBullet, int ReloadMax,
                   float SpeedBullet, int TimeBullet, int TimeBulletRand,int TowerX,int TowerY, Fire fire,Sprite image,FunctionalList functional
-            ,Sound sound){
+            ,Sound sound,int AmountFragment){
+        this.AmountFragment = AmountFragment;
         this.WidthTower = WidthTower;
         this.HeightTower = HeightTower;
         WidthTower2 = WidthTower/2;
@@ -127,6 +126,7 @@ public class Cannon extends moduleUnit implements Cloneable{
         unit.difference = differenceY;
         unit.reload_max = ReloadMax;
         unit.sound_fire = sound;
+        unit.AmountFragment = AmountFragment;
 
         unit.const_tower_x = ConstTowerX;
         unit.const_tower_y = ConstTowerY;

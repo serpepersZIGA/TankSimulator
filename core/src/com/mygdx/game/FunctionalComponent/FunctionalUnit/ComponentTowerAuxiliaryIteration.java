@@ -1,8 +1,9 @@
-package com.mygdx.game.unit.FunctionalComponent;
+package com.mygdx.game.FunctionalComponent.FunctionalUnit;
 
+import com.mygdx.game.FunctionalComponent.FunctionalComponent;
 import com.mygdx.game.unit.Unit;
 
-public class ComponentTowerAuxiliaryIteration extends FunctionalComponent{
+public class ComponentTowerAuxiliaryIteration extends FunctionalComponent {
     public void FunctionalIterationAnHost(Unit unit){
         //unit.tower_iteration(unit);
         for (Unit Tower : unit.tower_obj){

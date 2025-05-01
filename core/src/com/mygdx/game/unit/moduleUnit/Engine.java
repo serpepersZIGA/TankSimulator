@@ -1,7 +1,6 @@
 package com.mygdx.game.unit.moduleUnit;
 
-import com.mygdx.game.unit.FunctionalComponent.FunctionalComponent;
-import com.mygdx.game.unit.FunctionalComponent.FunctionalList;
+import com.mygdx.game.FunctionalComponent.FunctionalList;
 import com.mygdx.game.unit.Unit;
 
 public class Engine extends moduleUnit implements Cloneable{

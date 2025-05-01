@@ -80,7 +80,7 @@ public class ActionGameClient extends com.mygdx.game.main.ActionGame {
             Bullet bullet = Main.BulletList.get(i);
             if(bullet != null) {
                 if (bullet.height == 1) {
-                    bullet.all_action(i);
+                    bullet.all_action_client();
                 }
             }
         }
@@ -107,6 +107,9 @@ public class ActionGameClient extends com.mygdx.game.main.ActionGame {
             if(unit.height == 1) {
                 unit.UpdateUnit();
                 unit.update();
+                for (Unit tower : unit.tower_obj){
+                    tower.updateTower();
+                }
             }
         }
         for(i = 0;i< UnitList.size();i++) {
@@ -114,6 +117,9 @@ public class ActionGameClient extends com.mygdx.game.main.ActionGame {
             if(unit.height == 2) {
                 unit.UpdateUnit();
                 unit.update();
+                for (Unit tower : unit.tower_obj){
+                    tower.updateTower();
+                }
             }
         }
         for(i = 0;i< DebrisList.size();i++) {
@@ -135,7 +141,7 @@ public class ActionGameClient extends com.mygdx.game.main.ActionGame {
             Bullet bullet = Main.BulletList.get(i);
             if(bullet != null) {
                 if (bullet.height == 2) {
-                    bullet.all_action(i);
+                    bullet.all_action_client();
                 }
             }
         }
