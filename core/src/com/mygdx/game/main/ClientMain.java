@@ -1,7 +1,6 @@
 package com.mygdx.game.main;
 import Content.Build.BigBuildingWood1;
 import Content.Build.Home1;
-import Content.Bull.*;
 import Content.Particle.*;
 import Content.UnitPack.Transport.Transport.*;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -17,12 +16,12 @@ import com.mygdx.game.block.Block;
 import com.mygdx.game.build.BuildPacket;
 import com.mygdx.game.build.BuildType;
 import com.mygdx.game.build.PacketBuildingServer;
+import com.mygdx.game.bull.BullPacket;
 import com.mygdx.game.bull.Bullet;
 import com.mygdx.game.method.CycleTimeDay;
 import com.mygdx.game.object_map.ObjectLoad;
 import com.mygdx.game.method.SoundPlay;
 import Content.UnitPack.Soldat.SoldatBullet;
-import com.mygdx.game.soldat.SoldatPacket;
 import com.mygdx.game.object_map.MapObject;
 import com.mygdx.game.object_map.ObjectMapAssets;
 import com.mygdx.game.object_map.PacketMapObject;
@@ -31,11 +30,10 @@ import com.mygdx.game.object_map.component_collision_system.CollisionVoid;
 import com.mygdx.game.unit.*;
 import com.mygdx.game.unit.SpawnPlayer.*;
 
-import static Content.Bull.BullRegister.PacketBull;
 import static com.mygdx.game.build.BuildRegister.PacketBuilding;
 import static com.mygdx.game.bull.BulletRegister.IDBullet;
+import static com.mygdx.game.bull.BulletRegister.PacketBull;
 import static com.mygdx.game.main.Main.*;
-import static com.mygdx.game.soldat.SoldatRegister.PacketSoldat;
 import static com.mygdx.game.object_map.MapObject.PacketMapObjects;
 import static com.mygdx.game.unit.TransportRegister.*;
 
@@ -58,7 +56,6 @@ public class ClientMain extends Listener {
         Client.getKryo().register(ArrayList.class);
         Client.getKryo().register(DebrisTransport.class);
         Client.getKryo().register(SoundPlay.class);
-        Client.getKryo().register(SoldatPacket.class);
         Client.getKryo().register(DebrisPacket.class);
         Client.getKryo().register(SoldatBullet.class);
         Client.getKryo().register(UnitType.class);
@@ -71,11 +68,6 @@ public class ClientMain extends Listener {
         Client.getKryo().register(FlameStatic.class);
         Client.getKryo().register(BuildPacket.class);
         Client.getKryo().register(BuildType.class);
-        Client.getKryo().register(BullFlame.class);
-        Client.getKryo().register(BullFragment.class);
-        Client.getKryo().register(BullAcid.class);
-        Client.getKryo().register(BullTank.class);
-        Client.getKryo().register(BullMortar.class);
         Client.getKryo().register(PacketBuildingServer.class);
         Client.getKryo().register(PlayerSpawnData.class);
         Client.getKryo().register(SpawnPlayerCannonFlame.class);
@@ -267,20 +259,13 @@ public class ClientMain extends Listener {
     }
 
     public void debris_data_add(DebrisPacket packet) {
-        Unit debris = DebrisList.get(DebrisList.size() - 1);
+        Unit debris = DebrisList.get(DebrisList.size()- 1);
         debris.ID = packet.UnitID;
         debris.x = packet.x;
         debris.y = packet.y;
         debris.rotation_corpus = packet.rotation;
     }
 
-    private void soldat_data(int i) {
-        SoldatList.get(i).name = PacketSoldat.get(i).name;
-        SoldatList.get(i).x = PacketSoldat.get(i).x;
-        SoldatList.get(i).y = PacketSoldat.get(i).y;
-        SoldatList.get(i).rotation = PacketSoldat.get(i).rotation;
-        SoldatList.get(i).team = PacketSoldat.get(i).team;
-    }
 
     public void Building_create(int i, int x, int y) {
         if (PacketBuilding.get(i).name != null) {

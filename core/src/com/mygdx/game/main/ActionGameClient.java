@@ -87,8 +87,6 @@ public class ActionGameClient extends com.mygdx.game.main.ActionGame {
         Render.end();
         Batch.begin();
         Render.begin(ShapeRenderer.ShapeType.Filled);
-        for (i = 0; i< Main.SoldatList.size(); i++){
-            Main.SoldatList.get(i).all_action_client(i);}
         for (i= 0; i< Main.FlameSpawnList.size(); i++){
             Main.FlameSpawnList.get(i).all_action(i);
         }

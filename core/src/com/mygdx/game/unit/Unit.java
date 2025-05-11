@@ -1,12 +1,11 @@
 package com.mygdx.game.unit;
-
-import Content.Bull.*;
 import Content.Particle.Blood;
 import Content.UnitPack.Soldat.SoldatBullet;
 import Content.UnitPack.Soldat.SoldatFlame;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.mygdx.game.Event.EventGame;
+import com.mygdx.game.bull.BullPacket;
 import com.mygdx.game.bull.Bullet;
 import com.mygdx.game.main.Main;
 import com.mygdx.game.method.*;
@@ -16,6 +15,7 @@ import com.mygdx.game.unit.CollisionUnit.TypeCollision;
 import com.mygdx.game.unit.Controller.Controller;
 import com.mygdx.game.unit.Fire.Fire;
 import com.mygdx.game.FunctionalComponent.FunctionalList;
+import com.mygdx.game.unit.Inventory.*;
 import com.mygdx.game.unit.moduleUnit.Cannon;
 import com.mygdx.game.unit.moduleUnit.Corpus;
 import com.mygdx.game.unit.moduleUnit.Engine;
@@ -29,17 +29,19 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import static Content.Bull.BullRegister.PacketBull;
+import static com.mygdx.game.bull.BulletRegister.PacketBull;
 import static com.mygdx.game.main.Main.*;
 import static com.mygdx.game.method.Method.*;
 import static com.mygdx.game.method.Option.SoundConst;
 import static com.mygdx.game.method.pow2.pow2;
 import static com.mygdx.game.unit.ClassUnit.SupportTransport;
-import static com.mygdx.game.unit.TransportRegister.packetUnitUpdate;
+import static com.mygdx.game.unit.Fire.FireRegister.FireVoid;
+import static com.mygdx.game.unit.TransportRegister.*;
 import static java.lang.StrictMath.*;
 
 public abstract class Unit implements Cloneable{
     public static ArrayList<Object[]> IDList = new ArrayList<>();
+    public Item GunUse = null;
     public String ID;
     public TypeCollision collision = TypeCollision.rect;
     public UnitType type_unit;
@@ -48,6 +50,7 @@ public abstract class Unit implements Cloneable{
     public float SpeedBullet,SpeedBulletRand;
     public static boolean AIScan;
     public ClassUnit classUnit = ClassUnit.Transport;
+    public Inventory inventory;
     public float x, y;
     public Corpus CorpusUnit;
     public Engine EngineUnit;
@@ -75,6 +78,7 @@ public abstract class Unit implements Cloneable{
     public FunctionalList functional = new FunctionalList();
     public static int BorderDetected = 200;
     public boolean host,crite_life;
+    public Soldat soldat;
 
     private int i;
     protected int distance_target = 200;
@@ -94,7 +98,7 @@ public abstract class Unit implements Cloneable{
     public boolean press_s;
     public boolean press_d;
     public Sprite tower_img,corpus_img;
-    public Fire fire;
+    public Fire fire = FireVoid;
     public Controller control = RegisterControl.controllerVoid;
     public int HPTriggerHill;
     public Unit(){
@@ -116,17 +120,26 @@ public abstract class Unit implements Cloneable{
         this.type_unit = type;
 
     }
-    public Unit(String str,Corpus corpus, Engine engine, ArrayList<Cannon> cannon, int[][]TowerXY){
+    public Unit(Corpus corpus, Engine engine, ArrayList<Cannon> cannon, int[][]TowerXY,ClassUnit classUnit
+    ,int medic_help){
+
+        this.medic_help = (byte) medic_help;
         this.CorpusUnit = corpus.CorpusAdd();
         this.EngineUnit = engine.EngineAdd();
         this.CannonUnitList = cannon;
         this.TowerXY = TowerXY;
+        this.classUnit = classUnit;
 //        for(int i = 0;i<cannon.size();i++){
 //            tower_obj.add(new UnitPattern(cannon.get(i).CannonAdd(this,TowerXY[i][0],TowerXY[i][1]),this));
 //        }
     }
     public Unit(Soldat soldat){
-
+        this.soldat = soldat.SoldatAdd();
+        this.behavior = (byte) (2+ rand.rand(1));
+//        collision = TypeCollision.circle;
+        this.EventClear = EventData.eventDeadSoldat;
+        this.speed_rotation = 1.2F;
+        soldat.SoldatLoad(this);
     }
     public Unit(Corpus corpus,float x,float y,float rotation,float speed,float SpeedInert,float RotationInert){
         this.x = x;
@@ -150,17 +163,22 @@ public abstract class Unit implements Cloneable{
 
     }
     public Unit(Cannon cannon,Unit unit){
+        classUnit = ClassUnit.Tower;
         this.CannonUnit = cannon;
     }
-    public void UnitAdd(int x, int y, boolean host, byte team, Controller controller){
+    public void UnitAdd(int x, int y, boolean host, byte team, Controller controller,Inventory inventory){
         try {
             Unit unitAdd = (Unit) this.clone();
             unitAdd.x = x;
+            unitAdd.inventory =inventory.clone();
             unitAdd.y = y;
             unitAdd.host = host;
             unitAdd.team = team;
             unitAdd.control = controller;
             unitAdd.tower_obj = new ArrayList<>();
+            unitAdd.medic_help = this.medic_help;
+            unitAdd.classUnit = this.classUnit;
+            unitAdd.EventClear = this.EventClear;//EventData.eventDeadSoldat;
             for(int i = 0;i<CannonUnitList.size();i++){
                 unitAdd.tower_obj.add(new UnitPattern(CannonUnitList.get(i).
                         CannonAdd(unitAdd,unitAdd.TowerXY[i][0],unitAdd.TowerXY[i][1]),unitAdd));
@@ -193,6 +211,8 @@ public abstract class Unit implements Cloneable{
             unitAdd.y = y;
             unitAdd.host = host;
             unitAdd.tower_obj = new ArrayList<>();
+            unitAdd.tower_x = x;
+            unitAdd.tower_y = y;
             for(int i = 0;i<unitAdd.CannonUnitList.size();i++){
                 unitAdd.tower_obj.add(new UnitPattern(unitAdd.CannonUnitList.get(i).
                         CannonAdd(unitAdd,unitAdd.TowerXY[i][0],unitAdd.TowerXY[i][1]),unitAdd));
@@ -447,27 +467,57 @@ public abstract class Unit implements Cloneable{
         }
 
     }
-
-    public void bot_fire(){
-        Unit unit = detection_near_transport_i(this);
-        if(unit != null) {
-            this.sost_fire_bot = fire_bot(unit.tower_x, unit.tower_y);
-            this.left_mouse = sost_fire_bot & trigger_fire;
+    public void SoldatRotate(float x, float y, float x_2, float y_2, float speed_tower) {
+        int gh = (int) (atan2(y - y_2, x - x_2) / 3.1415926535 *180);
+        if(gh>50 && rotation_corpus<-50){
+            gh= -180;
         }
+        if(gh<-50 && rotation_corpus>50){
+            gh= 180;
+        }
+        if (rotation_corpus > 179){rotation_corpus = -179;}
+        else if (rotation_corpus < -179){rotation_corpus = 179;}
+        if (rotation_corpus < gh) {
+            rotation_corpus += speed_tower;
+        } else if (rotation_corpus > gh) {
+            rotation_corpus -= speed_tower;
+        }
+        if(abs(rotation_corpus-gh)<20 & trigger_fire){
+            left_mouse = true;
+        }
+
     }
+    public void bot_fire(){
+        //Unit unit = detection_near_transport_i(this);
+        //System.out.println(GunUse);
+            if(AIScan) {
+                trigger_fire = true;
+                if (GunUse == null) {
+                    inventory.ItemUseType(TypeItem.Gun,this);
+                    System.out.println(RadiusTarget);
+                }else if(RadiusTarget<650f){
+                    inventory.ItemUseTeg(TegItem.intimately,this);
+                }
+                else{
+                    inventory.ItemUseTeg(TegItem.afar,this);
+                }
+                //this.g = (float) sqrt(pow2((xy[0] - BlockList2D.get(path.get(0)[1]).get(path.get(0)[0]).x_center)) + pow2(xy[1] - BlockList2D.get(path.get(0)[1]).get(path.get(0)[0]).y_center));
+
+            }
+            //this.sost_fire_bot = fire_bot_not_tower(unit.tower_x, unit.tower_y);
+            this.sost_fire_bot = fire_bot();
+            this.left_mouse = sost_fire_bot & trigger_fire;
+            rotation_tower = rotation_corpus+90;
+//            left_mouse = true;
+//            System.out.println(left_mouse);
+        }
+
     private boolean enemy_fire_not_tower(){
         if(UnitList.size() != 0) {
             Unit unit = detection_near_transport_i(this);
             return fire_bot_not_tower(unit.x,unit.y);
         }
         return false;
-    }
-    protected void bot_bull_tank_fire_not_tower(){
-        if(enemy_fire_not_tower()){
-            SoundPlay.sound( this.sound_fire,1-((float) sqrt(pow2(this.x_rend) + pow2(this.y_rend))/200));
-            Main.BulletList.add(new BullTank(this.tower_x,this.tower_y,-this.rotation_corpus+180,this.damage,this.penetration,this.team,this.height));
-
-        }
     }
 
     protected void blade_helicopter(){
@@ -543,9 +593,15 @@ public abstract class Unit implements Cloneable{
         g = (float) (atan2(this.tower_y - obj_y,this.tower_x-obj_x ) / 3.1415926535f * 180f);
         return abs(g - (rotation_tower)) < 20;
     }
+    protected boolean fire_bot(){
+        rotation_tower = rotation_corpus;
+        return abs(AngleTarget - (rotation_tower)) < 20;
+    }
     protected boolean fire_bot_not_tower(double obj_x,double obj_y){
         g = (float) (atan2(this.tower_y - obj_y,this.tower_x-obj_x ) / 3.1415926535f * 180f);
-        sost_fire_bot = abs(g-rotation_corpus)<20;
+        sost_fire_bot = abs(g-rotation_tower)<20;
+        System.out.println(rotation_corpus+ " "+g);
+        //sost_fire_bot = true;
         if(reload_bot() & sost_fire_bot){
             this.reload = this.reload_max;
             return true;
@@ -1206,13 +1262,16 @@ public abstract class Unit implements Cloneable{
         if(this.time_spawn_soldat <= 0){
             this.time_spawn_soldat = this.time_spawn_soldat_max;
             packetUnitUpdate.ConfUnitList = true;
+            Inventory inventory1 = new Inventory(new Item[3][4]);
+            inventory1.ItemAdd(ItemRegister.AK74);
+            inventory1.ItemAdd(ItemRegister.flamethrower);
             switch(rand.rand(2)){
                 case 0:{
-                    UnitList.add(new SoldatBullet(this.x,this.y,true,this.team));
+                    Veteran.UnitAdd((int) this.x, (int) this.y,true, (byte) 2, RegisterControl.controllerSoldatBot,inventory1);
                     break;
                 }
                 case 1:{
-                    UnitList.add(new SoldatFlame(this.x,this.y,true,this.team));
+                    Jaeger.UnitAdd((int) this.x, (int) this.y,true, (byte) 2,Main.RegisterControl.controllerSoldatBot,inventory1);
                     break;
                 }
                 //case 3->{soldat.add(new soldat_(this.x,this.y));}
@@ -1272,7 +1331,6 @@ public abstract class Unit implements Cloneable{
             }
 
         }
-
         if (this.press_a){
             this.rotation_corpus += this.speed_rotation;
         }
@@ -1301,18 +1359,17 @@ public abstract class Unit implements Cloneable{
             }
         }
     }
-    public void AiSoldat(){
-        Unit obj = detection_near_transport_i(this);
-        if(obj!=null) {
-            AISoldatPath(obj);
-        }
+    public void AiSoldat(Unit unit){
+        //Unit obj = detection_near_transport_i(this);
+        AISoldatPath(unit);
+
     }
     public void AISoldatPath(Unit iEnemy){
         if (AIScan) {
             if (null != findIntersection(x,y, iEnemy.tower_x, iEnemy.tower_y)) {
                 path.clear();
                 Ai.pathAIAStar(this,iEnemy, x, y);
-                trigger_fire = true;
+                trigger_fire = false;
             } else {
                 path.clear();
                 trigger_fire = true;
@@ -1355,9 +1412,6 @@ public abstract class Unit implements Cloneable{
 
         return area1.intersects(circle.getBounds2D());
     }
-    public void HPSynchronization(){
-        this.green_len = (float) this.hp /this.max_hp * Option.size_x_indicator;
-    }
     public void all_action(){
         damage_temperature();
         inertia_xy();
@@ -1366,20 +1420,20 @@ public abstract class Unit implements Cloneable{
         EventClear.EventIteration(this);
     }
     public void all_action_client(){
-        HPSynchronization();
+        this.green_len = (float) this.hp /this.max_hp * Option.size_x_indicator;
         control.ControllerIterationClientAnHost(this);
         functional.FunctionalIterationClientAnHost(this);
         EventClear.EventIteration(this);
 
     }
     public void all_action_client_1(){
-        HPSynchronization();
+        this.green_len = (float) this.hp /this.max_hp * Option.size_x_indicator;
         move_xy_transport();
         control.ControllerIterationClientAnClient(this);
         functional.FunctionalIterationAnClient(this);
     }
     public void all_action_client_2(){
-        HPSynchronization();
+        this.green_len = (float) this.hp /this.max_hp * Option.size_x_indicator;
         move_xy_transport();
         functional.FunctionalIterationAnClient(this);
     }

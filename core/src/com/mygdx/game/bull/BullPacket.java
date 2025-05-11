@@ -1,4 +1,4 @@
-package Content.Bull;
+package com.mygdx.game.bull;
 
 public class BullPacket {
     public float x,y;

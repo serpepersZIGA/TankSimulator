@@ -1,5 +1,4 @@
 package com.mygdx.game.main;
-import Content.Bull.*;
 import Content.Particle.*;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
@@ -7,10 +6,10 @@ import com.esotericsoftware.kryonet.Server;
 import com.mygdx.game.build.BuildPacket;
 import com.mygdx.game.build.BuildType;
 import com.mygdx.game.build.PacketBuildingServer;
+import com.mygdx.game.bull.BullPacket;
 import com.mygdx.game.method.CycleTimeDay;
 import com.mygdx.game.method.SoundPlay;
 import Content.UnitPack.Soldat.SoldatBullet;
-import com.mygdx.game.soldat.SoldatPacket;
 import com.mygdx.game.object_map.ObjectMapAssets;
 import com.mygdx.game.object_map.PacketMapObject;
 import com.mygdx.game.unit.DebrisPacket;
@@ -43,7 +42,6 @@ public class ServerMain extends Listener {
         Server.getKryo().register(ArrayList.class);
         Server.getKryo().register(DebrisTransport.class);
         Server.getKryo().register(SoundPlay.class);
-        Server.getKryo().register(SoldatPacket.class);
         Server.getKryo().register(DebrisPacket.class);
         Server.getKryo().register(SoldatBullet.class);
         Server.getKryo().register(UnitType.class);
@@ -57,11 +55,6 @@ public class ServerMain extends Listener {
         Server.getKryo().register(BuildPacket.class);
         Server.getKryo().register(BuildType.class);
 
-        Server.getKryo().register(BullFlame.class);
-        Server.getKryo().register(BullFragment.class);
-        Server.getKryo().register(BullAcid.class);
-        Server.getKryo().register(BullTank.class);
-        Server.getKryo().register(BullMortar.class);
         Server.getKryo().register(PacketBuildingServer.class);
         Server.getKryo().register(PlayerSpawnData.class);
         Server.getKryo().register(SpawnPlayerCannonFlame.class);

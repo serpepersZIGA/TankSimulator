@@ -7,7 +7,7 @@ import static com.mygdx.game.main.Main.*;
 
 public class RegisterModuleCannon {
     public static Cannon CannonFlame,CannonMortar,CannonFlameAuxiliary, CannonMachineGun,CannonMachineGunAuxiliary,CannonAcid;
-    public RegisterModuleCannon(){
+    public static void Create(){
         FunctionalList func = new FunctionalList();
         func.Add(RegisterFunctionalComponent.TowerXY);
         func.Add(RegisterFunctionalComponent.TowerControl);

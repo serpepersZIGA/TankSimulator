@@ -142,10 +142,6 @@ public class Cannon extends moduleUnit implements Cloneable{
         unit.x_tower = TowerX;
         unit.y_tower = TowerY;
 
-
-
-
-
     }
 //    public static void CannonAdd(Cannon cannon, Unit unit,int differenceX,int differenceY){
 //        try {

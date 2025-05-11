@@ -1,6 +1,5 @@
 package com.mygdx.game.bull;
 
-import Content.Bull.BullMortar;
 import com.mygdx.game.FunctionalComponent.FunctionalBullet.FunctionalComponentBulletRegister;
 import com.mygdx.game.FunctionalComponent.FunctionalList;
 
@@ -10,6 +9,7 @@ import static Data.DataColor.*;
 
 public class BulletRegister {
     public static ArrayList<Object[]>IDBullet =new ArrayList<>();
+    public static ArrayList<BullPacket> PacketBull = new ArrayList<>();
     public static Bullet BulletMortar,BulletAcid,BulletFlame,BulletTank,BulletFragment;
     public static void BulletRegisterAdd() {
         FunctionalList func = new FunctionalList();

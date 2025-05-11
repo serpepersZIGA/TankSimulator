@@ -1,10 +1,8 @@
 package com.mygdx.game.main;
 
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import Content.Bull.BullFragment;
 import Content.Particle.Acid;
 import Content.Particle.FlameSpawn;
-import com.mygdx.game.soldat.SoldatPacket;
 import com.mygdx.game.build.BuildPacket;
 import com.mygdx.game.method.CycleTimeDay;
 import com.mygdx.game.method.Keyboard;
@@ -13,11 +11,10 @@ import com.mygdx.game.unit.DebrisPacket;
 import com.mygdx.game.unit.Unit;
 import com.mygdx.game.unit.TransportPacket;
 
-import static Content.Bull.BullRegister.PacketBull;
 import static com.mygdx.game.build.BuildRegister.PacketBuilding;
+import static com.mygdx.game.bull.BulletRegister.PacketBull;
 import static com.mygdx.game.main.Main.*;
 import static com.mygdx.game.main.ServerMain.Server;
-import static com.mygdx.game.soldat.SoldatRegister.PacketSoldat;
 import static com.mygdx.game.unit.TransportRegister.*;
 
 public class ActionGameHost extends com.mygdx.game.main.ActionGame {
@@ -44,15 +41,6 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
                     if (Keyboard.LeftMouse) {
                         Main.FlameSpawnList.add(new FlameSpawn(Keyboard.MouseX / Zoom + RC.x2,Keyboard.MouseY / Zoom + RC.y2));
                         timer = 30;
-                        Main.BulletList.add(new BullFragment(Keyboard.MouseX / Zoom + RC.x2,Keyboard.MouseY / Zoom + RC.y2,40,20,(byte)1));
-                        Main.BulletList.add(new BullFragment(Keyboard.MouseX / Zoom + RC.x2,Keyboard.MouseY / Zoom + RC.y2,40,20,(byte)1));
-                        Main.BulletList.add(new BullFragment(Keyboard.MouseX / Zoom + RC.x2,Keyboard.MouseY / Zoom + RC.y2,40,20,(byte)1));
-                        Main.BulletList.add(new BullFragment(Keyboard.MouseX / Zoom + RC.x2,Keyboard.MouseY / Zoom + RC.y2,40,20,(byte)1));
-                        Main.BulletList.add(new BullFragment(Keyboard.MouseX / Zoom + RC.x2,Keyboard.MouseY / Zoom + RC.y2,40,20,(byte)1));
-                        Main.BulletList.add(new BullFragment(Keyboard.MouseX / Zoom + RC.x2,Keyboard.MouseY / Zoom + RC.y2,40,20,(byte)1));
-                        Main.BulletList.add(new BullFragment(Keyboard.MouseX / Zoom + RC.x2,Keyboard.MouseY / Zoom + RC.y2,40,20,(byte)1));
-                        Main.BulletList.add(new BullFragment(Keyboard.MouseX / Zoom + RC.x2,Keyboard.MouseY / Zoom + RC.y2,40,20,(byte)1));
-                        Main.BulletList.add(new BullFragment(Keyboard.MouseX / Zoom + RC.x2,Keyboard.MouseY / Zoom + RC.y2,40,20,(byte)1));
 
 
                     }
@@ -102,10 +90,6 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
         Render.end();
         Batch.begin();
         Render.begin(ShapeRenderer.ShapeType.Filled);
-        for (i = 0; i< Main.SoldatList.size(); i++){
-            packet_enemy_soldat();
-            Main.SoldatList.get(i).all_action(i);
-        }
         for (i= 0; i< Main.FlameSpawnList.size(); i++){
             Main.FlameSpawnList.get(i).all_action(i);
         }
@@ -217,7 +201,6 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
         packetUnitUpdate.ConfUnitList = false;
         PacketUnit.clear();
         PacketBull.clear();
-        PacketSoldat.clear();
         PacketDebris.clear();
         PacketBuilding.clear();
     }
@@ -247,14 +230,6 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
         pack.x = unit.x;
         pack.y = unit.y;
         pack.rotation = unit.rotation_corpus;
-    }
-    private void packet_enemy_soldat(){
-        PacketSoldat.add(new SoldatPacket());
-        PacketSoldat.get(i).name = SoldatList.get(i).name;
-        PacketSoldat.get(i).x = SoldatList.get(i).x;
-        PacketSoldat.get(i).y = SoldatList.get(i).y;
-        PacketSoldat.get(i).rotation = SoldatList.get(i).rotation;
-        PacketSoldat.get(i).team = SoldatList.get(i).team;
     }
     public void PacketBuildServer(int i){
         PacketBuilding.add(new BuildPacket());

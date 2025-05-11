@@ -33,20 +33,19 @@ import com.mygdx.game.method.RenderCenter;
 import com.mygdx.game.object_map.MapObject;
 import com.mygdx.game.object_map.VoidObject;
 import com.mygdx.game.particle.*;
-import com.mygdx.game.soldat.Soldat;
-import com.mygdx.game.soldat.SoldatRegister;
 import Data.DataSound;
 import com.mygdx.game.unit.*;
 import com.mygdx.game.unit.CollisionUnit.CollisionMethodGlobal;
 import com.mygdx.game.unit.Controller.RegisterController;
 import com.mygdx.game.unit.Fire.FireRegister;
 import com.mygdx.game.FunctionalComponent.FunctionalUnit.FunctionalComponentUnitRegister;
+import com.mygdx.game.unit.Inventory.Inventory;
+import com.mygdx.game.unit.Inventory.Item;
+import com.mygdx.game.unit.Inventory.ItemRegister;
 import com.mygdx.game.unit.PlayerSpawnList.PlayerAllLoad;
 import com.mygdx.game.unit.SpawnPlayer.PlayerSpawnData;
 import com.mygdx.game.unit.SpawnPlayer.PlayerSpawnListData;
-import com.mygdx.game.unit.moduleUnit.RegisterModuleCannon;
-import com.mygdx.game.unit.moduleUnit.RegisterModuleCorpus;
-import com.mygdx.game.unit.moduleUnit.RegisterModuleEngine;
+import com.mygdx.game.unit.moduleUnit.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -54,6 +53,7 @@ import java.util.LinkedList;
 
 import static com.mygdx.game.unit.SpawnPlayer.PlayerSpawnListData.PlayerSpawnCannonVoid;
 import static com.mygdx.game.unit.TransportRegister.PlayerCannonFlameA2;
+import static com.mygdx.game.unit.TransportRegister.TrackSoldatT1;
 
 
 public class Main extends ApplicationAdapter {
@@ -63,7 +63,6 @@ public class Main extends ApplicationAdapter {
 	public static LinkedList<Particle> FlameStaticList = new LinkedList<>();
 	public static ArrayList<Button>ButtonList = new ArrayList<>();
 	public static LinkedList<Particle> FlameList = new LinkedList<>();
-	public static ArrayList<Soldat> SoldatList = new ArrayList<>();
 	public static LinkedList<Particle> BangList = new LinkedList<>();
 	public static LinkedList<Particle> FlameParticleList = new LinkedList<>();
 	public static LinkedList<Particle> LiquidList = new LinkedList<>();
@@ -89,7 +88,6 @@ public class Main extends ApplicationAdapter {
 	public static int FPS;
 	public static boolean GameHost;
 	public static TransportRegister TransportRegister;
-	public static com.mygdx.game.soldat.SoldatRegister SoldatRegister;
 	public static int width_block_2, height_block_2,x_block,y_block,width_block= 50,height_block =50,width_block_air= 15,height_block_air =15,quantity_width,quantity_height;
 	public static int width_block_zoom= 50,height_block_zoom =50,width_block_render= 64,height_block_render =64;
 	public static float radius_air_max = 150,radius_air_max_zoom;
@@ -142,7 +140,10 @@ public class Main extends ApplicationAdapter {
 		//SoldatList.add(new SoldatBull(1200,200, UnitList));
 		MapScan.MapInput("Map/maps/MapBase.mapt");
 		MapAllLoad.MapCount();
-		PlayerCannonFlameA2.UnitAdd(1200,1200,true, (byte) 2, RegisterControl.controllerBot);
+		TrackSoldatT1.UnitAdd(2000,1200,true, (byte) 2,
+				RegisterControl.controllerBotSupport,new Inventory(new Item[3][4]));
+		PlayerCannonFlameA2.UnitAdd(1200,1200,true, (byte) 2,
+				RegisterControl.controllerBot,new Inventory(new Item[3][4]));
 		//UnitList.add(new PanzerFlameT1(2200,2000,true,(byte)2));
 		//UnitList.get(0).control = Main.RegisterControl.controllerBot;
 //		UnitList.add(new TrackRemountT1(2700,2000,Main.UnitList,true,(byte)2));
@@ -223,6 +224,8 @@ public class Main extends ApplicationAdapter {
 		RegisterFunctionalComponent = new FunctionalComponentUnitRegister();
 		FunctionalComponentBulletRegister.FunctionalComponentBulletRegisters();
 		UpdateRegister.UpdateBulletRegisterCreate();
+
+
 		VoidObj = new VoidObject();
 		textureBuffer = new Texture("image/infantry/soldat_enemy.png");
 		ContentImage = new DataImage();
@@ -231,6 +234,14 @@ public class Main extends ApplicationAdapter {
 		FireRegister.Create();
 		BulletRegister.BulletRegisterAdd();
 		RegisterControl = new RegisterController();
+
+		RegisterModuleCannon.Create();
+		RegisterModuleEngine.Create();
+		RegisterModuleCorpus.Create();
+		RegisterModuleSoldat.Create();
+		GunRegister.Create();
+		ItemRegister.Create();
+
 		CycleDayNight = new CycleTimeDay(5,5,3,3,0.4f,0.9f);
 		BuildingRegister = new UpdateBuildingRegister();
 		PacketBuildingServer = new PacketBuildingServer();
@@ -242,9 +253,6 @@ public class Main extends ApplicationAdapter {
 		InputWindow = new InputWindow();
 		EventData = new EventRegister();
 
-		new RegisterModuleCannon();
-		new RegisterModuleEngine();
-		new RegisterModuleCorpus();
 		new PlayerSpawnListData();
 
 		KeyboardObj = new Keyboard();
@@ -255,7 +263,6 @@ public class Main extends ApplicationAdapter {
 		KeyboardObj.zoom_const();
 		Ai = new AI();
 		TransportRegister = new TransportRegister();
-		SoldatRegister = new SoldatRegister();
 		spawn_object();
 		ButtonList.add(new Play(100,600,400,120,"PLAY",(byte)0));
 		ButtonList.add(new PlayHost(100,800,400,120,"HOST",(byte)1));

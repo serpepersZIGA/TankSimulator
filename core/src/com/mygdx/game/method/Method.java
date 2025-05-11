@@ -1,7 +1,6 @@
 package com.mygdx.game.method;
 
 import com.mygdx.game.build.Building;
-import com.mygdx.game.soldat.Soldat;
 import com.mygdx.game.unit.Unit;
 
 import java.util.ArrayList;
@@ -114,46 +113,6 @@ public class Method {
         return new Object[]{ind,radius};
     }
 
-    public static int[] detection_near_soldat_transport_i_def(ArrayList<Soldat> obj_bot, int i, ArrayList<Unit> obj) {
-        int ind = 0;
-        int radius = 0;
-        double g;
-        for (int i2 = 0; i2 < obj.size(); i2++) {
-            g = sqrt(pow2.pow2(obj_bot.get(i).x - obj.get(i2).x) + pow2.pow2(obj_bot.get(i).y - obj.get(i2).y));
-            if (radius > g || radius == 0) {
-                if(obj.get(i2).x != obj_bot.get(i).x && obj.get(i2).y != obj_bot.get(i).y) {
-                    ind = i2;
-                    radius = (int) g;
-                }
-            }
-        }
-        return new int[]{ind,radius};
-    }
 
-    public static int detection_near_soldat_transport(ArrayList<Soldat> obj_bot, int i, ArrayList<Unit> obj) {
-        int ind = 0;
-        int radius = 0;
-        for (int i2 = 0; i2 < obj.size(); i2++) {
-            double g = sqrt(pow2.pow2(obj_bot.get(i).x - obj.get(i2).x) + pow2.pow2(obj_bot.get(i).y - obj.get(i2).y));
-            if (radius == 0 || radius > g) {
-                ind = i2;
-                radius = (int) g;
-
-            }
-        }
-        return ind;
-    }
-    public static int detection_near_soldat_build(ArrayList<Soldat> obj_bot, int i, ArrayList<Building> obj) {
-        int ind = 0;
-        int radius = 0;
-        for (int i2 = 0; i2 < obj.size(); i2++) {
-            double g = sqrt(pow2.pow2(obj_bot.get(i).x - obj.get(i2).x) + pow2.pow2(obj_bot.get(i).y - obj.get(i2).y));
-            if (radius == 0 || radius > g) {
-                ind = i2;
-                radius = (int) g;
-            }
-        }
-        return ind;
-    }
 
 }

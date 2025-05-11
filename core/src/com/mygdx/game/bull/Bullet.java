@@ -1,6 +1,4 @@
 package com.mygdx.game.bull;
-import Content.Bull.BullFragment;
-import Content.Bull.BullPacket;
 import com.mygdx.game.Event.EventGame;
 import com.mygdx.game.bull.Updater.UpdateRegister;
 import com.mygdx.game.bull.Updater.UpdaterBullet;
@@ -20,10 +18,8 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 import java.io.Serializable;
 
-import static Content.Bull.BullRegister.PacketBull;
 import static Data.DataColor.*;
-import static com.mygdx.game.bull.BulletRegister.BulletFragment;
-import static com.mygdx.game.bull.BulletRegister.IDBullet;
+import static com.mygdx.game.bull.BulletRegister.*;
 import static com.mygdx.game.main.Main.*;
 import static com.mygdx.game.method.pow2.pow2;
 
@@ -226,15 +222,6 @@ public abstract class Bullet implements Serializable,Cloneable {
         this.x += this.speed_x;
         this.y += this.speed_y;
     }
-    protected final void fragments_create(){
-        this.time -= 1;
-        if(this.time<=0){
-            Main.BangList.add(new Bang(this.x,this.y,10));
-            for(int i3 = 0;i3<this.AmountFragment;i3++){
-            Main.BulletList.add(new BullFragment(this.x,this.y,this.damage_fragment,this.penetration_fragment,this.type_team));}
-            this.clear_sost = 1;}
-
-    }
     protected final void color_fire(){
         if(this.b >0){this.b-= b_wane;}
         if(this.g> 0){this.g -=g_wane;}
@@ -264,7 +251,7 @@ public abstract class Bullet implements Serializable,Cloneable {
             if(FlameSpawn) {spawn_flame();}
             if(AcidSpawn){spawn_acid();}
             for (int l = 0; l<AmountFragment; l++) {
-                Bullet bullet = BulletFragment.BulletAdd2(this.x,this.y,rand.rand(360),damage,penetration,
+                Bullet bullet = BulletFragment.BulletAdd2(this.x,this.y,rand.rand(360),damage_fragment,penetration_fragment,
                         0,0,type_team,height,0,12+rand.rand(6),0,
                         65+rand.rand(35));
                 PackBulletFragment(bullet);

@@ -8,7 +8,6 @@ import com.mygdx.game.bull.Bullet;
 import com.mygdx.game.main.Main;
 import com.mygdx.game.menu.button.Button;
 import com.mygdx.game.particle.Particle;
-import com.mygdx.game.soldat.Soldat;
 import com.mygdx.game.unit.Unit;
 
 import static com.mygdx.game.block.Block.lighting;
@@ -233,10 +232,6 @@ public class Keyboard extends InputAdapter{
             tr.const_x_corpus = (int)(tr.corpus_width_2*Main.Zoom);
             tr.const_y_corpus = (int)(tr.corpus_height_2*Main.Zoom);
 
-        }
-        for(Soldat sl : Main.SoldatList){
-            sl.width_render = (int)(sl.width*Main.Zoom);
-            sl.height_render = (int)(sl.height*Main.Zoom);
         }
         Main.Option.size_y_indicator_zoom = (int) (Main.Option.size_y_indicator* Main.Zoom);
         Main.Option.size_x_indicator_zoom = (int) (Main.Option.size_x_indicator* Main.Zoom);

@@ -1,14 +1,12 @@
 package com.mygdx.game.unit.Fire;
 
-import Content.Bull.BullPacket;
-import Content.Bull.BullTank;
+import com.mygdx.game.bull.BullPacket;
 import com.mygdx.game.bull.BulletRegister;
-import com.mygdx.game.main.Main;
 import com.mygdx.game.method.SoundPlay;
 import com.mygdx.game.method.rand;
 import com.mygdx.game.unit.Unit;
 
-import static Content.Bull.BullRegister.PacketBull;
+import static com.mygdx.game.bull.BulletRegister.PacketBull;
 import static com.mygdx.game.main.Main.BulletList;
 import static com.mygdx.game.method.Option.SoundConst;
 import static com.mygdx.game.method.pow2.pow2;
