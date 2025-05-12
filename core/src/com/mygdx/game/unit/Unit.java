@@ -1,7 +1,5 @@
 package com.mygdx.game.unit;
 import Content.Particle.Blood;
-import Content.UnitPack.Soldat.SoldatBullet;
-import Content.UnitPack.Soldat.SoldatFlame;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.mygdx.game.Event.EventGame;
@@ -487,14 +485,13 @@ public abstract class Unit implements Cloneable{
         }
 
     }
-    public void bot_fire(){
+    public void BotSoldatFire(){
         //Unit unit = detection_near_transport_i(this);
         //System.out.println(GunUse);
             if(AIScan) {
-                trigger_fire = true;
+                //trigger_fire = true;
                 if (GunUse == null) {
                     inventory.ItemUseType(TypeItem.Gun,this);
-                    System.out.println(RadiusTarget);
                 }else if(RadiusTarget<650f){
                     inventory.ItemUseTeg(TegItem.intimately,this);
                 }
@@ -505,8 +502,8 @@ public abstract class Unit implements Cloneable{
 
             }
             //this.sost_fire_bot = fire_bot_not_tower(unit.tower_x, unit.tower_y);
-            this.sost_fire_bot = fire_bot();
-            this.left_mouse = sost_fire_bot & trigger_fire;
+            //this.sost_fire_bot = fire_bot();
+            this.left_mouse = fire_bot() & trigger_fire;
             rotation_tower = rotation_corpus+90;
 //            left_mouse = true;
 //            System.out.println(left_mouse);
@@ -594,8 +591,8 @@ public abstract class Unit implements Cloneable{
         return abs(g - (rotation_tower)) < 20;
     }
     protected boolean fire_bot(){
-        rotation_tower = rotation_corpus;
-        return abs(AngleTarget - (rotation_tower)) < 20;
+        //rotation_tower = rotation_corpus;
+        return abs(AngleTarget - (rotation_corpus)) < 20;
     }
     protected boolean fire_bot_not_tower(double obj_x,double obj_y){
         g = (float) (atan2(this.tower_y - obj_y,this.tower_x-obj_x ) / 3.1415926535f * 180f);

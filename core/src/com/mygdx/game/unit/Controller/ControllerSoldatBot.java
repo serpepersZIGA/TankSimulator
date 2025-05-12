@@ -13,7 +13,10 @@ public class ControllerSoldatBot extends Controller{
         Unit obj = detection_near_transport_i(unit);
         if(obj != null) {
             unit.AISoldatPath(obj);
-            unit.bot_fire();
+            unit.BotSoldatFire();
+        }
+        else{
+            unit.trigger_fire = false;
         }
         //unit.TowerControlBot();
         //unit.SoldatMoveBot();
