@@ -177,9 +177,27 @@ public abstract class Unit implements Cloneable{
             unitAdd.medic_help = this.medic_help;
             unitAdd.classUnit = this.classUnit;
             unitAdd.EventClear = this.EventClear;//EventData.eventDeadSoldat;
+
+
+
             for(int i = 0;i<CannonUnitList.size();i++){
                 unitAdd.tower_obj.add(new UnitPattern(CannonUnitList.get(i).
                         CannonAdd(unitAdd,unitAdd.TowerXY[i][0],unitAdd.TowerXY[i][1]),unitAdd));
+            }
+
+            unitAdd.corpus_width_zoom = (int)(unitAdd.corpus_width*Main.Zoom);
+            unitAdd.corpus_height_zoom = (int)(unitAdd.corpus_height*Main.Zoom);
+            unitAdd.width_tower_zoom = (int)(unitAdd.width_tower *Main.Zoom);
+            unitAdd.height_tower_zoom = (int)(unitAdd.height_tower *Main.Zoom);
+            unitAdd.const_x_corpus = (int)(unitAdd.corpus_width_2*Main.Zoom);
+            unitAdd.const_y_corpus = (int)(unitAdd.corpus_height_2*Main.Zoom);
+            unitAdd.const_x_tower = (int)(unitAdd.const_tower_x*Main.Zoom);
+            this.const_y_tower = (int)(unitAdd.const_tower_y*Main.Zoom);
+            for (Unit tower : unitAdd.tower_obj){
+                tower.width_tower_zoom = (int)(tower.width_tower *Main.Zoom);
+                tower.height_tower_zoom = (int)(tower.height_tower *Main.Zoom);
+                tower.const_x_tower = (int)(tower.const_tower_x*Main.Zoom);
+                tower.const_y_tower = (int)(tower.const_tower_y*Main.Zoom);
             }
 
             for(Unit cannons : unitAdd.tower_obj){
@@ -214,6 +232,20 @@ public abstract class Unit implements Cloneable{
             for(int i = 0;i<unitAdd.CannonUnitList.size();i++){
                 unitAdd.tower_obj.add(new UnitPattern(unitAdd.CannonUnitList.get(i).
                         CannonAdd(unitAdd,unitAdd.TowerXY[i][0],unitAdd.TowerXY[i][1]),unitAdd));
+            }
+            unitAdd.corpus_width_zoom = (int)(unitAdd.corpus_width*Main.Zoom);
+            unitAdd.corpus_height_zoom = (int)(unitAdd.corpus_height*Main.Zoom);
+            unitAdd.width_tower_zoom = (int)(unitAdd.width_tower *Main.Zoom);
+            unitAdd.height_tower_zoom = (int)(unitAdd.height_tower *Main.Zoom);
+            unitAdd.const_x_corpus = (int)(unitAdd.corpus_width_2*Main.Zoom);
+            unitAdd.const_y_corpus = (int)(unitAdd.corpus_height_2*Main.Zoom);
+            unitAdd.const_x_tower = (int)(unitAdd.const_tower_x*Main.Zoom);
+            this.const_y_tower = (int)(unitAdd.const_tower_y*Main.Zoom);
+            for (Unit tower : unitAdd.tower_obj){
+                tower.width_tower_zoom = (int)(tower.width_tower *Main.Zoom);
+                tower.height_tower_zoom = (int)(tower.height_tower *Main.Zoom);
+                tower.const_x_tower = (int)(tower.const_tower_x*Main.Zoom);
+                tower.const_y_tower = (int)(tower.const_tower_y*Main.Zoom);
             }
             for(Unit cannons : unitAdd.tower_obj){
                 cannons.team = team;

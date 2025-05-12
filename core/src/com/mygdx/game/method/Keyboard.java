@@ -190,7 +190,9 @@ public class Keyboard extends InputAdapter{
         }
 
         for(Bullet bull : Main.BulletList){
-            bull.size_render = (int)(bull.size* Main.Zoom);
+            if(bull != null) {
+                bull.size_render = (int) (bull.size * Main.Zoom);
+            }
         }
         for(Unit tr : Main.UnitList){
             tr.corpus_width_zoom = (int)(tr.corpus_width*Main.Zoom);
