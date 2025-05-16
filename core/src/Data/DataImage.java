@@ -11,10 +11,18 @@ public class DataImage {
     public Sprite track_enemy_1lvl;
     public Sprite grass,dirt_2,dirt_3,dirt_4;
     public Sprite asphalt1;
-    public Sprite soldat_1,ExpBuild;
+    public Sprite soldat_1,ExpBuild,frameInventory,InventoryBackground;
+    public Sprite AK74;
     public Texture buff;
     public DataImage(){
         corpus_track_soldat_enemy = new Sprite(LoadImage("image/enemy/machine_enemy_1lvl.png"));
+        frameInventory = new Sprite(LoadImage("image/item/frameSlot.png"));
+        InventoryBackground = new Sprite(LoadImage("image/item/InventoryBackground.png"));
+        AK74 = new Sprite(LoadImage("image/item/AK74.png"));
+
+
+
+
         corpus_track_remount_enemy = new Sprite(LoadImage("image/enemy/corpus_enemy_medic_1.png"));
         tower_player = new Sprite(LoadImage("image/player/tower_player_1.png"));
         tower_enemy = new Sprite(LoadImage("image/enemy/tower_enemy_1.png"));
@@ -36,7 +44,7 @@ public class DataImage {
         helicopter_blade = new Sprite(LoadImage("image/other/blade_helicopter.png"));
         helicopter_blade = new Sprite(LoadImage("image/other/blade_helicopter.png"));
         pepper_object_map = new Sprite(LoadImage("image/object_map/pepper.png"));
-        new Sprite(LoadImage("image/enemy/machine_enemy_1lvl.png"));
+        //new Sprite(LoadImage("image/enemy/machine_enemy_1lvl.png"));
         buff.dispose();
     }
     private Texture LoadImage(String image){

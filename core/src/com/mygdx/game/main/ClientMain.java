@@ -28,6 +28,8 @@ import com.mygdx.game.object_map.PacketMapObject;
 import com.mygdx.game.object_map.VoidObject;
 import com.mygdx.game.object_map.component_collision_system.CollisionVoid;
 import com.mygdx.game.unit.*;
+import com.mygdx.game.unit.Inventory.Item;
+import com.mygdx.game.unit.Inventory.PacketInventory;
 import com.mygdx.game.unit.SpawnPlayer.*;
 
 import static com.mygdx.game.build.BuildRegister.PacketBuilding;
@@ -35,6 +37,7 @@ import static com.mygdx.game.bull.BulletRegister.IDBullet;
 import static com.mygdx.game.bull.BulletRegister.PacketBull;
 import static com.mygdx.game.main.Main.*;
 import static com.mygdx.game.object_map.MapObject.PacketMapObjects;
+import static com.mygdx.game.unit.Inventory.Item.IDListItem;
 import static com.mygdx.game.unit.TransportRegister.*;
 
 
@@ -126,6 +129,22 @@ public class ClientMain extends Listener {
             else {
                 UnitCreate();
             }
+
+
+            InventoryPack = ((PackerServer) p).inventory;
+            if(InventoryPack != null) {
+                for (int i = 0; i < InventoryPack.size(); i++) {
+                    for (int i2 = 0; i2 < InventoryPack.get(i).Inventory.size(); i2++) {
+                        for (Object[] obj : IDListItem) {
+                            if (Objects.equals(obj[1], InventoryPack.get(i).Inventory.get(i2))) {
+                                UnitList.get(i).inventory.ItemAdd((Item) obj[0]);
+                            }
+                        }
+                    }
+                }
+                InventoryPack = null;
+            }
+
             PacketDebris = ((PackerServer) p).debris;
             i = 0;
 

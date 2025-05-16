@@ -39,9 +39,7 @@ import com.mygdx.game.unit.CollisionUnit.CollisionMethodGlobal;
 import com.mygdx.game.unit.Controller.RegisterController;
 import com.mygdx.game.unit.Fire.FireRegister;
 import com.mygdx.game.FunctionalComponent.FunctionalUnit.FunctionalComponentUnitRegister;
-import com.mygdx.game.unit.Inventory.Inventory;
-import com.mygdx.game.unit.Inventory.Item;
-import com.mygdx.game.unit.Inventory.ItemRegister;
+import com.mygdx.game.unit.Inventory.*;
 import com.mygdx.game.unit.PlayerSpawnList.PlayerAllLoad;
 import com.mygdx.game.unit.SpawnPlayer.PlayerSpawnData;
 import com.mygdx.game.unit.SpawnPlayer.PlayerSpawnListData;
@@ -120,6 +118,8 @@ public class Main extends ApplicationAdapter {
 	public static CollisionMethodGlobal Collision;
 	public static ArrayList<Unit> ClearUnitList = new ArrayList<>();
 	public static ArrayList<Unit> ClearDebrisList = new ArrayList<>();
+	public static ArrayList<PacketInventory> InventoryPack;
+	public static InventoryInterface inventoryMain;
 
 
 
@@ -231,6 +231,7 @@ public class Main extends ApplicationAdapter {
 		ContentImage = new DataImage();
 		ContentSound = new DataSound();
 		Collision = new CollisionMethodGlobal();
+		inventoryMain = new InventoryInterface();
 		FireRegister.Create();
 		BulletRegister.BulletRegisterAdd();
 		RegisterControl = new RegisterController();
@@ -241,7 +242,7 @@ public class Main extends ApplicationAdapter {
 		RegisterModuleSoldat.Create();
 		GunRegister.Create();
 		ItemRegister.Create();
-
+		InventoryPack = new ArrayList<>();//new PacketInventory();
 		CycleDayNight = new CycleTimeDay(5,5,3,3,0.4f,0.9f);
 		BuildingRegister = new UpdateBuildingRegister();
 		PacketBuildingServer = new PacketBuildingServer();

@@ -130,6 +130,7 @@ public class ActionGameClient extends com.mygdx.game.main.ActionGame {
             //Main_client.debris_data(debris);
         }
         RC.BuildingIteration();
+        inventoryMain.InventoryIteration();
         Batch.draw(textureBuffer,-20,1,1,1);
         Render.end();
 

@@ -8,8 +8,11 @@ import com.mygdx.game.method.CycleTimeDay;
 import com.mygdx.game.method.Keyboard;
 import com.mygdx.game.object_map.MapObject;
 import com.mygdx.game.unit.DebrisPacket;
+import com.mygdx.game.unit.Inventory.Item;
+import com.mygdx.game.unit.Inventory.PacketInventory;
 import com.mygdx.game.unit.Unit;
 import com.mygdx.game.unit.TransportPacket;
+import com.mygdx.game.unit.UnitPattern;
 
 import static com.mygdx.game.build.BuildRegister.PacketBuilding;
 import static com.mygdx.game.bull.BulletRegister.PacketBull;
@@ -140,6 +143,8 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
 
         }
         RC.BuildingIteration();
+        inventoryMain.InventoryIteration();
+        //System.out.println(inventoryMain.SlotInventory.length);
         Batch.draw(textureBuffer,-20,1,1,1);
         Render.end();
 
@@ -221,6 +226,22 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
         for (Unit Tower : unit.tower_obj){
             pack.reloadTower.add(Tower.reload);
             pack.rotation_tower_2.add(Tower.rotation_tower);
+        }
+    }
+    public void packetInventoryServer(){
+
+        for (Unit unit : UnitList) {
+            InventoryPack.add(new PacketInventory());
+            PacketInventory pack = InventoryPack.get(InventoryPack.size() - 1);
+            for (Item[] itemX : unit.inventory.InventorySlots) {
+                for (Item item : itemX) {
+                    if (item != null) {
+                        pack.Inventory.add(item.ID);
+                    } else {
+                        pack.Inventory.add(null);
+                    }
+                }
+            }
         }
     }
     private void packet_debris_server(Unit unit){

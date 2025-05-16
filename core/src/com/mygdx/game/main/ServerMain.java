@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import static com.mygdx.game.main.Main.*;
 
 public class ServerMain extends Listener {
-    static Server Server;
+    public static Server Server;
     static final int udpPort = 27950, tcpPort = 27950;
     public static int nConnect = 0;
 

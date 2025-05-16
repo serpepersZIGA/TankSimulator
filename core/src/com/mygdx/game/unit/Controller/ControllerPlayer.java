@@ -2,6 +2,7 @@ package com.mygdx.game.unit.Controller;
 
 import com.mygdx.game.main.Main;
 import com.mygdx.game.method.Keyboard;
+import com.mygdx.game.unit.Inventory.InventoryInterface;
 import com.mygdx.game.unit.Unit;
 
 import static com.mygdx.game.main.ClientMain.Client;
@@ -23,6 +24,11 @@ public class ControllerPlayer extends Controller {
             Tower.left_mouse = Keyboard.LeftMouse;
             Tower.TargetX = unit.TargetX+Tower.tower_x;
             Tower.TargetY = unit.TargetY+Tower.tower_y;
+        }
+        if(Keyboard.PressE){
+            inventoryMain = new InventoryInterface(unit.inventory,200,200,600,350);
+            Keyboard.PressE = false;
+
         }
 
     }
@@ -65,6 +71,11 @@ public class ControllerPlayer extends Controller {
         PacketClient.mouse_x = Keyboard.MouseX;
         PacketClient.mouse_y = Keyboard.MouseY;
         PacketClient.IDClient = unit.nConnect;
+        if(Keyboard.PressE){
+            inventoryMain = new InventoryInterface(unit.inventory,200,200,600,350);
+            Keyboard.PressE = false;
+
+        }
         Client.sendUDP(PacketClient);
 
     }

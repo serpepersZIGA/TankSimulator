@@ -12,4 +12,5 @@ public class TransportPacket {
     public boolean host,crite_life,PlayerConf;
     public int IDClient;
     public ArrayList<Float>rotation_tower_2 = new ArrayList<>(),reloadTower = new ArrayList<>();
+    public ArrayList<String>ItemList = new ArrayList<>();
 }
