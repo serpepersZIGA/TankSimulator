@@ -3,17 +3,19 @@ import Content.Particle.*;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
+import com.mygdx.game.Event.EventUseClient;
 import com.mygdx.game.build.BuildPacket;
 import com.mygdx.game.build.BuildType;
 import com.mygdx.game.build.PacketBuildingServer;
 import com.mygdx.game.bull.BullPacket;
 import com.mygdx.game.method.CycleTimeDay;
 import com.mygdx.game.method.SoundPlay;
-import Content.UnitPack.Soldat.SoldatBullet;
 import com.mygdx.game.object_map.ObjectMapAssets;
 import com.mygdx.game.object_map.PacketMapObject;
 import com.mygdx.game.unit.DebrisPacket;
-import Content.UnitPack.Transport.Transport.DebrisTransport;
+import com.mygdx.game.unit.Inventory.Item;
+import com.mygdx.game.unit.Inventory.ItemRegister;
+import com.mygdx.game.unit.Inventory.PacketInventory;
 import com.mygdx.game.unit.SpawnPlayer.*;
 import com.mygdx.game.unit.TransportPacket;
 import com.mygdx.game.unit.Unit;
@@ -21,8 +23,10 @@ import com.mygdx.game.unit.UnitType;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import static com.mygdx.game.main.Main.*;
+import static com.mygdx.game.unit.Inventory.Item.IDListItem;
 
 public class ServerMain extends Listener {
     public static Server Server;
@@ -35,15 +39,17 @@ public class ServerMain extends Listener {
         Server = new Server(10000000,10000000);
 
         //Регистрируем пакет класс
+        Server.getKryo().register(String[][].class);
+        Server.getKryo().register(String[].class);
+        Server.getKryo().register(EventUseClient.class);
+        Server.getKryo().register(PacketInventory.class);
         Server.getKryo().register(PackerServer.class);
         Server.getKryo().register(Packet_client.class);
         Server.getKryo().register(TransportPacket.class);
         Server.getKryo().register(BullPacket.class);
         Server.getKryo().register(ArrayList.class);
-        Server.getKryo().register(DebrisTransport.class);
         Server.getKryo().register(SoundPlay.class);
         Server.getKryo().register(DebrisPacket.class);
-        Server.getKryo().register(SoldatBullet.class);
         Server.getKryo().register(UnitType.class);
         Server.getKryo().register(Bang.class);
         Server.getKryo().register(FlameSpawn.class);
@@ -144,15 +150,6 @@ public class ServerMain extends Listener {
                 }
 
             }
-
-//            for (Packet_client pack : Clients) {
-//                if(pack.IDClient == ((Packet_client) p).IDClient){
-//                    Clients.remove(pack);
-//                    Clients.add((Packet_client)p);
-//                    return;
-//                }
-//            }
-//            Clients.add((Packet_client) p);
         }
         else if(p instanceof PlayerSpawnData){
             nConnect += 1;
@@ -161,6 +158,15 @@ public class ServerMain extends Listener {
                 int i2 = Main.UnitList.size();
                 ((PlayerSpawnData) p).SpawnPlayer(false);
                 Main.UnitList.get(i2).nConnect = nConnect;
+            }
+        }
+        else if(p instanceof EventUseClient){
+            for(Object[] item :IDListItem) {
+                if(Objects.equals(item[1], ((EventUseClient) p).str)) {
+
+                    UnitList.get(((EventUseClient) p).ID).inventory.ItemUse((Item)item[0],UnitList.get(((EventUseClient) p).ID));
+                    return;
+                }
             }
         }
     }

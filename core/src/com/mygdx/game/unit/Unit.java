@@ -440,11 +440,15 @@ public abstract class Unit implements Cloneable{
         }
 
         if (this.press_a){
-            this.rotation_tower += this.speed_rotation;
+            for (Unit Tower : tower_obj){
+                Tower.rotation_tower += this.speed_rotation;
+            }
             this.rotation_corpus += this.speed_rotation;
         }
         if (this.press_d){
-            this.rotation_tower -= this.speed_rotation;
+            for (Unit Tower : tower_obj){
+                Tower.rotation_tower -= this.speed_rotation;
+            }
             this.rotation_corpus -= this.speed_rotation;
         }
         if(!this.press_w && !this.press_s) {

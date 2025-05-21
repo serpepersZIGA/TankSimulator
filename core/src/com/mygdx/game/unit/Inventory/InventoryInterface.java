@@ -2,17 +2,18 @@ package com.mygdx.game.unit.Inventory;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.mygdx.game.Event.EventGame;
 import com.mygdx.game.method.RenderMethod;
+import com.mygdx.game.unit.Unit;
 
-import static com.mygdx.game.main.Main.ContentImage;
-import static com.mygdx.game.main.Main.Render;
+import static com.mygdx.game.main.Main.*;
 import static com.mygdx.game.method.Keyboard.MouseX;
 import static com.mygdx.game.method.Keyboard.MouseY;
 
 public class InventoryInterface {
     public static boolean InventoryConf = false;
     public static boolean InventoryConfMoving = false;
-    public int XCol,YCol;
+    public int XCol,YCol,XColUs,YColUs;
     public int XInterface,YInterface,XSlots,YSlots,WidthWindow,HeightWindow,x,y;
     public Sprite frame = ContentImage.frameInventory;
     public Sprite frameInventory = ContentImage.InventoryBackground;
@@ -33,7 +34,7 @@ public class InventoryInterface {
     }
     public InventoryInterface(){
         SlotInventory = new Slot[0][0];
-        this.x = 200;this.y = 200;
+        this.x = 200;this.y = 1000;
         WidthWindow = 600;
         HeightWindow = 350;
     }
@@ -65,7 +66,6 @@ public class InventoryInterface {
             if(InventoryConfMoving){
                 x = MouseX-XCol;
                 y = MouseY-YCol;
-                System.out.println(MouseX);
             }
         }
     }
@@ -75,5 +75,37 @@ public class InventoryInterface {
         return YCol < HeightWindow & YCol > 0 & XCol<WidthWindow &XCol> 0;
         //return false;
     }
-
+    public void InventoryUs(Unit unit){
+        for (Slot[] slots : SlotInventory) {
+            for (Slot slot : slots) {
+                XColUs = MouseX - (this.x + slot.x);
+                YColUs = MouseY - (this.y + slot.y);
+                if (YColUs < slot.height & YColUs > 0 & XColUs < slot.width & XColUs > 0) {
+                    if (slot.item != null) {
+                        slot.item.Use(unit);
+                    }
+                    return;
+                }
+                //return false;
+            }
+        }
+    }
+    public void InventoryUsClient(Unit unit){
+        for (Slot[] slots : SlotInventory) {
+            for (Slot slot : slots) {
+                XColUs = MouseX - (this.x + slot.x);
+                YColUs = MouseY - (this.y + slot.y);
+                if (YColUs < slot.height & YColUs > 0 & XColUs < slot.width & XColUs > 0) {
+                    if (slot.item != null) {
+                        slot.item.Use(unit);
+                        for (int i = 0; i < UnitList.size(); i++) {
+                            EventGame.EventGameClient(slot.item.ID, i);
+                        }
+                    }
+                    return;
+                }
+                //return false;
+            }
+        }
+    }
 }

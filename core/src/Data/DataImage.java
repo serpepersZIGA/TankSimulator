@@ -12,13 +12,14 @@ public class DataImage {
     public Sprite grass,dirt_2,dirt_3,dirt_4;
     public Sprite asphalt1;
     public Sprite soldat_1,ExpBuild,frameInventory,InventoryBackground;
-    public Sprite AK74;
+    public Sprite AK74,FlameGun;
     public Texture buff;
     public DataImage(){
         corpus_track_soldat_enemy = new Sprite(LoadImage("image/enemy/machine_enemy_1lvl.png"));
         frameInventory = new Sprite(LoadImage("image/item/frameSlot.png"));
         InventoryBackground = new Sprite(LoadImage("image/item/InventoryBackground.png"));
         AK74 = new Sprite(LoadImage("image/item/AK74.png"));
+        FlameGun = new Sprite(LoadImage("image/item/flamegun.png"));
 
 
 

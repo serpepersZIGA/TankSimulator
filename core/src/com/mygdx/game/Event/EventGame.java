@@ -1,9 +1,22 @@
 package com.mygdx.game.Event;
 
+import com.esotericsoftware.kryonet.Client;
 import com.mygdx.game.bull.Bullet;
+import com.mygdx.game.main.ClientMain;
 import com.mygdx.game.unit.Unit;
 
+import static com.mygdx.game.main.Main.PacketClient;
+
 public abstract class EventGame {
+    public EventGame(){
+
+    }
+    public static void EventGameClient(String str,int i){
+        EventUseClient event = new EventUseClient();
+        event.str = str;
+        event.ID = i;
+        ClientMain.Client.sendTCP(event);
+    }
     public void EventIteration(){
 
     }

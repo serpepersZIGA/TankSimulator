@@ -14,6 +14,8 @@ import com.mygdx.game.unit.Unit;
 import com.mygdx.game.unit.TransportPacket;
 import com.mygdx.game.unit.UnitPattern;
 
+import java.util.ArrayList;
+
 import static com.mygdx.game.build.BuildRegister.PacketBuilding;
 import static com.mygdx.game.bull.BulletRegister.PacketBull;
 import static com.mygdx.game.main.Main.*;
@@ -198,9 +200,11 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
         PacketServer.player = PacketUnit;
         PacketServer.bull = PacketBull;
         PacketServer.building = PacketBuilding;
+        packetInventoryServer();
         PacketServer.mapObject = MapObject.PacketMapObjects;
         PacketServer.TotalLight = CycleTimeDay.lightTotal;
         Server.sendToAllUDP(PacketServer);
+        PacketServer.inventory.clear();
         MapObject.PacketMapObjects.clear();
         packetUnitUpdate.ConfDebrisList = false;
         packetUnitUpdate.ConfUnitList = false;
@@ -229,19 +233,23 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
         }
     }
     public void packetInventoryServer(){
-
-        for (Unit unit : UnitList) {
-            InventoryPack.add(new PacketInventory());
-            PacketInventory pack = InventoryPack.get(InventoryPack.size() - 1);
-            for (Item[] itemX : unit.inventory.InventorySlots) {
-                for (Item item : itemX) {
-                    if (item != null) {
-                        pack.Inventory.add(item.ID);
+        for (int i = 0;i<UnitList.size();i++) {
+            Unit unit = UnitList.get(i);
+            PacketInventory pack = new PacketInventory();
+            pack.Inventory = new String[unit.inventory.InventorySlots.length][unit.inventory.InventorySlots[0].length];
+            //InventoryPack.add(new PacketInventory());
+            //PacketInventory pack = InventoryPack.get(InventoryPack.size() - 1);
+            for (int ix = 0;ix<unit.inventory.InventorySlots.length;ix++) {
+                //pack.Inventory[ix][0]
+                for (int iy = 0;iy<unit.inventory.InventorySlots[ix].length;iy++) {
+                    if (unit.inventory.InventorySlots[ix][iy] != null) {
+                        pack.Inventory[ix][iy] = unit.inventory.InventorySlots[ix][iy].ID;
                     } else {
-                        pack.Inventory.add(null);
+                        pack.Inventory[ix][iy] = null;
                     }
                 }
             }
+            PacketServer.inventory.add(pack);
         }
     }
     private void packet_debris_server(Unit unit){

@@ -1,5 +1,6 @@
 package com.mygdx.game.unit.Controller;
 
+import com.mygdx.game.Event.EventGame;
 import com.mygdx.game.main.Main;
 import com.mygdx.game.method.Keyboard;
 import com.mygdx.game.unit.Inventory.InventoryInterface;
@@ -7,10 +8,13 @@ import com.mygdx.game.unit.Unit;
 
 import static com.mygdx.game.main.ClientMain.Client;
 import static com.mygdx.game.main.Main.*;
+import static com.mygdx.game.method.Keyboard.LeftMouse;
+import static com.mygdx.game.method.Keyboard.LeftMouseClick;
+import static com.mygdx.game.unit.Inventory.InventoryInterface.InventoryConf;
 
 public class ControllerPlayer extends Controller {
     public void ControllerIteration(Unit unit){
-        unit.left_mouse = Keyboard.LeftMouse;
+        unit.left_mouse = LeftMouse;
         unit.right_mouse = Keyboard.RightMouse;
         unit.press_w = Keyboard.PressW;
         unit.press_a = Keyboard.PressA;
@@ -21,14 +25,16 @@ public class ControllerPlayer extends Controller {
         Main.RC.x = unit.tower_x;
         Main.RC.y = unit.tower_y;
         for(Unit Tower : unit.tower_obj){
-            Tower.left_mouse = Keyboard.LeftMouse;
+            Tower.left_mouse = LeftMouse;
             Tower.TargetX = unit.TargetX+Tower.tower_x;
             Tower.TargetY = unit.TargetY+Tower.tower_y;
         }
         if(Keyboard.PressE){
-            inventoryMain = new InventoryInterface(unit.inventory,200,200,600,350);
+            inventoryMain = new InventoryInterface(unit.inventory,200,500,600,350);
             Keyboard.PressE = false;
-
+        }
+        if(InventoryConf & LeftMouse){
+            inventoryMain.InventoryUs(unit);
         }
 
     }
@@ -66,15 +72,17 @@ public class ControllerPlayer extends Controller {
         PacketClient.press_a = Keyboard.PressA;
         PacketClient.press_s = Keyboard.PressS;
         PacketClient.press_d = Keyboard.PressD;
-        PacketClient.left_mouse = Keyboard.LeftMouse;
+        PacketClient.left_mouse = LeftMouse;
         PacketClient.right_mouse = Keyboard.RightMouse;
         PacketClient.mouse_x = Keyboard.MouseX;
         PacketClient.mouse_y = Keyboard.MouseY;
         PacketClient.IDClient = unit.nConnect;
         if(Keyboard.PressE){
-            inventoryMain = new InventoryInterface(unit.inventory,200,200,600,350);
+            inventoryMain = new InventoryInterface(unit.inventory,200,500,600,350);
             Keyboard.PressE = false;
-
+        }
+        if(InventoryConf & LeftMouse){
+            inventoryMain.InventoryUsClient(unit);
         }
         Client.sendUDP(PacketClient);
 

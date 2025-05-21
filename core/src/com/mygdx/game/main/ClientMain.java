@@ -2,7 +2,6 @@ package com.mygdx.game.main;
 import Content.Build.BigBuildingWood1;
 import Content.Build.Home1;
 import Content.Particle.*;
-import Content.UnitPack.Transport.Transport.*;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.esotericsoftware.kryonet.Client;
 
@@ -12,6 +11,7 @@ import java.util.Objects;
 
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
+import com.mygdx.game.Event.EventUseClient;
 import com.mygdx.game.block.Block;
 import com.mygdx.game.build.BuildPacket;
 import com.mygdx.game.build.BuildType;
@@ -21,13 +21,13 @@ import com.mygdx.game.bull.Bullet;
 import com.mygdx.game.method.CycleTimeDay;
 import com.mygdx.game.object_map.ObjectLoad;
 import com.mygdx.game.method.SoundPlay;
-import Content.UnitPack.Soldat.SoldatBullet;
 import com.mygdx.game.object_map.MapObject;
 import com.mygdx.game.object_map.ObjectMapAssets;
 import com.mygdx.game.object_map.PacketMapObject;
 import com.mygdx.game.object_map.VoidObject;
 import com.mygdx.game.object_map.component_collision_system.CollisionVoid;
 import com.mygdx.game.unit.*;
+import com.mygdx.game.unit.Inventory.Inventory;
 import com.mygdx.game.unit.Inventory.Item;
 import com.mygdx.game.unit.Inventory.PacketInventory;
 import com.mygdx.game.unit.SpawnPlayer.*;
@@ -52,15 +52,17 @@ public class ClientMain extends Listener {
         Client = new Client(10000000, 10000000);
 
         //Регистрируем пакет
+        Client.getKryo().register(String[][].class);
+        Client.getKryo().register(String[].class);
+        Client.getKryo().register(EventUseClient.class);
+        Client.getKryo().register(PacketInventory.class);
         Client.getKryo().register(PackerServer.class);
         Client.getKryo().register(Packet_client.class);
         Client.getKryo().register(TransportPacket.class);
         Client.getKryo().register(BullPacket.class);
         Client.getKryo().register(ArrayList.class);
-        Client.getKryo().register(DebrisTransport.class);
         Client.getKryo().register(SoundPlay.class);
         Client.getKryo().register(DebrisPacket.class);
-        Client.getKryo().register(SoldatBullet.class);
         Client.getKryo().register(UnitType.class);
         Client.getKryo().register(Bang.class);
         Client.getKryo().register(FlameSpawn.class);
@@ -119,7 +121,6 @@ public class ClientMain extends Listener {
             CycleTimeDay.lightTotal = ((PackerServer) p).TotalLight;
             PacketUnit = ((PackerServer) p).player;
             i = 0;
-
             if(PacketUnit.size()== UnitList.size()) {
                 for (Unit unit : UnitList) {
                     player_data(unit);
@@ -134,10 +135,18 @@ public class ClientMain extends Listener {
             InventoryPack = ((PackerServer) p).inventory;
             if(InventoryPack != null) {
                 for (int i = 0; i < InventoryPack.size(); i++) {
-                    for (int i2 = 0; i2 < InventoryPack.get(i).Inventory.size(); i2++) {
-                        for (Object[] obj : IDListItem) {
-                            if (Objects.equals(obj[1], InventoryPack.get(i).Inventory.get(i2))) {
-                                UnitList.get(i).inventory.ItemAdd((Item) obj[0]);
+                    UnitList.get(i).inventory = new Inventory(new Item[InventoryPack.get(i).Inventory.length][InventoryPack.get(i).Inventory[0].length]);
+                    for (int ix = 0; ix < InventoryPack.get(i).Inventory.length; ix++) {
+                        for (int iy = 0; iy < InventoryPack.get(i).Inventory[ix].length; iy++) {
+                            if (InventoryPack.get(i).Inventory[ix][iy] != null) {
+                                for (Object[] obj : IDListItem) {
+                                    if (Objects.equals(obj[1], InventoryPack.get(i).Inventory[ix][iy])) {
+                                        UnitList.get(i).inventory.ItemAdd((Item) obj[0]);
+                                    }
+                                }
+                            }
+                            else {
+                                UnitList.get(i).inventory.ItemAdd(null);
                             }
                         }
                     }

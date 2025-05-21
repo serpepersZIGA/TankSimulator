@@ -3,6 +3,8 @@ package com.mygdx.game.unit.moduleUnit;
 
 import com.mygdx.game.FunctionalComponent.FunctionalList;
 
+import java.util.ArrayList;
+
 import static com.mygdx.game.main.Main.RegisterFunctionalComponent;
 
 public class RegisterModuleEngine {

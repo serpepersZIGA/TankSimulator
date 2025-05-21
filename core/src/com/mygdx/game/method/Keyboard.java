@@ -94,12 +94,12 @@ public class Keyboard extends InputAdapter{
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         if(button == Input.Buttons.LEFT) {
-            if(InventoryConf & inventoryMain.CollisionMouseInvert()){
-                InventoryConfMoving = true;
-            }
             LeftMouse = true;
         }
         if(button == Input.Buttons.RIGHT) {
+            if(InventoryConf & inventoryMain.CollisionMouseInvert()){
+                InventoryConfMoving = true;
+            }
            RightMouse = true;
         }
         return false;
@@ -108,13 +108,13 @@ public class Keyboard extends InputAdapter{
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         if(button == Input.Buttons.LEFT) {
-            if(InventoryConfMoving){
-                InventoryConfMoving = false;
-            }
             LeftMouse = false;
             LeftMouseClick = true;
         }
         if(button == Input.Buttons.RIGHT) {
+            if(InventoryConfMoving){
+                InventoryConfMoving = false;
+            }
             RightMouse = false;
             RightMouseClick = true;
         }

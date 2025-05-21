@@ -1,6 +1,7 @@
 package com.mygdx.game.unit.Inventory;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.mygdx.game.unit.ClassUnit;
 import com.mygdx.game.unit.Unit;
 import com.mygdx.game.unit.moduleUnit.Gun;
 
@@ -28,16 +29,25 @@ public class Item implements Cloneable{
         IDListItem.add(new Object[]{this,ID});
     }
     public void Use(Unit unit){
-        switch (typeItem){
+
+        switch (typeItem) {
             case Gun:
                 //unit.GunUse.Reload = unit.reload;
                 //unit.reload = this.Reload;
                 //unit.GunUse = this;
-                gun.GunLoad(unit);
+                if(unit.classUnit == ClassUnit.Soldat) {
+                    gun.GunLoad(unit);
+                }
+                else if(unit.classUnit == ClassUnit.Transport){
+                    for(Unit tower : unit.tower_obj) {
+                        gun.GunLoad(tower);
+                    }
+                }
                 break;
             case Medic:
                 break;
         }
+
     }
     public void UseNull(Unit unit){
         switch (typeItem){

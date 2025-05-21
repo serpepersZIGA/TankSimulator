@@ -1,7 +1,5 @@
 package com.mygdx.game.unit.SpawnPlayer;
 
-import Content.UnitPack.Transport.Transport.PanzerAcidT1;
-import Content.UnitPack.Transport.Transport.PlayerCannonAcid;
 import com.mygdx.game.main.Main;
 import com.mygdx.game.unit.Inventory.Inventory;
 import com.mygdx.game.unit.Inventory.InventoryInterface;

@@ -1,6 +1,5 @@
 package com.mygdx.game.unit.SpawnPlayer;
 
-import Content.UnitPack.Transport.Transport.PlayerCannonFlame;
 import com.mygdx.game.main.Main;
 import com.mygdx.game.unit.Inventory.Inventory;
 import com.mygdx.game.unit.Inventory.InventoryInterface;

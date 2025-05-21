@@ -1,6 +1,5 @@
 package com.mygdx.game.unit.SpawnPlayer;
 
-import Content.UnitPack.Transport.Transport.PlayerCannonMortar;
 import com.mygdx.game.main.Main;
 import com.mygdx.game.unit.Inventory.Inventory;
 import com.mygdx.game.unit.Inventory.InventoryInterface;
@@ -18,7 +17,7 @@ public class SpawnPlayerCannonMortar extends PlayerSpawnData{
         PlayerCannonMortarA1.UnitAdd(200,200,host, (byte) 1,Main.RegisterControl.controllerPlayer,new Inventory(new Item[3][4]));
         //UnitList.get(UnitList.size()-1).control = Main.RegisterControl.controllerPlayer;
         UnitList.get(UnitList.size()-1).PlayerConf = true;
-        UnitList.get(UnitList.size()-1).inventory.ItemAdd(ItemRegister.AK74);
+        UnitList.get(UnitList.size()-1).inventory.ItemAdd(ItemRegister.flamethrower);
         UnitList.get(UnitList.size()-1).inventory.ItemAdd(ItemRegister.AK74);
         inventoryMain = new InventoryInterface(UnitList.get(UnitList.size()-1).inventory,200,200,600,350);
 
