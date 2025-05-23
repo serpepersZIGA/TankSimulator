@@ -1,6 +1,5 @@
 package com.mygdx.game.unit.Inventory;
 
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.mygdx.game.Event.EventGame;
 import com.mygdx.game.method.RenderMethod;
@@ -13,14 +12,17 @@ import static com.mygdx.game.method.Keyboard.MouseY;
 public class InventoryInterface {
     public static boolean InventoryConf = false;
     public static boolean InventoryConfMoving = false;
-    public int XCol,YCol,XColUs,YColUs;
+    public int XCol,YCol,XColUs,YColUs,XCol2,YCol2;
     public int XInterface,YInterface,XSlots,YSlots,WidthWindow,HeightWindow,x,y;
     public Sprite frame = ContentImage.frameInventory;
     public Sprite frameInventory = ContentImage.InventoryBackground;
     public Slot[][]SlotInventory;
+    public SlotBuffer SlotBuffer;
+    public Inventory inventory;
     public InventoryInterface(Inventory inventory,int x,int y,int width,int height){
         XInterface = inventory.InventorySlots.length;
         YInterface = inventory.InventorySlots[0].length;
+        this.inventory = inventory;
         SlotInventory = new Slot[XInterface][YInterface];
         this.x = x;this.y = y;
         WidthWindow = width;
@@ -67,6 +69,11 @@ public class InventoryInterface {
                 x = MouseX-XCol;
                 y = MouseY-YCol;
             }
+            if(SlotBuffer != null){
+                SlotBuffer.SlotXY();
+                SlotBuffer.SlotRender();
+                SlotBuffer.SlotPaste();
+            }
         }
     }
     public boolean CollisionMouseInvert(){
@@ -74,6 +81,26 @@ public class InventoryInterface {
         YCol = MouseY-this.y;
         return YCol < HeightWindow & YCol > 0 & XCol<WidthWindow &XCol> 0;
         //return false;
+    }
+    public void CollisionMouseItem(){
+        int ix = 0;
+        int iy = 0;
+        for(Slot[] SlotLine : SlotInventory){
+            for(Slot Slot : SlotLine) {
+                XCol2 = MouseX-(Slot.x+this.x);
+                YCol2 = MouseY-(Slot.y+this.y);
+                if(YCol2 < Slot.height & YCol2 > 0 & XCol2<Slot.width &XCol2> 0){
+                    if(Slot.item!= null) {
+                        SlotBuffer = new SlotBuffer(Slot, XCol2, YCol2, Slot.width, Slot.height, ix, iy);
+                    }
+                    return;
+                }
+                iy++;
+            }
+            ix++;
+            iy = 0;
+
+        }
     }
     public void InventoryUs(Unit unit){
         for (Slot[] slots : SlotInventory) {

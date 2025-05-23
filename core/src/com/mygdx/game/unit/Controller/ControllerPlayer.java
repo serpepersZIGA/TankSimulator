@@ -31,7 +31,7 @@ public class ControllerPlayer extends Controller {
         }
         if(Keyboard.PressE){
             inventoryMain = new InventoryInterface(unit.inventory,200,500,600,350);
-            Keyboard.PressE = false;
+            //Keyboard.PressE = false;
         }
         if(InventoryConf & LeftMouse){
             inventoryMain.InventoryUs(unit);
@@ -79,7 +79,7 @@ public class ControllerPlayer extends Controller {
         PacketClient.IDClient = unit.nConnect;
         if(Keyboard.PressE){
             inventoryMain = new InventoryInterface(unit.inventory,200,500,600,350);
-            Keyboard.PressE = false;
+            //Keyboard.PressE = false;
         }
         if(InventoryConf & LeftMouse){
             inventoryMain.InventoryUsClient(unit);

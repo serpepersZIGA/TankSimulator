@@ -23,7 +23,7 @@ import static com.mygdx.game.unit.Inventory.InventoryInterface.InventoryConfMovi
 
 public class Keyboard extends InputAdapter{
     public static boolean PressW,PressA,PressS,PressD,PressE,PressUP,PressDown;
-    public static boolean LeftMouse, RightMouse,LeftMouseClick, RightMouseClick;
+    public static boolean LeftMouse, RightMouse,LeftMouseClick, RightMouseClick,MiddleMouse;
     public static int MouseX,MouseY;
     private static float ZoomMax,ZoomMin;
     public static void ZoomMaxMin(){
@@ -96,6 +96,12 @@ public class Keyboard extends InputAdapter{
         if(button == Input.Buttons.LEFT) {
             LeftMouse = true;
         }
+        if(button == Input.Buttons.MIDDLE) {
+            if(InventoryConf) {
+                inventoryMain.CollisionMouseItem();
+            }
+            MiddleMouse = true;
+        }
         if(button == Input.Buttons.RIGHT) {
             if(InventoryConf & inventoryMain.CollisionMouseInvert()){
                 InventoryConfMoving = true;
@@ -117,6 +123,9 @@ public class Keyboard extends InputAdapter{
             }
             RightMouse = false;
             RightMouseClick = true;
+        }
+        if(button == Input.Buttons.MIDDLE) {
+            MiddleMouse = false;
         }
         return false;
     }
