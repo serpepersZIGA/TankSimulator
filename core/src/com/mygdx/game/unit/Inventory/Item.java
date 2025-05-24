@@ -7,6 +7,8 @@ import com.mygdx.game.unit.moduleUnit.Gun;
 
 import java.util.ArrayList;
 
+import static com.mygdx.game.main.Main.Option;
+
 public class Item implements Cloneable{
     public String ID;
     public static ArrayList<Object[]>IDListItem = new ArrayList<>();
@@ -57,6 +59,7 @@ public class Item implements Cloneable{
             case Medic:
                 if(unit.max_hp>=unit.hp+HPHill){
                     unit.hp+=HPHill;
+                    unit.green_len = ((float) unit.hp / unit.max_hp) * Option.size_x_indicator;
                     return true;
 
                 }

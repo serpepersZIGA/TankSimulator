@@ -139,7 +139,7 @@ public class InventoryInterface {
                     if (slot.item != null) {
                         if(slot.item.Use(unit)){
                             inventory.InventorySlots[ix][iy]= null;
-                            SlotInventory[ix][iy]= null;
+                            SlotInventory[ix][iy].item= null;
                         }
                     }
                     return;
@@ -152,21 +152,30 @@ public class InventoryInterface {
         }
     }
     public void InventoryUsClient(Unit unit){
+        ix = 0;
+        iy = 0;
         for (Slot[] slots : SlotInventory) {
             for (Slot slot : slots) {
                 XColUs = MouseX - (this.x + slot.x);
                 YColUs = MouseY - (this.y + slot.y);
                 if (YColUs < slot.height & YColUs > 0 & XColUs < slot.width & XColUs > 0) {
                     if (slot.item != null) {
-                        slot.item.Use(unit);
                         for (int i = 0; i < UnitList.size(); i++) {
-                            EventGame.EventGameClient(slot.item.ID, i);
+                            EventGame.EventGameClient(slot.item.ID, i,ix,iy);
+                        }
+                        if(slot.item.Use(unit)) {
+                            inventory.InventorySlots[ix][iy]= null;
+                            SlotInventory[ix][iy].item = null;
                         }
                     }
                     return;
                 }
+                iy++;
                 //return false;
             }
+            iy = 0;
+            ix++;
         }
+
     }
 }

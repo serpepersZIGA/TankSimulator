@@ -19,6 +19,7 @@ public class SpawnPlayerCannonMortar extends PlayerSpawnData{
         UnitList.get(UnitList.size()-1).PlayerConf = true;
         UnitList.get(UnitList.size()-1).inventory.ItemAdd(ItemRegister.flamethrower);
         UnitList.get(UnitList.size()-1).inventory.ItemAdd(ItemRegister.AK74);
+        UnitList.get(UnitList.size()-1).inventory.ItemAdd(ItemRegister.MedicineT1);
         inventoryMain = new InventoryInterface(UnitList.get(UnitList.size()-1).inventory,200,200,600,350);
 
     }

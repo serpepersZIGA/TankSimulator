@@ -168,6 +168,8 @@ public class ServerMain extends Listener {
             for(Object[] item :IDListItem) {
                 if(Objects.equals(item[1], ((EventUseClient) p).str)) {
                     UnitList.get(((EventUseClient) p).ID).inventory.ItemUse((Item)item[0],UnitList.get(((EventUseClient) p).ID));
+
+
                     return;
                 }
             }

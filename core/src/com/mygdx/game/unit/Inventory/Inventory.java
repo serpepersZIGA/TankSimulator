@@ -51,16 +51,16 @@ public class Inventory implements Cloneable{
         int ix = 0;
         int iy = 0;
         for (Item[] inventorySlot : InventorySlots) {
-            ix++;
             for (Item value : inventorySlot) {
-                iy++;
                 if (value == item) {
                     if(value.Use(unit)){
                         InventorySlots[ix][iy] = null;
                     }
                     return true;
                 }
+                iy++;
             }
+            ix++;
         }
         return false;
     }
@@ -83,9 +83,7 @@ public class Inventory implements Cloneable{
         ix = 0;
         iy = 0;
         for (Item[] inventorySlot : InventorySlots) {
-            ix++;
             for (Item value : inventorySlot) {
-                iy++;
                 for(TegItem tegItem : value.teg){
                     if(teg == tegItem){
 //                        unit.GunUse.Reload = unit.reload;
@@ -96,7 +94,11 @@ public class Inventory implements Cloneable{
                         }
                         return true;
                     }
+                    iy++;
                 }
+                ix++;
+                iy = 0;
+
             }
         }
         return false;
