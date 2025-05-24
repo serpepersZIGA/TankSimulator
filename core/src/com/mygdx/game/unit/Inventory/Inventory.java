@@ -3,13 +3,30 @@ package com.mygdx.game.unit.Inventory;
 import com.mygdx.game.unit.Unit;
 import com.mygdx.game.unit.moduleUnit.Soldat;
 
+import static com.mygdx.game.unit.Inventory.Item.IDListItem;
+
 public class Inventory implements Cloneable{
     public Item[][]InventorySlots;
     public Inventory(Item[][]InventorySlots){
         this.InventorySlots = InventorySlots;
     }
     public void ItemAdd(int x,int y,Item item){
-        InventorySlots[x][y] = item;
+        if(item != null) {
+            InventorySlots[x][y] = item.clone();
+            return;
+        }
+        InventorySlots[x][y] = null;
+    }
+    public void ItemAdd(int x,int y,String item){
+        if(item != null) {
+            for(Object[] obj : IDListItem) {
+                if(item.equals((String) obj[1])) {
+                    InventorySlots[x][y] = (Item) obj[0];
+                }
+            }
+            return;
+        }
+        InventorySlots[x][y] = null;
     }
     public boolean ItemAdd(Item item){
         for (int iX =0;iX<InventorySlots.length;iX++) {
@@ -31,10 +48,16 @@ public class Inventory implements Cloneable{
         }
     }
     public boolean ItemUse(Item item, Unit unit){
+        int ix = 0;
+        int iy = 0;
         for (Item[] inventorySlot : InventorySlots) {
+            ix++;
             for (Item value : inventorySlot) {
+                iy++;
                 if (value == item) {
-                    value.Use(unit);
+                    if(value.Use(unit)){
+                        InventorySlots[ix][iy] = null;
+                    }
                     return true;
                 }
             }
@@ -55,15 +78,22 @@ public class Inventory implements Cloneable{
         }
         return false;
     }
+    public static int ix,iy;
     public boolean ItemUseTeg(TegItem teg, Unit unit){
+        ix = 0;
+        iy = 0;
         for (Item[] inventorySlot : InventorySlots) {
+            ix++;
             for (Item value : inventorySlot) {
+                iy++;
                 for(TegItem tegItem : value.teg){
                     if(teg == tegItem){
-                        unit.GunUse.Reload = unit.reload;
-                        unit.reload = value.Reload;
-                        unit.GunUse = value;
-                        value.Use(unit);
+//                        unit.GunUse.Reload = unit.reload;
+//                        unit.reload = value.Reload;
+//                        unit.GunUse = value;
+                        if(value.Use(unit)){
+                            InventorySlots[ix][iy] = null;
+                        }
                         return true;
                     }
                 }

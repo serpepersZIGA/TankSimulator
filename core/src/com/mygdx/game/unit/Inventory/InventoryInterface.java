@@ -18,6 +18,7 @@ public class InventoryInterface {
     public Sprite frameInventory = ContentImage.InventoryBackground;
     public Slot[][]SlotInventory;
     public SlotBuffer SlotBuffer;
+    public Slot slotBuf;
     public Inventory inventory;
     public InventoryInterface(Inventory inventory,int x,int y,int width,int height){
         XInterface = inventory.InventorySlots.length;
@@ -60,7 +61,7 @@ public class InventoryInterface {
             for (Slot[] slotX : SlotInventory) {
                 for (Slot slot : slotX) {
                     RenderMethod.transorm_img(slot.x+x, slot.y+y, slot.width, slot.height, this.frame);
-                    if(slot.item != null) {
+                    if(slot.item != null & slotBuf !=slot) {
                         RenderMethod.transorm_img(slot.x + x, slot.y + y, slot.width, slot.height, slot.item.image);
                     }
                 }
@@ -76,21 +77,45 @@ public class InventoryInterface {
             }
         }
     }
+    public void InventoryIterationClient(){
+        if(InventoryConf) {
+            RenderMethod.transorm_img(this.x, this.y, this.WidthWindow, this.HeightWindow, this.frameInventory);
+            for (Slot[] slotX : SlotInventory) {
+                for (Slot slot : slotX) {
+                    RenderMethod.transorm_img(slot.x+x, slot.y+y, slot.width, slot.height, this.frame);
+                    if(slot.item != null & slotBuf !=slot) {
+                        RenderMethod.transorm_img(slot.x + x, slot.y + y, slot.width, slot.height, slot.item.image);
+                    }
+                }
+            }
+            if(InventoryConfMoving){
+                x = MouseX-XCol;
+                y = MouseY-YCol;
+            }
+            if(SlotBuffer != null){
+                SlotBuffer.SlotXY();
+                SlotBuffer.SlotRender();
+                SlotBuffer.SlotPasteClient();
+            }
+        }
+    }
     public boolean CollisionMouseInvert(){
         XCol = MouseX-this.x;
         YCol = MouseY-this.y;
         return YCol < HeightWindow & YCol > 0 & XCol<WidthWindow &XCol> 0;
         //return false;
     }
+    public int ix,iy;
     public void CollisionMouseItem(){
-        int ix = 0;
-        int iy = 0;
+        ix = 0;
+        iy = 0;
         for(Slot[] SlotLine : SlotInventory){
             for(Slot Slot : SlotLine) {
                 XCol2 = MouseX-(Slot.x+this.x);
                 YCol2 = MouseY-(Slot.y+this.y);
                 if(YCol2 < Slot.height & YCol2 > 0 & XCol2<Slot.width &XCol2> 0){
                     if(Slot.item!= null) {
+                        slotBuf = Slot;
                         SlotBuffer = new SlotBuffer(Slot, XCol2, YCol2, Slot.width, Slot.height, ix, iy);
                     }
                     return;
@@ -103,18 +128,27 @@ public class InventoryInterface {
         }
     }
     public void InventoryUs(Unit unit){
+        ix = 0;
+        iy = 0;
         for (Slot[] slots : SlotInventory) {
             for (Slot slot : slots) {
+
                 XColUs = MouseX - (this.x + slot.x);
                 YColUs = MouseY - (this.y + slot.y);
                 if (YColUs < slot.height & YColUs > 0 & XColUs < slot.width & XColUs > 0) {
                     if (slot.item != null) {
-                        slot.item.Use(unit);
+                        if(slot.item.Use(unit)){
+                            inventory.InventorySlots[ix][iy]= null;
+                            SlotInventory[ix][iy]= null;
+                        }
                     }
                     return;
                 }
+                iy++;
                 //return false;
             }
+            iy = 0;
+            ix++;
         }
     }
     public void InventoryUsClient(Unit unit){

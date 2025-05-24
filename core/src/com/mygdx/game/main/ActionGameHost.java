@@ -232,7 +232,7 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
             pack.rotation_tower_2.add(Tower.rotation_tower);
         }
     }
-    public void packetInventoryServer(){
+    public static void packetInventoryServer(){
         for (int i = 0;i<UnitList.size();i++) {
             Unit unit = UnitList.get(i);
             PacketInventory pack = new PacketInventory();

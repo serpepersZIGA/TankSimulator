@@ -15,6 +15,7 @@ public class Item implements Cloneable{
     public ArrayList<TegItem>teg;
     public Gun gun;
     public float Reload;
+    public int HPHill;
     public Item(Gun gun,ArrayList<TegItem>teg){
         this.teg = teg;
         this.gun = gun;
@@ -28,7 +29,16 @@ public class Item implements Cloneable{
         this.typeItem = TypeItem.Gun;
         IDListItem.add(new Object[]{this,ID});
     }
-    public void Use(Unit unit){
+    public Item(int HPHill,String ID,ArrayList<TegItem>teg,Sprite image){
+        this.teg = teg;
+        this.ID = ID;
+        this.HPHill = HPHill;
+
+        this.image = image;
+        this.typeItem = TypeItem.Medic;
+        IDListItem.add(new Object[]{this,ID});
+    }
+    public boolean Use(Unit unit){
 
         switch (typeItem) {
             case Gun:
@@ -45,8 +55,14 @@ public class Item implements Cloneable{
                 }
                 break;
             case Medic:
+                if(unit.max_hp>=unit.hp+HPHill){
+                    unit.hp+=HPHill;
+                    return true;
+
+                }
                 break;
         }
+        return false;
 
     }
     public void UseNull(Unit unit){
@@ -55,6 +71,9 @@ public class Item implements Cloneable{
                 gun.GunLoad(unit);
                 break;
             case Medic:
+                if(unit.max_hp>=unit.hp+HPHill){
+                    unit.hp+=HPHill;
+                }
                 break;
         }
     }

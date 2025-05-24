@@ -3,6 +3,8 @@ import Content.Particle.*;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
+import com.mygdx.game.Event.EventDeleteItemClient;
+import com.mygdx.game.Event.EventTransferItemClient;
 import com.mygdx.game.Event.EventUseClient;
 import com.mygdx.game.build.BuildPacket;
 import com.mygdx.game.build.BuildType;
@@ -14,7 +16,6 @@ import com.mygdx.game.object_map.ObjectMapAssets;
 import com.mygdx.game.object_map.PacketMapObject;
 import com.mygdx.game.unit.DebrisPacket;
 import com.mygdx.game.unit.Inventory.Item;
-import com.mygdx.game.unit.Inventory.ItemRegister;
 import com.mygdx.game.unit.Inventory.PacketInventory;
 import com.mygdx.game.unit.SpawnPlayer.*;
 import com.mygdx.game.unit.TransportPacket;
@@ -25,6 +26,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import static com.mygdx.game.main.ActionGameHost.packetInventoryServer;
 import static com.mygdx.game.main.Main.*;
 import static com.mygdx.game.unit.Inventory.Item.IDListItem;
 
@@ -42,6 +44,8 @@ public class ServerMain extends Listener {
         Server.getKryo().register(String[][].class);
         Server.getKryo().register(String[].class);
         Server.getKryo().register(EventUseClient.class);
+        Server.getKryo().register(EventDeleteItemClient.class);
+        Server.getKryo().register(EventTransferItemClient.class);
         Server.getKryo().register(PacketInventory.class);
         Server.getKryo().register(PackerServer.class);
         Server.getKryo().register(Packet_client.class);
@@ -163,11 +167,40 @@ public class ServerMain extends Listener {
         else if(p instanceof EventUseClient){
             for(Object[] item :IDListItem) {
                 if(Objects.equals(item[1], ((EventUseClient) p).str)) {
-
                     UnitList.get(((EventUseClient) p).ID).inventory.ItemUse((Item)item[0],UnitList.get(((EventUseClient) p).ID));
                     return;
                 }
             }
+        }
+        else if(p instanceof EventDeleteItemClient){
+            EventDeleteItemClient pack = (EventDeleteItemClient) p;
+            UnitList.get(pack.i).inventory.InventorySlots[pack.x][pack.y] = null;
+            return;
+
+
+        }
+        else if(p instanceof EventTransferItemClient){
+            EventTransferItemClient pack = (EventTransferItemClient) p;
+            System.out.println("x1 "+pack.x+" y1 "+pack.y+" x2 "+pack.x2+" y2 "+pack.y2);
+//            Item item1 = UnitList.get(pack.i).inventory.InventorySlots[pack.x][pack.y];
+//            Item item2 = UnitList.get(pack.i).inventory.InventorySlots[pack.x2][pack.y2];
+            UnitList.get(pack.i).inventory.ItemAdd(pack.x,pack.y,pack.item2);
+            UnitList.get(pack.i).inventory.ItemAdd(pack.x2,pack.y2,pack.item1);
+            //packetInventoryServer();
+//            if(UnitList.get(pack.i).inventory.InventorySlots[pack.x][pack.y]!= null) {
+//                Item itemBuff1 = UnitList.get(pack.i).inventory.InventorySlots[pack.x][pack.y];
+//                Item itemBuff2 = UnitList.get(pack.i).inventory.InventorySlots[pack.x2][pack.y2];
+//                System.out.println("x1 "+pack.x+" y1 "+pack.y+" x2 "+pack.x2+" y2 "+pack.y2);
+//                itemBuff1 = itemBuff1.clone();
+//                if (itemBuff2 != null) {
+//                    itemBuff2 = itemBuff2.clone();
+//                    UnitList.get(pack.i).inventory.InventorySlots[pack.x][pack.y] = itemBuff2.clone();
+//                }
+//                else{
+//                    UnitList.get(pack.i).inventory.InventorySlots[pack.x][pack.y] = null;
+//                }
+//                UnitList.get(pack.i).inventory.InventorySlots[pack.x2][pack.y2] = itemBuff1.clone();
+//            }
         }
     }
 

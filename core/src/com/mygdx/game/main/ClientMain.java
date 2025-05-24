@@ -11,6 +11,8 @@ import java.util.Objects;
 
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
+import com.mygdx.game.Event.EventDeleteItemClient;
+import com.mygdx.game.Event.EventTransferItemClient;
 import com.mygdx.game.Event.EventUseClient;
 import com.mygdx.game.block.Block;
 import com.mygdx.game.build.BuildPacket;
@@ -55,6 +57,8 @@ public class ClientMain extends Listener {
         Client.getKryo().register(String[][].class);
         Client.getKryo().register(String[].class);
         Client.getKryo().register(EventUseClient.class);
+        Client.getKryo().register(EventDeleteItemClient.class);
+        Client.getKryo().register(EventTransferItemClient.class);
         Client.getKryo().register(PacketInventory.class);
         Client.getKryo().register(PackerServer.class);
         Client.getKryo().register(Packet_client.class);
@@ -134,24 +138,27 @@ public class ClientMain extends Listener {
 
             InventoryPack = ((PackerServer) p).inventory;
             if(InventoryPack != null) {
+                try {
                 for (int i = 0; i < InventoryPack.size(); i++) {
-                    UnitList.get(i).inventory = new Inventory(new Item[InventoryPack.get(i).Inventory.length][InventoryPack.get(i).Inventory[0].length]);
+                        UnitList.get(i).inventory = new Inventory(new Item[InventoryPack.get(i).Inventory.length][InventoryPack.get(i).Inventory[0].length]);
+
                     for (int ix = 0; ix < InventoryPack.get(i).Inventory.length; ix++) {
                         for (int iy = 0; iy < InventoryPack.get(i).Inventory[ix].length; iy++) {
                             if (InventoryPack.get(i).Inventory[ix][iy] != null) {
                                 for (Object[] obj : IDListItem) {
                                     if (Objects.equals(obj[1], InventoryPack.get(i).Inventory[ix][iy])) {
-                                        UnitList.get(i).inventory.ItemAdd((Item) obj[0]);
+                                        UnitList.get(i).inventory.ItemAdd(ix,iy,(Item) obj[0]);
                                     }
                                 }
                             }
                             else {
-                                UnitList.get(i).inventory.ItemAdd(null);
+                                UnitList.get(i).inventory.InventorySlots[ix][iy] = null;
                             }
                         }
                     }
                 }
                 InventoryPack = null;
+                }catch (IndexOutOfBoundsException ignored){}
             }
 
             PacketDebris = ((PackerServer) p).debris;
