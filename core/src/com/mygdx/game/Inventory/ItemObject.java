@@ -46,7 +46,7 @@ public class ItemObject{
     }
     public void IterationItemClient(){
         CenterRender();
-        RenderMethod.transorm_img(x_rend,y_rend,width,height,item.image);
+        RenderMethod.transorm_img(x_rend,y_rend,widthRender,heightRender,item.image);
         //Press();
 
 

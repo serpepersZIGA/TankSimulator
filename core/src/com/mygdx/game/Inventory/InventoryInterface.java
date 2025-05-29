@@ -63,14 +63,14 @@ public class InventoryInterface {
             for (Slot[] slotX : SlotInventory) {
                 for (Slot slot : slotX) {
                     RenderMethod.transorm_img(slot.x+x, slot.y+y, slot.width, slot.height, this.frame);
-                    if(inventory.InventorySlots[iy][ix] != null & slotBuf !=slot) {
+                    if(inventory.InventorySlots[ix][iy] != null & slotBuf !=slot) {
                         RenderMethod.transorm_img(slot.x + x, slot.y + y, slot.width, slot.height,
-                                inventory.InventorySlots[iy][ix].image);
+                                inventory.InventorySlots[ix][iy].image);
                     }
-                    ix++;
+                    iy++;
                 }
-                iy++;
-                ix = 0;
+                ix++;
+                iy = 0;
             }
             if(InventoryConfMoving){
                 x = MouseX-XCol;
