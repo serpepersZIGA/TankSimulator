@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.Event.EventRegister;
 import com.mygdx.game.FunctionalComponent.FunctionalBullet.FunctionalComponentBulletRegister;
+import com.mygdx.game.Inventory.*;
 import com.mygdx.game.MapFunction.MapScan;
 import com.mygdx.game.block.Block;
 import com.mygdx.game.block.BlockMap;
@@ -22,7 +23,6 @@ import com.mygdx.game.bull.Bullet;
 import Data.DataImage;
 import com.mygdx.game.bull.BulletRegister;
 import com.mygdx.game.bull.Updater.UpdateRegister;
-import com.mygdx.game.bull.Updater.UpdaterBullet;
 import com.mygdx.game.menu.InputWindow;
 import com.mygdx.game.menu.MapAllLoad;
 import com.mygdx.game.menu.button.*;
@@ -39,7 +39,6 @@ import com.mygdx.game.unit.CollisionUnit.CollisionMethodGlobal;
 import com.mygdx.game.unit.Controller.RegisterController;
 import com.mygdx.game.unit.Fire.FireRegister;
 import com.mygdx.game.FunctionalComponent.FunctionalUnit.FunctionalComponentUnitRegister;
-import com.mygdx.game.unit.Inventory.*;
 import com.mygdx.game.unit.PlayerSpawnList.PlayerAllLoad;
 import com.mygdx.game.unit.SpawnPlayer.PlayerSpawnData;
 import com.mygdx.game.unit.SpawnPlayer.PlayerSpawnListData;
@@ -111,6 +110,7 @@ public class Main extends ApplicationAdapter {
 	public static  ArrayList<Packet_client> Clients = new ArrayList<>();
 	private Viewport viewport;
 	public static PlayerSpawnData SpawnPlayer;
+	public static String SpawnIDPlayer;
 	public static CycleTimeDay CycleDayNight;
 	public static int flame_spawn_time,flame_spawn_time_max = 20;
 	public static RegisterController RegisterControl;
@@ -118,8 +118,9 @@ public class Main extends ApplicationAdapter {
 	public static CollisionMethodGlobal Collision;
 	public static ArrayList<Unit> ClearUnitList = new ArrayList<>();
 	public static ArrayList<Unit> ClearDebrisList = new ArrayList<>();
-	public static ArrayList<PacketInventory> InventoryPack;
+	public static ArrayList<PacketInventory> InventoryPack = new ArrayList<>();
 	public static InventoryInterface inventoryMain;
+	public static ArrayList<ItemPacket>ItemPackList = new ArrayList<>();
 
 
 
@@ -140,10 +141,10 @@ public class Main extends ApplicationAdapter {
 		//SoldatList.add(new SoldatBull(1200,200, UnitList));
 		MapScan.MapInput("Map/maps/MapBase.mapt");
 		MapAllLoad.MapCount();
-		TrackSoldatT1.UnitAdd(2000,1200,true, (byte) 2,
-				RegisterControl.controllerBotSupport,new Inventory(new Item[3][4]));
-		PlayerCannonFlameA2.UnitAdd(1200,1200,true, (byte) 2,
-				RegisterControl.controllerBot,new Inventory(new Item[3][4]));
+//		TrackSoldatT1.UnitAdd(2000,1200,true, (byte) 2,
+//				RegisterControl.controllerBotSupport,new Inventory(new Item[3][4]));
+//		PlayerCannonFlameA2.UnitAdd(1200,1200,true, (byte) 2,
+//				RegisterControl.controllerBot,new Inventory(new Item[3][4]));
 		//UnitList.add(new PanzerFlameT1(2200,2000,true,(byte)2));
 		//UnitList.get(0).control = Main.RegisterControl.controllerBot;
 //		UnitList.add(new TrackRemountT1(2700,2000,Main.UnitList,true,(byte)2));
@@ -261,7 +262,6 @@ public class Main extends ApplicationAdapter {
 		Gdx.input.setInputProcessor(KeyboardObj);
 		field(160, 160);
 		Option = new Option();
-		KeyboardObj.zoom_const();
 		Ai = new AI();
 		TransportRegister = new TransportRegister();
 		spawn_object();
@@ -284,6 +284,7 @@ public class Main extends ApplicationAdapter {
 
 		viewport = new StretchViewport(ZoomWindowX, ZoomWindowY, camera);
 		viewport = new StretchViewport(ZoomWindowX, ZoomWindowY, camera);
+		KeyboardObj.zoom_const();
 	}
 
 

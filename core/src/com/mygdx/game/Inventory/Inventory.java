@@ -1,9 +1,6 @@
-package com.mygdx.game.unit.Inventory;
+package com.mygdx.game.Inventory;
 
 import com.mygdx.game.unit.Unit;
-import com.mygdx.game.unit.moduleUnit.Soldat;
-
-import static com.mygdx.game.unit.Inventory.Item.IDListItem;
 
 public class Inventory implements Cloneable{
     public Item[][]InventorySlots;
@@ -19,8 +16,8 @@ public class Inventory implements Cloneable{
     }
     public void ItemAdd(int x,int y,String item){
         if(item != null) {
-            for(Object[] obj : IDListItem) {
-                if(item.equals((String) obj[1])) {
+            for(Object[] obj : Item.IDListItem) {
+                if(item.equals(obj[1])) {
                     InventorySlots[x][y] = (Item) obj[0];
                 }
             }
@@ -32,7 +29,7 @@ public class Inventory implements Cloneable{
         for (int iX =0;iX<InventorySlots.length;iX++) {
             for (int iY =0;iY<InventorySlots[iX].length;iY++) {
                 if(InventorySlots[iX][iY]==null){
-                    InventorySlots[iX][iY] = item;
+                    InventorySlots[iX][iY] = item.clone();
                     return true;
                 }
             }

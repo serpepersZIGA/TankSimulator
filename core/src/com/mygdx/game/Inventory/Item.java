@@ -1,4 +1,4 @@
-package com.mygdx.game.unit.Inventory;
+package com.mygdx.game.Inventory;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.mygdx.game.unit.ClassUnit;

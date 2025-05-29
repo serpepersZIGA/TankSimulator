@@ -2,11 +2,18 @@ package com.mygdx.game.main;
 
 import Content.Particle.*;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.mygdx.game.Inventory.Inventory;
+import com.mygdx.game.Inventory.InventoryInterface;
+import com.mygdx.game.Inventory.Item;
+import com.mygdx.game.Inventory.ItemRegister;
 import com.mygdx.game.block.Block;
 import com.mygdx.game.method.Keyboard;
 import com.mygdx.game.unit.Unit;
 
+import java.util.Objects;
+
 import static com.mygdx.game.main.Main.*;
+import static com.mygdx.game.unit.Unit.IDList;
 
 public class ActionMenu extends ActionGame {
     private int i;
@@ -137,7 +144,7 @@ public class ActionMenu extends ActionGame {
                     serverMain.create();
                     ActionGame = new ActionGameHost();
                     Block.passability_detected();
-                    Main.SpawnPlayer.SpawnPlayer(true);
+                    SpawnPlayer();
                     KeyboardObj.zoom_const();
 
 
@@ -150,13 +157,32 @@ public class ActionMenu extends ActionGame {
                     Main_client.create();
                     ActionGame = new ActionGameClient();
                     KeyboardObj.zoom_const();
+                    //return;
                 } catch (Exception e) {
-                    //throw new RuntimeException(e);
+                    throw new RuntimeException(e);
                 }
             }
         }
         Keyboard.LeftMouseClick = false;
         CycleDayNight.WorkTime();
+    }
+    public void SpawnPlayer(){
+        for (Object[]obj : IDList){
+            if(Objects.equals(obj[1], SpawnIDPlayer)){
+                Unit unit = (Unit) obj[0];
+                unit.UnitAdd(200,200,true,(byte)1,
+                        RegisterControl.controllerPlayer,new Inventory(new Item[4][4]));
+                inventoryMain = new InventoryInterface(UnitList.get(UnitList.size()-1).inventory,200,200,400,320);
+                UnitList.get(UnitList.size()-1).inventory.ItemAdd(ItemRegister.MedicineT1);
+                UnitList.get(UnitList.size()-1).inventory.ItemAdd(ItemRegister.MedicineT1);
+                UnitList.get(UnitList.size()-1).inventory.ItemAdd(ItemRegister.MedicineT1);
+                UnitList.get(UnitList.size()-1).inventory.ItemAdd(ItemRegister.AK74);
+//                unit.inventory.ItemAdd(ItemRegister.MedicineT1);
+//                unit.inventory.ItemAdd(ItemRegister.MedicineT1);
+//                unit.inventory.ItemAdd(ItemRegister.MedicineT1);
+
+            }
+        }
     }
 
 

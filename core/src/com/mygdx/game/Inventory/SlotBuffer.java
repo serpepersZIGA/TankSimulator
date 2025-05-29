@@ -1,12 +1,12 @@
-package com.mygdx.game.unit.Inventory;
+package com.mygdx.game.Inventory;
 
-import com.esotericsoftware.kryonet.Client;
 import com.mygdx.game.Event.EventDeleteItemClient;
 import com.mygdx.game.Event.EventTransferItemClient;
 import com.mygdx.game.main.ClientMain;
-import com.mygdx.game.main.Main;
 import com.mygdx.game.method.RenderMethod;
 
+import static com.mygdx.game.Inventory.ItemObject.ItemList;
+import static com.mygdx.game.main.ClientMain.Client;
 import static com.mygdx.game.main.Main.*;
 import static com.mygdx.game.method.Keyboard.*;
 
@@ -35,6 +35,7 @@ public class SlotBuffer {
             XCol = MouseX-(inventoryMain.x);
             YCol = MouseY-(inventoryMain.y);
             if(!(YCol < inventoryMain.HeightWindow & YCol > 0 & XCol<inventoryMain.WidthWindow &XCol> 0)){
+                ItemList.add(new ItemObject(slot.item, (int) RC.x, (int) RC.y));
                 slot.item = null;
                 inventoryMain.slotBuf = null;
                 inventoryMain.inventory.InventorySlots[ix][iy] = null;
@@ -99,7 +100,7 @@ public class SlotBuffer {
                         break;
                     }
                 }
-                ClientMain.Client.sendTCP(event);
+                Client.sendTCP(event);
             }
             int ix2 = 0;
             int iy2 = 0;
@@ -139,7 +140,7 @@ public class SlotBuffer {
                                     break;
                                 }
                             }
-                            ClientMain.Client.sendTCP(event);
+                            Client.sendTCP(event);
                         }
                         inventoryMain.slotBuf = null;
                         inventoryMain.SlotBuffer = null;

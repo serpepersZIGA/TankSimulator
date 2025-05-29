@@ -3,7 +3,6 @@ package com.mygdx.game.unit;
 import com.mygdx.game.FunctionalComponent.FunctionalList;
 import com.mygdx.game.method.RenderMethod;
 import com.mygdx.game.unit.CollisionUnit.TypeCollision;
-import com.mygdx.game.unit.Inventory.Inventory;
 import com.mygdx.game.unit.moduleUnit.Cannon;
 import com.mygdx.game.unit.moduleUnit.Corpus;
 import com.mygdx.game.unit.moduleUnit.Engine;

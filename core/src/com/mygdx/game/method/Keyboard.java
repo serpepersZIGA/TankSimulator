@@ -2,27 +2,23 @@ package com.mygdx.game.method;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
+import com.mygdx.game.Inventory.ItemObject;
 import com.mygdx.game.block.Block;
 import com.mygdx.game.build.Building;
-import com.mygdx.game.build.UpdateBuildingRegister;
 import com.mygdx.game.bull.Bullet;
-import com.mygdx.game.main.ActionGameNull;
-import com.mygdx.game.main.ClientMain;
 import com.mygdx.game.main.Main;
-import com.mygdx.game.main.ServerMain;
 import com.mygdx.game.menu.button.Button;
 import com.mygdx.game.particle.Particle;
 import com.mygdx.game.unit.Unit;
 
-import java.io.IOException;
-
+import static com.mygdx.game.Inventory.ItemObject.ItemList;
 import static com.mygdx.game.block.Block.lighting;
 import static com.mygdx.game.main.Main.*;
-import static com.mygdx.game.unit.Inventory.InventoryInterface.InventoryConf;
-import static com.mygdx.game.unit.Inventory.InventoryInterface.InventoryConfMoving;
+import static com.mygdx.game.Inventory.InventoryInterface.InventoryConf;
+import static com.mygdx.game.Inventory.InventoryInterface.InventoryConfMoving;
 
 public class Keyboard extends InputAdapter{
-    public static boolean PressW,PressA,PressS,PressD,PressE,PressUP,PressDown;
+    public static boolean PressW,PressA,PressS,PressD,PressE,PressUP,PressDown,PressF;
     public static boolean LeftMouse, RightMouse,LeftMouseClick, RightMouseClick,MiddleMouse;
     public static int MouseX,MouseY;
     private static float ZoomMax,ZoomMin;
@@ -44,6 +40,9 @@ public class Keyboard extends InputAdapter{
         }
         if (keycode ==Input.Keys.D) {
             PressD = true;
+        }
+        if (keycode ==Input.Keys.F) {
+            PressF = true;
         }
         if (keycode ==Input.Keys.E) {
             PressE = true;
@@ -72,6 +71,9 @@ public class Keyboard extends InputAdapter{
         }
         if (keycode ==Input.Keys.D) {
             PressD = false;
+        }
+        if (keycode ==Input.Keys.F) {
+            PressF = false;
         }
         if (keycode ==Input.Keys.E) {
             PressE = false;
@@ -172,6 +174,8 @@ public class Keyboard extends InputAdapter{
         for(Particle particle : Main.FlameParticleList){
             particle.size_render = (int)(particle.size* Main.Zoom);
         }
+        ItemObject.widthRender = (int)(ItemObject.width* Main.Zoom);
+        ItemObject.heightRender = (int)(ItemObject.height* Main.Zoom);
 
         RC.WidthRenderZoom = RC.WidthRender /Main.Zoom;
         RC.HeightRenderZoom = RC.HeightRender /Main.Zoom;

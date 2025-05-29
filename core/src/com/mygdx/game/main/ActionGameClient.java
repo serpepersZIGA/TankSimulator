@@ -3,11 +3,16 @@ package com.mygdx.game.main;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import Content.Particle.Acid;
 import Content.Particle.FlameSpawn;
+import com.mygdx.game.Inventory.Inventory;
+import com.mygdx.game.Inventory.InventoryInterface;
+import com.mygdx.game.Inventory.Item;
 import com.mygdx.game.bull.Bullet;
 import com.mygdx.game.method.Keyboard;
 import com.mygdx.game.unit.DebrisPacket;
+import com.mygdx.game.unit.SpawnPlayer.SpawnPlayerPack;
 import com.mygdx.game.unit.Unit;
 
+import static com.mygdx.game.Inventory.ItemObject.ItemList;
 import static com.mygdx.game.main.Main.*;
 import static com.mygdx.game.main.ClientMain.Client;
 import static com.mygdx.game.unit.TransportRegister.*;
@@ -15,7 +20,10 @@ import static com.mygdx.game.unit.TransportRegister.*;
 
 public class ActionGameClient extends com.mygdx.game.main.ActionGame {
     public ActionGameClient(){
-        Client.sendTCP(Main.SpawnPlayer);
+        SpawnPlayerPack pack = new SpawnPlayerPack();
+        //inventoryMain = new InventoryInterface(new Inventory(new Item[4][4]),200,200,500,400);
+        pack.ID = SpawnIDPlayer;
+        Client.sendTCP(pack);
 
     }
     int i;
@@ -90,6 +98,9 @@ public class ActionGameClient extends com.mygdx.game.main.ActionGame {
         for (i= 0; i< Main.FlameSpawnList.size(); i++){
             Main.FlameSpawnList.get(i).all_action(i);
         }
+        for(int i = 0;i<ItemList.size();i++){
+            ItemList.get(i).IterationItemClient();
+        }
         for(i = 0;i< UnitList.size();i++) {
             Unit unit = UnitList.get(i);
             //Main_client.player_data(unit);
@@ -97,6 +108,7 @@ public class ActionGameClient extends com.mygdx.game.main.ActionGame {
                 unit.all_action_client_2();
             }
             else {
+                //System.out.println(unit.nConnect+" "+IDClient);
                 unit.all_action_client_1();
             }
         }

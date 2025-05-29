@@ -14,6 +14,7 @@ import com.esotericsoftware.kryonet.Listener;
 import com.mygdx.game.Event.EventDeleteItemClient;
 import com.mygdx.game.Event.EventTransferItemClient;
 import com.mygdx.game.Event.EventUseClient;
+import com.mygdx.game.Inventory.*;
 import com.mygdx.game.block.Block;
 import com.mygdx.game.build.BuildPacket;
 import com.mygdx.game.build.BuildType;
@@ -29,17 +30,15 @@ import com.mygdx.game.object_map.PacketMapObject;
 import com.mygdx.game.object_map.VoidObject;
 import com.mygdx.game.object_map.component_collision_system.CollisionVoid;
 import com.mygdx.game.unit.*;
-import com.mygdx.game.unit.Inventory.Inventory;
-import com.mygdx.game.unit.Inventory.Item;
-import com.mygdx.game.unit.Inventory.PacketInventory;
 import com.mygdx.game.unit.SpawnPlayer.*;
 
+import static com.mygdx.game.Inventory.ItemObject.ItemList;
 import static com.mygdx.game.build.BuildRegister.PacketBuilding;
 import static com.mygdx.game.bull.BulletRegister.IDBullet;
 import static com.mygdx.game.bull.BulletRegister.PacketBull;
 import static com.mygdx.game.main.Main.*;
 import static com.mygdx.game.object_map.MapObject.PacketMapObjects;
-import static com.mygdx.game.unit.Inventory.Item.IDListItem;
+import static com.mygdx.game.Inventory.Item.IDListItem;
 import static com.mygdx.game.unit.TransportRegister.*;
 
 
@@ -51,9 +50,10 @@ public class ClientMain extends Listener {
 
     public void create() {
         System.out.println("Подключаемся к серверу");
-        Client = new Client(10000000, 10000000);
+        Client = new Client(200000000, 200000000);
 
         //Регистрируем пакет
+        Client.getKryo().register(ItemPacket.class);
         Client.getKryo().register(String[][].class);
         Client.getKryo().register(String[].class);
         Client.getKryo().register(EventUseClient.class);
@@ -78,17 +78,13 @@ public class ClientMain extends Listener {
         Client.getKryo().register(BuildPacket.class);
         Client.getKryo().register(BuildType.class);
         Client.getKryo().register(PacketBuildingServer.class);
-        Client.getKryo().register(PlayerSpawnData.class);
-        Client.getKryo().register(SpawnPlayerCannonFlame.class);
-        Client.getKryo().register(SpawnPlayerCannonAcid.class);
-        Client.getKryo().register(SpawnPlayerCannonMortar.class);
-        Client.getKryo().register(SpawnPlayerCannonBull.class);
-        Client.getKryo().register(SpawnPlayerVoid.class);
+
 
         Client.getKryo().register(PacketMapObject.class);
         Client.getKryo().register(ObjectMapAssets.class);
 
         Client.getKryo().register(PacketUnitUpdate.class);
+        Client.getKryo().register(SpawnPlayerPack.class);
 
         //Запускаем клиент
         Client.start();
@@ -135,19 +131,34 @@ public class ClientMain extends Listener {
                 UnitCreate();
             }
 
+            ItemPackList = ((PackerServer) p).item;
+            i = 0;
+            if(ItemPackList.size()== ItemList.size()) {
+                for (ItemObject item : ItemList) {
+                    item_data(item);
+                    i++;
+                }
+            }
+            else {
+                ItemCreate();
+            }
+
+
 
             InventoryPack = ((PackerServer) p).inventory;
             if(InventoryPack != null) {
                 try {
-                for (int i = 0; i < InventoryPack.size(); i++) {
+                for (i = 0; i < InventoryPack.size(); i++) {
                         UnitList.get(i).inventory = new Inventory(new Item[InventoryPack.get(i).Inventory.length][InventoryPack.get(i).Inventory[0].length]);
 
                     for (int ix = 0; ix < InventoryPack.get(i).Inventory.length; ix++) {
                         for (int iy = 0; iy < InventoryPack.get(i).Inventory[ix].length; iy++) {
                             if (InventoryPack.get(i).Inventory[ix][iy] != null) {
                                 for (Object[] obj : IDListItem) {
-                                    if (Objects.equals(obj[1], InventoryPack.get(i).Inventory[ix][iy])) {
-                                        UnitList.get(i).inventory.ItemAdd(ix,iy,(Item) obj[0]);
+                                    if(InventoryPack.get(i).Inventory[ix][iy] != null) {
+                                        if (Objects.equals(obj[1], InventoryPack.get(i).Inventory[ix][iy])) {
+                                            UnitList.get(i).inventory.ItemAdd(ix, iy, (Item) obj[0]);
+                                        }
                                     }
                                 }
                             }
@@ -179,7 +190,7 @@ public class ClientMain extends Listener {
                 KeyboardObj.ZoomConstTransport();
                 packetUnitUpdate.ConfDebrisList = false;
             }
-            ActionGameClient.PackUpdateUnit();
+            //ActionGameClient.PackUpdateUnit();
 
             PacketMapObjects = ((PackerServer) p).mapObject;
             for (PacketMapObject packetMapObject : PacketMapObjects) {
@@ -205,7 +216,8 @@ public class ClientMain extends Listener {
 //                }
 //                KeyboardObj.zoom_const();
 //            }
-
+            ItemPackList.clear();
+            //InventoryPack.clear();
             PacketMapObjects.clear();
             PacketBull.clear();
             PacketUnit.clear();
@@ -248,6 +260,14 @@ public class ClientMain extends Listener {
             e.printStackTrace();
         }
     }
+    public void item_data(ItemObject item) {
+        ItemPacket packet = ItemPackList.get(i);;
+        item.x = packet.x;
+        item.y = packet.y;
+        //item.ID
+
+    }
+
 
     public void player_data(Unit unit) {
         TransportPacket packet = PacketUnit.get(i);
@@ -342,6 +362,19 @@ public class ClientMain extends Listener {
             if (pack.PlayerConf) {
                 UnitList.get(UnitList.size() - 1).control = RegisterControl.controllerPlayer;
                 UnitList.get(UnitList.size() - 1).nConnect = pack.IDClient;
+            }
+        }
+        KeyboardObj.ZoomConstTransport();
+    }
+    public void ItemCreate() {
+        ItemList.clear();
+        for (ItemPacket pack : ItemPackList) {
+            for(Object[] obj : IDListItem) {
+                if(Objects.equals(obj[1], pack.ID)){
+
+                    ItemList.add(new ItemObject((Item) obj[0],pack.x,pack.y));
+                    break;
+                }
             }
         }
         KeyboardObj.ZoomConstTransport();

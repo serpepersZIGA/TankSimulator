@@ -1,16 +1,14 @@
 package com.mygdx.game.unit.Controller;
 
-import com.mygdx.game.Event.EventGame;
 import com.mygdx.game.main.Main;
 import com.mygdx.game.method.Keyboard;
-import com.mygdx.game.unit.Inventory.InventoryInterface;
+import com.mygdx.game.Inventory.InventoryInterface;
 import com.mygdx.game.unit.Unit;
 
 import static com.mygdx.game.main.ClientMain.Client;
 import static com.mygdx.game.main.Main.*;
 import static com.mygdx.game.method.Keyboard.LeftMouse;
-import static com.mygdx.game.method.Keyboard.LeftMouseClick;
-import static com.mygdx.game.unit.Inventory.InventoryInterface.InventoryConf;
+import static com.mygdx.game.Inventory.InventoryInterface.InventoryConf;
 
 public class ControllerPlayer extends Controller {
     public void ControllerIteration(Unit unit){
@@ -20,6 +18,7 @@ public class ControllerPlayer extends Controller {
         unit.press_a = Keyboard.PressA;
         unit.press_s = Keyboard.PressS;
         unit.press_d = Keyboard.PressD;
+        unit.press_f = Keyboard.PressF;
         unit.TargetX = Keyboard.MouseX- RC.width_2;
         unit.TargetY = Keyboard.MouseY- RC.height_2;
         Main.RC.x = unit.tower_x;
@@ -72,11 +71,12 @@ public class ControllerPlayer extends Controller {
         PacketClient.press_a = Keyboard.PressA;
         PacketClient.press_s = Keyboard.PressS;
         PacketClient.press_d = Keyboard.PressD;
-        PacketClient.left_mouse = LeftMouse;
+        PacketClient.press_f = Keyboard.PressF;
+        PacketClient.left_mouse = Keyboard.LeftMouse;
         PacketClient.right_mouse = Keyboard.RightMouse;
         PacketClient.mouse_x = Keyboard.MouseX;
         PacketClient.mouse_y = Keyboard.MouseY;
-        PacketClient.IDClient = unit.nConnect;
+        PacketClient.IDClient = IDClient;
         if(Keyboard.PressE){
             inventoryMain = new InventoryInterface(unit.inventory,200,500,600,350);
             //Keyboard.PressE = false;

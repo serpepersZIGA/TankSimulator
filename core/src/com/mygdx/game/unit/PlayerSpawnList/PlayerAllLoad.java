@@ -6,6 +6,8 @@ import com.mygdx.game.main.Main;
 import com.mygdx.game.menu.button.ButtonTank.ListTankPlayerAdd;
 import com.mygdx.game.menu.button.ButtonTank.TankChoice;
 
+import static com.mygdx.game.unit.SpawnPlayer.PlayerSpawnListData.SpawnList;
+
 public class PlayerAllLoad {
     public static void PlayerCount(){
         FileHandle[] files = Gdx.files.internal("PlayerAllSpawnList").list();
@@ -18,6 +20,7 @@ public class PlayerAllLoad {
         int y = 200;
         for (FileHandle file: files) {
             System.out.println(file.readString());
+            SpawnList.add(file.name());
             Main.ButtonList.add(new TankChoice(x,y,260,140,file.name()));
             y+= 140;
         }

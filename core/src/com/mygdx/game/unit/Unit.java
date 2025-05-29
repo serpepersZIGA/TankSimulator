@@ -3,6 +3,7 @@ import Content.Particle.Blood;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.mygdx.game.Event.EventGame;
+import com.mygdx.game.Inventory.*;
 import com.mygdx.game.bull.BullPacket;
 import com.mygdx.game.bull.Bullet;
 import com.mygdx.game.main.Main;
@@ -13,7 +14,6 @@ import com.mygdx.game.unit.CollisionUnit.TypeCollision;
 import com.mygdx.game.unit.Controller.Controller;
 import com.mygdx.game.unit.Fire.Fire;
 import com.mygdx.game.FunctionalComponent.FunctionalList;
-import com.mygdx.game.unit.Inventory.*;
 import com.mygdx.game.unit.moduleUnit.Cannon;
 import com.mygdx.game.unit.moduleUnit.Corpus;
 import com.mygdx.game.unit.moduleUnit.Engine;
@@ -94,7 +94,7 @@ public abstract class Unit implements Cloneable{
     public boolean press_w;
     public boolean press_a;
     public boolean press_s;
-    public boolean press_d;
+    public boolean press_d,press_f;
     public Sprite tower_img,corpus_img;
     public Fire fire = FireVoid;
     public Controller control = RegisterControl.controllerVoid;
@@ -1505,7 +1505,6 @@ public abstract class Unit implements Cloneable{
         float[]xy = Main.RC.render_objZoom(this.x,this.y);
         this.x_rend = (int)xy[0];
         this.y_rend = (int)xy[1];
-
     }
     public void center_render_tower(){
         float[]xy = Main.RC.render_objZoom(this.tower_x,this.tower_y);

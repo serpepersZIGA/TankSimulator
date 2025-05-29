@@ -6,6 +6,7 @@ import com.esotericsoftware.kryonet.Server;
 import com.mygdx.game.Event.EventDeleteItemClient;
 import com.mygdx.game.Event.EventTransferItemClient;
 import com.mygdx.game.Event.EventUseClient;
+import com.mygdx.game.Inventory.*;
 import com.mygdx.game.build.BuildPacket;
 import com.mygdx.game.build.BuildType;
 import com.mygdx.game.build.PacketBuildingServer;
@@ -15,8 +16,6 @@ import com.mygdx.game.method.SoundPlay;
 import com.mygdx.game.object_map.ObjectMapAssets;
 import com.mygdx.game.object_map.PacketMapObject;
 import com.mygdx.game.unit.DebrisPacket;
-import com.mygdx.game.unit.Inventory.Item;
-import com.mygdx.game.unit.Inventory.PacketInventory;
 import com.mygdx.game.unit.SpawnPlayer.*;
 import com.mygdx.game.unit.TransportPacket;
 import com.mygdx.game.unit.Unit;
@@ -26,9 +25,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import static com.mygdx.game.main.ActionGameHost.packetInventoryServer;
+import static com.mygdx.game.Inventory.ItemObject.ItemList;
 import static com.mygdx.game.main.Main.*;
-import static com.mygdx.game.unit.Inventory.Item.IDListItem;
+import static com.mygdx.game.Inventory.Item.IDListItem;
+import static com.mygdx.game.unit.Unit.IDList;
 
 public class ServerMain extends Listener {
     public static Server Server;
@@ -38,9 +38,10 @@ public class ServerMain extends Listener {
     public void create(){
         System.out.println("Создаем сервер");
         //Создаем сервер
-        Server = new Server(10000000,10000000);
+        Server = new Server(200000000,200000000);
 
         //Регистрируем пакет класс
+        Server.getKryo().register(ItemPacket.class);
         Server.getKryo().register(String[][].class);
         Server.getKryo().register(String[].class);
         Server.getKryo().register(EventUseClient.class);
@@ -65,18 +66,15 @@ public class ServerMain extends Listener {
         Server.getKryo().register(BuildPacket.class);
         Server.getKryo().register(BuildType.class);
 
+
+
         Server.getKryo().register(PacketBuildingServer.class);
-        Server.getKryo().register(PlayerSpawnData.class);
-        Server.getKryo().register(SpawnPlayerCannonFlame.class);
-        Server.getKryo().register(SpawnPlayerCannonAcid.class);
-        Server.getKryo().register(SpawnPlayerCannonMortar.class);
-        Server.getKryo().register(SpawnPlayerCannonBull.class);
-        Server.getKryo().register(SpawnPlayerVoid.class);
 
         Server.getKryo().register(PacketMapObject.class);
         Server.getKryo().register(ObjectMapAssets.class);
 
         Server.getKryo().register(PacketUnitUpdate.class);
+        Server.getKryo().register(SpawnPlayerPack.class);
 
         //Регистрируем порт
         try {
@@ -135,13 +133,16 @@ public class ServerMain extends Listener {
         if(p instanceof Packet_client) {
             Packet_client pack = (Packet_client)p;
             for (Unit unit : UnitList) {
+                //System.out.println(IDClient+" "+unit.nConnect );
                 if (pack.IDClient == unit.nConnect) {
+
                     unit.left_mouse = pack.left_mouse;
                     unit.right_mouse = pack.right_mouse;
                     unit.press_w = pack.press_w;
                     unit.press_a = pack.press_a;
                     unit.press_s = pack.press_s;
                     unit.press_d = pack.press_d;
+                    unit.press_f = pack.press_f;
                     unit.TargetX = pack.mouse_x- RC.width_2;
                     unit.TargetY = pack.mouse_y- RC.height_2;
                     //unit.FireControl();
@@ -155,14 +156,30 @@ public class ServerMain extends Listener {
 
             }
         }
-        else if(p instanceof PlayerSpawnData){
+        else if(p instanceof SpawnPlayerPack){
+            //System.out.println("586855");
             nConnect += 1;
             EnumerationList = true;
-            if(!p.equals(new SpawnPlayerVoid())) {
-                int i2 = Main.UnitList.size();
-                ((PlayerSpawnData) p).SpawnPlayer(false);
-                Main.UnitList.get(i2).nConnect = nConnect;
+            for(Object[] Player :IDList) {
+                if (Objects.equals(Player[1], ((SpawnPlayerPack) p).ID)) {
+                    Unit unit = (Unit) Player[0];
+                    unit.UnitAdd(200,200,false,(byte) 1
+                            ,RegisterControl.controllerPlayer,new Inventory(new Item[4][4]));
+                    UnitList.get(UnitList.size()-1).nConnect = nConnect;
+                    UnitList.get(UnitList.size()-1).PlayerConf = true;
+                    UnitList.get(UnitList.size()-1).inventory.ItemAdd(ItemRegister.MedicineT1);
+                    UnitList.get(UnitList.size()-1).inventory.ItemAdd(ItemRegister.MedicineT1);
+                    UnitList.get(UnitList.size()-1).inventory.ItemAdd(ItemRegister.MedicineT1);
+                    UnitList.get(UnitList.size()-1).inventory.ItemAdd(ItemRegister.MedicineT1);
+                    UnitList.get(UnitList.size()-1).inventory.ItemAdd(ItemRegister.MedicineT1);
+                    break;
+                }
             }
+//            if(!p.equals(new SpawnPlayerVoid())) {
+//                int i2 = Main.UnitList.size();
+//                ((PlayerSpawnData) p).SpawnPlayer(false);
+//                Main.UnitList.get(i2).nConnect = nConnect;
+//            }
         }
         else if(p instanceof EventUseClient){
             for(Object[] item :IDListItem) {
@@ -176,6 +193,8 @@ public class ServerMain extends Listener {
         }
         else if(p instanceof EventDeleteItemClient){
             EventDeleteItemClient pack = (EventDeleteItemClient) p;
+            ItemList.add(new ItemObject(UnitList.get(pack.i).inventory.InventorySlots
+                    [pack.x][pack.y], (int) UnitList.get(pack.i).x, (int) UnitList.get(pack.i).y));
             UnitList.get(pack.i).inventory.InventorySlots[pack.x][pack.y] = null;
             return;
 
@@ -183,7 +202,7 @@ public class ServerMain extends Listener {
         }
         else if(p instanceof EventTransferItemClient){
             EventTransferItemClient pack = (EventTransferItemClient) p;
-            System.out.println("x1 "+pack.x+" y1 "+pack.y+" x2 "+pack.x2+" y2 "+pack.y2);
+            //System.out.println("x1 "+pack.x+" y1 "+pack.y+" x2 "+pack.x2+" y2 "+pack.y2);
 //            Item item1 = UnitList.get(pack.i).inventory.InventorySlots[pack.x][pack.y];
 //            Item item2 = UnitList.get(pack.i).inventory.InventorySlots[pack.x2][pack.y2];
             UnitList.get(pack.i).inventory.ItemAdd(pack.x,pack.y,pack.item2);

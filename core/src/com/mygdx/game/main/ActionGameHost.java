@@ -8,13 +8,11 @@ import com.mygdx.game.method.CycleTimeDay;
 import com.mygdx.game.method.Keyboard;
 import com.mygdx.game.object_map.MapObject;
 import com.mygdx.game.unit.DebrisPacket;
-import com.mygdx.game.unit.Inventory.Item;
-import com.mygdx.game.unit.Inventory.PacketInventory;
+import com.mygdx.game.Inventory.PacketInventory;
 import com.mygdx.game.unit.Unit;
 import com.mygdx.game.unit.TransportPacket;
-import com.mygdx.game.unit.UnitPattern;
 
-import java.util.ArrayList;
+import static com.mygdx.game.Inventory.ItemObject.ItemList;
 
 import static com.mygdx.game.build.BuildRegister.PacketBuilding;
 import static com.mygdx.game.bull.BulletRegister.PacketBull;
@@ -98,6 +96,9 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
         for (i= 0; i< Main.FlameSpawnList.size(); i++){
             Main.FlameSpawnList.get(i).all_action(i);
         }
+        for(int i = 0;i<ItemList.size();i++){
+            ItemList.get(i).IterationItem();
+        }
         for(i = 0;i< DebrisList.size();i++) {
             Unit debris = DebrisList.get(i);
             packet_debris_server(debris);
@@ -167,6 +168,7 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
         Render.end();
         Batch.end();
         server_packet();
+        //System.out.println(UnitList.size());
 //        if(Unit.ai_sost == 0){
 //            Unit.AIScan = false;}
         if(flame_spawn_time <= 0){flame_spawn_time=flame_spawn_time_max;}
@@ -196,6 +198,7 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
 //            PacketUnit.clear();
 //            EnumerationList = false;
 //        }
+        PacketServer.item = ItemPackList;
         PacketServer.debris = PacketDebris;
         PacketServer.player = PacketUnit;
         PacketServer.bull = PacketBull;
@@ -208,6 +211,7 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
         MapObject.PacketMapObjects.clear();
         packetUnitUpdate.ConfDebrisList = false;
         packetUnitUpdate.ConfUnitList = false;
+        ItemPackList.clear();
         PacketUnit.clear();
         PacketBull.clear();
         PacketDebris.clear();

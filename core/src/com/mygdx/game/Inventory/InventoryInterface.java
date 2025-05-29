@@ -1,4 +1,4 @@
-package com.mygdx.game.unit.Inventory;
+package com.mygdx.game.Inventory;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.mygdx.game.Event.EventGame;
@@ -57,14 +57,20 @@ public class InventoryInterface {
     }
     public void InventoryIteration(){
         if(InventoryConf) {
+            ix = 0;
+            iy = 0;
             RenderMethod.transorm_img(this.x, this.y, this.WidthWindow, this.HeightWindow, this.frameInventory);
             for (Slot[] slotX : SlotInventory) {
                 for (Slot slot : slotX) {
                     RenderMethod.transorm_img(slot.x+x, slot.y+y, slot.width, slot.height, this.frame);
-                    if(slot.item != null & slotBuf !=slot) {
-                        RenderMethod.transorm_img(slot.x + x, slot.y + y, slot.width, slot.height, slot.item.image);
+                    if(inventory.InventorySlots[iy][ix] != null & slotBuf !=slot) {
+                        RenderMethod.transorm_img(slot.x + x, slot.y + y, slot.width, slot.height,
+                                inventory.InventorySlots[iy][ix].image);
                     }
+                    ix++;
                 }
+                iy++;
+                ix = 0;
             }
             if(InventoryConfMoving){
                 x = MouseX-XCol;
@@ -79,14 +85,20 @@ public class InventoryInterface {
     }
     public void InventoryIterationClient(){
         if(InventoryConf) {
+            ix = 0;
+            iy = 0;
             RenderMethod.transorm_img(this.x, this.y, this.WidthWindow, this.HeightWindow, this.frameInventory);
             for (Slot[] slotX : SlotInventory) {
                 for (Slot slot : slotX) {
                     RenderMethod.transorm_img(slot.x+x, slot.y+y, slot.width, slot.height, this.frame);
-                    if(slot.item != null & slotBuf !=slot) {
-                        RenderMethod.transorm_img(slot.x + x, slot.y + y, slot.width, slot.height, slot.item.image);
+                    if(inventory.InventorySlots[ix][iy] != null & slotBuf !=slot) {
+                        RenderMethod.transorm_img(slot.x + x, slot.y + y,
+                                slot.width, slot.height, inventory.InventorySlots[ix][iy].image);
                     }
+                    iy++;
                 }
+                ix++;
+                iy = 0;
             }
             if(InventoryConfMoving){
                 x = MouseX-XCol;
@@ -114,7 +126,8 @@ public class InventoryInterface {
                 XCol2 = MouseX-(Slot.x+this.x);
                 YCol2 = MouseY-(Slot.y+this.y);
                 if(YCol2 < Slot.height & YCol2 > 0 & XCol2<Slot.width &XCol2> 0){
-                    if(Slot.item!= null) {
+                    if(inventory.InventorySlots[ix][iy]!= null) {
+                        Slot.item = inventory.InventorySlots[ix][iy];
                         slotBuf = Slot;
                         SlotBuffer = new SlotBuffer(Slot, XCol2, YCol2, Slot.width, Slot.height, ix, iy);
                     }

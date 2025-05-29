@@ -1,9 +1,4 @@
-package com.mygdx.game.unit.Inventory;
-
-import Data.DataImage;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-
-import static com.mygdx.game.main.Main.ContentImage;
+package com.mygdx.game.Inventory;
 
 public class Slot {
     public int x,y,width,height;
