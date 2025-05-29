@@ -28,7 +28,6 @@ public class InventoryInterface {
         this.x = x;this.y = y;
         WidthWindow = width;
         HeightWindow = height;
-        System.out.println(XInterface);
         XSlots = width/XInterface;
         YSlots = height/YInterface;
         if(XSlots>YSlots){XSlots=YSlots;}
