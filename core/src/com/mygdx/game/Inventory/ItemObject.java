@@ -12,7 +12,6 @@ import java.util.ArrayList;
 
 import static com.mygdx.game.main.Main.ItemPackList;
 import static com.mygdx.game.main.Main.UnitList;
-import static com.mygdx.game.method.Keyboard.PressF;
 import static com.mygdx.game.method.pow2.pow2;
 import static java.lang.Math.sqrt;
 

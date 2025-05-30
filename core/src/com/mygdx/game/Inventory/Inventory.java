@@ -2,6 +2,8 @@ package com.mygdx.game.Inventory;
 
 import com.mygdx.game.unit.Unit;
 
+import java.util.Arrays;
+
 public class Inventory implements Cloneable{
     public Item[][]InventorySlots;
     public Inventory(Item[][]InventorySlots){
@@ -13,6 +15,11 @@ public class Inventory implements Cloneable{
             return;
         }
         InventorySlots[x][y] = null;
+    }
+    public void ItemClear(){
+        for (Item[] inventorySlot : InventorySlots) {
+            Arrays.fill(inventorySlot, null);
+        }
     }
     public void ItemAdd(int x,int y,String item){
         if(item != null) {

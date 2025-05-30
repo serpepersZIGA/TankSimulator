@@ -172,7 +172,6 @@ public class ActionMenu extends ActionGame {
                 Unit unit = (Unit) obj[0];
                 unit.UnitAdd(200,200,true,(byte)1,
                         RegisterControl.controllerPlayer,new Inventory(new Item[4][4]));
-                inventoryMain = new InventoryInterface(UnitList.get(UnitList.size()-1).inventory,200,200,400,320);
                 UnitList.get(UnitList.size()-1).inventory.ItemAdd(ItemRegister.MedicineT1);
                 UnitList.get(UnitList.size()-1).inventory.ItemAdd(ItemRegister.MedicineT1);
                 UnitList.get(UnitList.size()-1).inventory.ItemAdd(ItemRegister.MedicineT1);

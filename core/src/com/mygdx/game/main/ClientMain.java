@@ -149,8 +149,13 @@ public class ClientMain extends Listener {
             if(InventoryPack != null) {
                 try {
                 for (i = 0; i < InventoryPack.size(); i++) {
+                    if(UnitList.get(i).inventory!= null) {
+                        UnitList.get(i).inventory.ItemClear();
+                    }
+                    else {
                         UnitList.get(i).inventory = new Inventory(new Item[InventoryPack.get(i).Inventory.length][InventoryPack.get(i).Inventory[0].length]);
 
+                    }
                     for (int ix = 0; ix < InventoryPack.get(i).Inventory.length; ix++) {
                         for (int iy = 0; iy < InventoryPack.get(i).Inventory[ix].length; iy++) {
                             if (InventoryPack.get(i).Inventory[ix][iy] != null) {
