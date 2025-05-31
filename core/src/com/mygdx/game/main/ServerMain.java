@@ -7,12 +7,13 @@ import com.mygdx.game.Event.EventDeleteItemClient;
 import com.mygdx.game.Event.EventTransferItemClient;
 import com.mygdx.game.Event.EventUseClient;
 import com.mygdx.game.Inventory.*;
+import com.mygdx.game.Sound.SoundPacket;
 import com.mygdx.game.build.BuildPacket;
 import com.mygdx.game.build.BuildType;
 import com.mygdx.game.build.PacketBuildingServer;
 import com.mygdx.game.bull.BullPacket;
 import com.mygdx.game.method.CycleTimeDay;
-import com.mygdx.game.method.SoundPlay;
+import com.mygdx.game.Sound.SoundPlay;
 import com.mygdx.game.object_map.ObjectMapAssets;
 import com.mygdx.game.object_map.PacketMapObject;
 import com.mygdx.game.unit.DebrisPacket;
@@ -65,10 +66,9 @@ public class ServerMain extends Listener {
         Server.getKryo().register(FlameStatic.class);
         Server.getKryo().register(BuildPacket.class);
         Server.getKryo().register(BuildType.class);
-
-
-
         Server.getKryo().register(PacketBuildingServer.class);
+
+        Server.getKryo().register(SoundPacket.class);
 
         Server.getKryo().register(PacketMapObject.class);
         Server.getKryo().register(ObjectMapAssets.class);

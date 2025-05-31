@@ -2,19 +2,16 @@ package com.mygdx.game.main;
 import Content.Particle.*;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.Event.EventRegister;
 import com.mygdx.game.FunctionalComponent.FunctionalBullet.FunctionalComponentBulletRegister;
 import com.mygdx.game.Inventory.*;
 import com.mygdx.game.MapFunction.MapScan;
+import com.mygdx.game.Sound.SoundRegister;
 import com.mygdx.game.block.Block;
 import com.mygdx.game.block.BlockMap;
 import Content.Block.Air;
@@ -33,7 +30,7 @@ import com.mygdx.game.method.RenderCenter;
 import com.mygdx.game.object_map.MapObject;
 import com.mygdx.game.object_map.VoidObject;
 import com.mygdx.game.particle.*;
-import Data.DataSound;
+import com.mygdx.game.Sound.DataSound;
 import com.mygdx.game.unit.*;
 import com.mygdx.game.unit.CollisionUnit.CollisionMethodGlobal;
 import com.mygdx.game.unit.Controller.RegisterController;
@@ -49,8 +46,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 import static com.mygdx.game.unit.SpawnPlayer.PlayerSpawnListData.PlayerSpawnCannonVoid;
-import static com.mygdx.game.unit.TransportRegister.PlayerCannonFlameA2;
-import static com.mygdx.game.unit.TransportRegister.TrackSoldatT1;
 
 
 public class Main extends ApplicationAdapter {
@@ -84,7 +79,6 @@ public class Main extends ApplicationAdapter {
 	public static boolean GameStart;
 	public static int FPS;
 	public static boolean GameHost;
-	public static TransportRegister TransportRegister;
 	public static int width_block_2, height_block_2,x_block,y_block,width_block= 50,height_block =50,width_block_air= 15,height_block_air =15,quantity_width,quantity_height;
 	public static int width_block_zoom= 50,height_block_zoom =50,width_block_render= 64,height_block_render =64;
 	public static float radius_air_max = 150,radius_air_max_zoom;
@@ -108,7 +102,6 @@ public class Main extends ApplicationAdapter {
 	public static int IDClient;
 	public static UpdateBuildingRegister BuildingRegister;
 	public static  ArrayList<Packet_client> Clients = new ArrayList<>();
-	private Viewport viewport;
 	public static PlayerSpawnData SpawnPlayer;
 	public static String SpawnIDPlayer;
 	public static CycleTimeDay CycleDayNight;
@@ -233,6 +226,7 @@ public class Main extends ApplicationAdapter {
 		ContentSound = new DataSound();
 		Collision = new CollisionMethodGlobal();
 		inventoryMain = new InventoryInterface();
+		SoundRegister.SoundAdd();
 		FireRegister.Create();
 		BulletRegister.BulletRegisterAdd();
 		RegisterControl = new RegisterController();
@@ -254,16 +248,15 @@ public class Main extends ApplicationAdapter {
 		font2 = TXTFont((int) (16*ZoomWindowX),"font/Base/BaseFont.ttf");
 		InputWindow = new InputWindow();
 		EventData = new EventRegister();
-
-		new PlayerSpawnListData();
-
+		PlayerSpawnListData.Create();
 		KeyboardObj = new Keyboard();
 		Keyboard.ZoomMaxMin();
+		Main.Zoom = 1;
 		Gdx.input.setInputProcessor(KeyboardObj);
 		field(160, 160);
 		Option = new Option();
 		Ai = new AI();
-		TransportRegister = new TransportRegister();
+		TransportRegister.Create();
 		spawn_object();
 		ButtonList.add(new Play(100,600,400,120,"PLAY",(byte)0));
 		ButtonList.add(new PlayHost(100,800,400,120,"HOST",(byte)1));
@@ -279,17 +272,11 @@ public class Main extends ApplicationAdapter {
 		yMap = Main.BlockList2D.size();
 		xMaxAir = Main.AirList.get(0).size();
 		yMaxAir = Main.AirList.size();
-		Camera camera = new OrthographicCamera();
 		SpawnPlayer = PlayerSpawnCannonVoid;
 
-		viewport = new StretchViewport(ZoomWindowX, ZoomWindowY, camera);
-		viewport = new StretchViewport(ZoomWindowX, ZoomWindowY, camera);
+		//viewport = new StretchViewport(ZoomWindowX, ZoomWindowY, camera);
+		//viewport = new StretchViewport(ZoomWindowX, ZoomWindowY, camera);
 		KeyboardObj.zoom_const();
-	}
-
-
-	public void resize(int width, int height) {
-		viewport.update(screenWidth,screenHeight);
 	}
 	public static BitmapFont TXTFont(int size,String fontPath){
 		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(fontPath));

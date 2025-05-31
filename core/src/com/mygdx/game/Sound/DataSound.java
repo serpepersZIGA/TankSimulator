@@ -1,4 +1,4 @@
-package Data;
+package com.mygdx.game.Sound;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;

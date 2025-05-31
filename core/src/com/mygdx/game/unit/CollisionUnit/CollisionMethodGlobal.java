@@ -1,7 +1,8 @@
 package com.mygdx.game.unit.CollisionUnit;
 
+import com.mygdx.game.Sound.SoundPacket;
 import com.mygdx.game.main.Main;
-import com.mygdx.game.method.SoundPlay;
+import com.mygdx.game.Sound.SoundPlay;
 import com.mygdx.game.unit.Unit;
 
 import java.awt.*;
@@ -11,6 +12,7 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
+import static com.mygdx.game.Sound.SoundRegister.SoundPack;
 import static com.mygdx.game.method.Option.SoundConst;
 import static com.mygdx.game.method.pow2.pow2;
 import static java.lang.StrictMath.pow;
@@ -40,6 +42,13 @@ public class CollisionMethodGlobal {
                         case rect: {
                             if (CollisionRectRect(unit1, unit2)) {
                                 SoundPlay.sound(Main.ContentSound.hit, 1f - ((float) sqrt(pow2(unit1.x_rend) + pow2(unit1.y_rend)) / SoundConst));
+
+                                SoundPacket soundPacket = new SoundPacket();
+                                soundPacket.ix = (int) unit1.x;
+                                soundPacket.iy = (int) unit1.y;
+                                soundPacket.ID = 7;
+                                SoundPack.add(soundPacket);
+
                                 CollisionFunctional.physicCollision(unit1, unit2);
                                 CollisionFunctional.MethodCollisionTransport(unit1, unit2);
                             }

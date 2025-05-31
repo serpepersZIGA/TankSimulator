@@ -2,6 +2,7 @@ package com.mygdx.game.main;
 import Content.Build.BigBuildingWood1;
 import Content.Build.Home1;
 import Content.Particle.*;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.esotericsoftware.kryonet.Client;
 
@@ -15,6 +16,8 @@ import com.mygdx.game.Event.EventDeleteItemClient;
 import com.mygdx.game.Event.EventTransferItemClient;
 import com.mygdx.game.Event.EventUseClient;
 import com.mygdx.game.Inventory.*;
+import com.mygdx.game.Sound.SoundPacket;
+import com.mygdx.game.Sound.SoundRegister;
 import com.mygdx.game.block.Block;
 import com.mygdx.game.build.BuildPacket;
 import com.mygdx.game.build.BuildType;
@@ -23,7 +26,7 @@ import com.mygdx.game.bull.BullPacket;
 import com.mygdx.game.bull.Bullet;
 import com.mygdx.game.method.CycleTimeDay;
 import com.mygdx.game.object_map.ObjectLoad;
-import com.mygdx.game.method.SoundPlay;
+import com.mygdx.game.Sound.SoundPlay;
 import com.mygdx.game.object_map.MapObject;
 import com.mygdx.game.object_map.ObjectMapAssets;
 import com.mygdx.game.object_map.PacketMapObject;
@@ -33,13 +36,17 @@ import com.mygdx.game.unit.*;
 import com.mygdx.game.unit.SpawnPlayer.*;
 
 import static com.mygdx.game.Inventory.ItemObject.ItemList;
+import static com.mygdx.game.Sound.SoundRegister.IDSound;
 import static com.mygdx.game.build.BuildRegister.PacketBuilding;
 import static com.mygdx.game.bull.BulletRegister.IDBullet;
 import static com.mygdx.game.bull.BulletRegister.PacketBull;
 import static com.mygdx.game.main.Main.*;
+import static com.mygdx.game.method.Option.SoundConst;
+import static com.mygdx.game.method.pow2.pow2;
 import static com.mygdx.game.object_map.MapObject.PacketMapObjects;
 import static com.mygdx.game.Inventory.Item.IDListItem;
 import static com.mygdx.game.unit.TransportRegister.*;
+import static java.lang.StrictMath.sqrt;
 
 
 public class ClientMain extends Listener {
@@ -78,6 +85,7 @@ public class ClientMain extends Listener {
         Client.getKryo().register(BuildPacket.class);
         Client.getKryo().register(BuildType.class);
         Client.getKryo().register(PacketBuildingServer.class);
+        Client.getKryo().register(SoundPacket.class);
 
 
         Client.getKryo().register(PacketMapObject.class);
@@ -201,6 +209,13 @@ public class ClientMain extends Listener {
             for (PacketMapObject packetMapObject : PacketMapObjects) {
                 BlockList2D.get(packetMapObject.iy).get(packetMapObject.ix).objMap
                         = new VoidObject();
+                //KeyboardObj.zoom_const();
+            }
+            SoundRegister.SoundPack = ((PackerServer) p).sound;
+            for (SoundPacket pack : SoundRegister.SoundPack) {
+                SoundPlay.sound((Sound) IDSound.get(pack.ID)[0],
+                        1f-((float) sqrt(pow2(RC.x-pack.ix) + pow2(RC.y-pack.iy)) / SoundConst));
+
                 //KeyboardObj.zoom_const();
             }
 

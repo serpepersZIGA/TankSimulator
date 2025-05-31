@@ -14,6 +14,7 @@ import com.mygdx.game.unit.TransportPacket;
 
 import static com.mygdx.game.Inventory.ItemObject.ItemList;
 
+import static com.mygdx.game.Sound.SoundRegister.SoundPack;
 import static com.mygdx.game.build.BuildRegister.PacketBuilding;
 import static com.mygdx.game.bull.BulletRegister.PacketBull;
 import static com.mygdx.game.main.Main.*;
@@ -204,9 +205,11 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
         PacketServer.bull = PacketBull;
         PacketServer.building = PacketBuilding;
         packetInventoryServer();
+        PacketServer.sound = SoundPack;
         PacketServer.mapObject = MapObject.PacketMapObjects;
         PacketServer.TotalLight = CycleTimeDay.lightTotal;
         Server.sendToAllUDP(PacketServer);
+        SoundPack.clear();
         PacketServer.inventory.clear();
         MapObject.PacketMapObjects.clear();
         packetUnitUpdate.ConfDebrisList = false;

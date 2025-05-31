@@ -6,7 +6,7 @@ public class PlayerSpawnListData {
     public static PlayerSpawnData PlayerSpawnCannonFlame,PlayerSpawnCannonMortar,PlayerSpawnCannonAcid,PlayerSpawnCannonBull
             ,PlayerSpawnCannonVoid;
     public static ArrayList<String>SpawnList = new ArrayList<>();
-    public PlayerSpawnListData(){
+    public static void Create(){
         PlayerSpawnCannonFlame = new SpawnPlayerCannonFlame();
         PlayerSpawnCannonMortar = new SpawnPlayerCannonMortar();
         PlayerSpawnCannonAcid = new SpawnPlayerCannonAcid();

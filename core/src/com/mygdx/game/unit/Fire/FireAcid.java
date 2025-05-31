@@ -1,11 +1,13 @@
 package com.mygdx.game.unit.Fire;
 
+import com.mygdx.game.Sound.SoundPacket;
 import com.mygdx.game.bull.BullPacket;
 import com.mygdx.game.bull.BulletRegister;
-import com.mygdx.game.method.SoundPlay;
+import com.mygdx.game.Sound.SoundPlay;
 import com.mygdx.game.method.rand;
 import com.mygdx.game.unit.Unit;
 
+import static com.mygdx.game.Sound.SoundRegister.SoundPack;
 import static com.mygdx.game.bull.BulletRegister.PacketBull;
 import static com.mygdx.game.main.Main.BulletList;
 import static com.mygdx.game.method.Option.SoundConst;
@@ -16,6 +18,13 @@ public class FireAcid extends Fire{
     public void FireIteration(Unit unit){
         rotationTower = -unit.rotation_tower-90;
         SoundPlay.sound( unit.sound_fire,1-((float) sqrt(pow2(unit.x_rend) + pow2(unit.y_rend))/SoundConst));
+
+        SoundPacket soundPacket = new SoundPacket();
+        soundPacket.ix = (int) unit.x;
+        soundPacket.iy = (int) unit.y;
+        soundPacket.ID = 2;
+        SoundPack.add(soundPacket);
+
         unit.fire_x = (float) (unit.tower_x+unit.tower_width_2+((unit.tower_height_2) *sin(rotationTower*3.1415926535/180)));
         unit.fire_y = (float) (unit.tower_y+unit.tower_height_2+((unit.tower_height_2) *cos(rotationTower*3.1415926535/180)));
         BulletRegister.BulletAcid.BulletAdd(unit.fire_x, unit.fire_y,rotationTower+ -10+rand.rand(20),unit.damage,unit.penetration,

@@ -4,6 +4,8 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.mygdx.game.Event.EventGame;
 import com.mygdx.game.Inventory.*;
+import com.mygdx.game.Sound.SoundPacket;
+import com.mygdx.game.Sound.SoundPlay;
 import com.mygdx.game.bull.BullPacket;
 import com.mygdx.game.bull.Bullet;
 import com.mygdx.game.main.Main;
@@ -27,6 +29,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import static com.mygdx.game.Sound.SoundRegister.SoundPack;
 import static com.mygdx.game.bull.BulletRegister.PacketBull;
 import static com.mygdx.game.main.Main.*;
 import static com.mygdx.game.method.Method.*;
@@ -421,6 +424,11 @@ public abstract class Unit implements Cloneable{
         if (this.press_w) {
             if (this.time_sound_motor < 0) {
                 SoundPlay.sound(Main.ContentSound.motor_back, 1);
+                SoundPacket soundPacket = new SoundPacket();
+                soundPacket.ix = (int) this.x;
+                soundPacket.iy = (int) this.y;
+                soundPacket.ID = 1;
+                SoundPack.add(soundPacket);
                 this.time_sound_motor = this.time_max_sound_motor;
 
             }
@@ -431,6 +439,11 @@ public abstract class Unit implements Cloneable{
         if (this.press_s) {
             if (this.time_sound_motor < 0) {
                 SoundPlay.sound(Main.ContentSound.motor, 1);
+                SoundPacket soundPacket = new SoundPacket();
+                soundPacket.ix = (int) this.x;
+                soundPacket.iy = (int) this.y;
+                soundPacket.ID = 0;
+                SoundPack.add(soundPacket);
                 this.time_sound_motor = this.time_max_sound_motor;
             }
             if(this.min_speed < this.speed) {
@@ -633,7 +646,6 @@ public abstract class Unit implements Cloneable{
     protected boolean fire_bot_not_tower(double obj_x,double obj_y){
         g = (float) (atan2(this.tower_y - obj_y,this.tower_x-obj_x ) / 3.1415926535f * 180f);
         sost_fire_bot = abs(g-rotation_tower)<20;
-        System.out.println(rotation_corpus+ " "+g);
         //sost_fire_bot = true;
         if(reload_bot() & sost_fire_bot){
             this.reload = this.reload_max;
@@ -649,44 +661,24 @@ public abstract class Unit implements Cloneable{
                 case 1:{
                     if (this.speed > this.min_speed) {
                         press_w = true;
-                        if (this.time_sound_motor < 0) {
-                            SoundPlay.sound(Main.ContentSound.motor, 1f-((float) sqrt(pow2(this.x_rend) + pow2((float)this.y_rend))/SoundConst));
-                            this.time_sound_motor = this.time_max_sound_motor;
-                        }
                     }
                     break;
                 }
                 case 2:{
                     if (g > distance_target) {
                         press_w = true;
-                        if (this.time_sound_motor < 0) {
-                            SoundPlay.sound(Main.ContentSound.motor_back, 1f-((float) sqrt(pow2(this.x_rend) + pow2((float)this.y_rend))/SoundConst));
-                            this.time_sound_motor = this.time_max_sound_motor;
-                        }
                         return;
                     }
                     press_s = true;
-                    if (this.time_sound_motor < 0) {
-                        SoundPlay.sound(Main.ContentSound.motor, 1f-((float) sqrt(pow2(this.x_rend) + pow2((float)this.y_rend))/SoundConst));
-                        this.time_sound_motor = this.time_max_sound_motor;
-                    }
                     break;
 
                 }
                 case 3:{
                     if (g > distance_target) {
                         press_w = true;
-                        if (this.time_sound_motor < 0) {
-                            SoundPlay.sound(Main.ContentSound.motor_back, 1f-((float) sqrt(pow2(this.x_rend) + pow2((float)this.y_rend))/SoundConst));
-                            this.time_sound_motor = this.time_max_sound_motor;
-                        }
                         return;
                     }if (g < distance_target_2) {
                         press_s = true;
-                        if (this.time_sound_motor < 0) {
-                            SoundPlay.sound(Main.ContentSound.motor, 1f-((float) sqrt(pow2(this.x_rend) + pow2((float)this.y_rend))/SoundConst));
-                            this.time_sound_motor = this.time_max_sound_motor;
-                        }
 
                     }
                     break;
@@ -704,6 +696,11 @@ public abstract class Unit implements Cloneable{
                         this.speed -= this.acceleration;
                         if (this.time_sound_motor < 0) {
                             SoundPlay.sound(Main.ContentSound.motor, 1f-((float) sqrt(pow2(this.x_rend) + pow2((float)this.y_rend))/SoundConst));
+                            SoundPacket soundPacket = new SoundPacket();
+                            soundPacket.ix = (int) this.x;
+                            soundPacket.iy = (int) this.y;
+                            soundPacket.ID = 0;
+                            SoundPack.add(soundPacket);
                             this.time_sound_motor = this.time_max_sound_motor;
                         }
                     }
@@ -714,12 +711,22 @@ public abstract class Unit implements Cloneable{
                         this.speed += this.acceleration;
                         if (this.time_sound_motor < 0) {
                             SoundPlay.sound(Main.ContentSound.motor_back, 1f-((float) sqrt(pow2(this.x_rend) + pow2((float)this.y_rend))/SoundConst));
+                            SoundPacket soundPacket = new SoundPacket();
+                            soundPacket.ix = (int) this.x;
+                            soundPacket.iy = (int) this.y;
+                            soundPacket.ID = 1;
+                            SoundPack.add(soundPacket);
                             this.time_sound_motor = this.time_max_sound_motor;
                         }
                     } else if(this.speed > this.min_speed){
                         this.speed -= this.acceleration;
                         if (this.time_sound_motor < 0) {
                             SoundPlay.sound(Main.ContentSound.motor, 1f-((float) sqrt(pow2(this.x_rend) + pow2((float)this.y_rend))/SoundConst));
+                            SoundPacket soundPacket = new SoundPacket();
+                            soundPacket.ix = (int) this.x;
+                            soundPacket.iy = (int) this.y;
+                            soundPacket.ID = 0;
+                            SoundPack.add(soundPacket);
                             this.time_sound_motor = this.time_max_sound_motor;
                         }
                     }
@@ -795,11 +802,6 @@ public abstract class Unit implements Cloneable{
         this.time_sound_motor -= 1;
         if (this.trigger_drive == 1 && !this.crite_life) {
             press_w = true;
-            if (this.time_sound_motor < 0) {
-                SoundPlay.sound(Main.ContentSound.motor, 1f-((float) sqrt(pow2(this.x_rend) + pow2((float)this.y_rend))/SoundConst));
-                this.time_sound_motor = this.time_max_sound_motor;
-
-            }
         }
     }
 
@@ -972,6 +974,11 @@ public abstract class Unit implements Cloneable{
                         (int) unit.x,(int) unit.y, (int) unit.corpus_width, (int) unit.corpus_height, unit.rotation_corpus)
                         && unit.priority_paint == this.priority_paint) {
                     SoundPlay.sound(Main.ContentSound.hit, 1f - ((float) sqrt(pow2(this.x_rend) + pow2(this.y_rend)) / SoundConst));
+                    SoundPacket soundPacket = new SoundPacket();
+                    soundPacket.ix = (int) this.x;
+                    soundPacket.iy = (int) this.y;
+                    soundPacket.ID = 7;
+                    SoundPack.add(soundPacket);
                     MethodCollision(unit);
                     physicCollision(unit);
 
@@ -1132,6 +1139,13 @@ public abstract class Unit implements Cloneable{
         for(int i = 0;i<5;i++){
             Main.FlameSpawnList.add(new FlameSpawn(this.x + -5+rand.rand(50),this.y + -5+rand.rand(50)));}
         SoundPlay.sound(Main.ContentSound.kill,1-((float) sqrt(pow2(this.x_rend) + pow2(this.y_rend))/SoundConst));
+
+        SoundPacket soundPacket = new SoundPacket();
+        soundPacket.ix = (int) this.x;
+        soundPacket.iy = (int) this.y;
+        soundPacket.ID = 9;
+        SoundPack.add(soundPacket);
+
     }
     private boolean rectCollision(int x1, int y1, int width, int height, double rotation,
                                   int x2, int y2, int width2, int height2, double rotation_2){
@@ -1186,6 +1200,11 @@ public abstract class Unit implements Cloneable{
                             width_block, height_block, 0)) {
                         if (this.speed > 2 || this.speed < -2) {
                             SoundPlay.sound(Main.ContentSound.break_wooden, 1 - ((float) sqrt(pow2(this.x_rend) + pow2(this.y_rend)) / SoundConst));
+                            SoundPacket soundPacket = new SoundPacket();
+                            soundPacket.ix = (int) this.x;
+                            soundPacket.iy = (int) this.y;
+                            soundPacket.ID = 3;
+                            SoundPack.add(soundPacket);
                         }
                         MethodCollision(BlockList2D.get(iy).get(ix).x, BlockList2D.get(iy).get(ix).y);
                     }
