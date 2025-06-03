@@ -25,7 +25,7 @@ public abstract class Block {
     private float r;
     private float g;
     private float b;
-    private float rad;
+    public float rad;
     public int iBuilding;
     public static final float lighting = 400;
     public static float lighting_zoom = 400,lighting_zoom_2 = 200;
@@ -84,11 +84,24 @@ public abstract class Block {
     public void all_action(){
 
     }
+    public float lightingReal,lightingColor;
     protected final void UpdateAir(){
         if(radius != 0) {
             rad = radius/lighting_zoom;
-            Main.Render.setColor(r/rad,g/rad,b/rad,lightFlame);
-            Main.Render.rect(x,y,Main.width_block_air,Main.height_block_air);
+            lightingReal = (lightRealGlobal)*rad;
+            if(lightTotal<lightingReal){
+                lightingReal = lightTotal;
+            }
+            else if(lightingReal<0.2){
+                lightingReal = 0.2F;
+            }
+            lightingColor = (lightColorGlobal)*rad;
+            Main.Render.setColor(r / lightingColor, g / lightingColor, b / lightingColor, lightingReal);
+            Main.Render.rect(x, y, Main.width_block_air, Main.height_block_air);
+
+//            Main.Render.setColor(0, 0, 0, lightingReal);
+//            Main.Render.rect(x, y, Main.width_block_air, Main.height_block_air);
+
             r = 0;g =0;b=0;
         } else{
             Main.Render.setColor(0, 0, 0,lightTotal);

@@ -4,7 +4,9 @@ import com.mygdx.game.main.Main;
 
 public class CycleTimeDay {
     public static int timeDay,timeNight,totalTime,MaxTime,timeTransitionDay,timeTransitionNight;
-    public static float lightDay,lightNight,lightTotal,lightPurpose,lightFlame;
+    public static float lightDay,lightNight,lightTotal,lightPurpose,lightFlame, lightGlobal
+            ,lightRealGlobal,lightColorGlobal;
+
     public static float lightVariabilityDayNight,lightVariabilityNightDay;
     public static int ConfigTime;
 
@@ -26,41 +28,49 @@ public class CycleTimeDay {
         CycleTimeDay.lightVariabilityDayNight = (lightDay-lightNight)/timeTransitionDay;
         CycleTimeDay.lightVariabilityNightDay = (lightNight-lightDay)/timeTransitionNight;
     }
-    public void WorkTime(){
-        totalTime+= 1;
-        if(MaxTime <totalTime){
+    public void WorkTime() {
+        lightGlobal = (lightTotal-lightFlame);
+        lightRealGlobal = lightGlobal*1.5f;
+        lightColorGlobal = lightGlobal*8f;
+        totalTime += 1;
+        if (MaxTime < totalTime) {
             ConfigTime += 1;
-            if(ConfigTime>3){
+            if (ConfigTime > 3) {
                 ConfigTime = 0;
             }
-            if(CycleTimeDay.ConfigTime == 0){
-                MaxTime = timeDay;
-                lightPurpose = lightDay;
-                lightTotal = lightDay;
-
-            }
-            else if(CycleTimeDay.ConfigTime == 1){
-                MaxTime = timeTransitionDay;
-                lightPurpose = timeNight;
-            }
-            else if(CycleTimeDay.ConfigTime == 2){
-                MaxTime = timeNight;
-                lightPurpose = lightNight;
-                lightTotal = lightNight;
-
-
-            }
-            else if(CycleTimeDay.ConfigTime == 3){
-                MaxTime = timeTransitionNight;
-                lightPurpose = lightDay;
+            switch (ConfigTime) {
+                case 0: {
+                    MaxTime = timeDay;
+                    lightPurpose = lightDay;
+                    lightTotal = lightDay;
+                    break;
+                }
+                case 1: {
+                    MaxTime = timeTransitionDay;
+                    lightPurpose = timeNight;
+                    break;
+                }
+                case 2: {
+                    MaxTime = timeNight;
+                    lightPurpose = lightNight;
+                    lightTotal = lightNight;
+                    break;
+                }
+                case 3: {
+                    MaxTime = timeTransitionNight;
+                    lightPurpose = lightDay;
+                    break;
+                }
             }
             totalTime = 0;
         }
-        if(ConfigTime == 1){
-            lightTotal += lightVariabilityNightDay;
-        }
-        else if(ConfigTime == 3){
-            lightTotal += lightVariabilityDayNight;
+        switch (ConfigTime) {
+            case 1: {
+                lightTotal += lightVariabilityNightDay;
+                break;
+            } case 3: {
+                lightTotal += lightVariabilityDayNight;
+            }
         }
     }
 }

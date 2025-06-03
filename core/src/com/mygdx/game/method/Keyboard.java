@@ -11,8 +11,11 @@ import com.mygdx.game.menu.button.Button;
 import com.mygdx.game.particle.Particle;
 import com.mygdx.game.unit.Unit;
 
+import java.util.ArrayList;
+
 import static com.mygdx.game.Inventory.ItemObject.ItemList;
 import static com.mygdx.game.block.Block.lighting;
+import static com.mygdx.game.block.Block.lighting_zoom;
 import static com.mygdx.game.main.Main.*;
 import static com.mygdx.game.Inventory.InventoryInterface.InventoryConf;
 import static com.mygdx.game.Inventory.InventoryInterface.InventoryConfMoving;
@@ -190,16 +193,23 @@ public class Keyboard extends InputAdapter{
         Main.width_block_zoom = (int) (Main.width_block_render * Main.Zoom);
         Main.height_block_zoom = (int) (Main.height_block_render * Main.Zoom);
         radius_air_max_zoom = radius_air_max*Main.Zoom;
-        Block.lighting_zoom = lighting*Main.Zoom;
-        Block.lighting_zoom_2 = Block.lighting_zoom / 2;
-        for(int iy = 0;iy< BlockList2D.size();iy++){
-            for(int ix = 0;ix< BlockList2D.get(iy).size();ix++) {
-                if(BlockList2D.get(iy).get(ix).objMap != null) {
-                    BlockList2D.get(iy).get(ix).objMap.width_render = (int) (BlockList2D.get(iy).get(ix).objMap.width * Main.Zoom);
-                    BlockList2D.get(iy).get(ix).objMap.height_render = (int) (BlockList2D.get(iy).get(ix).objMap.height * Main.Zoom);
+        lighting_zoom = lighting*Main.Zoom;
+        Block.lighting_zoom_2 = lighting_zoom / 2;
+        for (ArrayList<Block> blocks : BlockList2D) {
+            for (Block block : blocks) {
+                if (block.objMap != null) {
+                    block.objMap.width_render = (int) (block.objMap.width * Main.Zoom);
+                    block.objMap.height_render = (int) (block.objMap.height * Main.Zoom);
                 }
             }
         }
+//        for (ArrayList<Block> air1 : AirList){
+//            for(Block air : air1){
+//                if(air.radius!= 0) {
+//                    air.rad = air.radius / lighting_zoom;
+//                }
+//            }
+//        }
         for(Building building : Main.BuildingList){
             building.width_render = (int)(building.width* Main.Zoom);
             building.height_render = (int)(building.height* Main.Zoom);

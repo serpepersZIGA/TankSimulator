@@ -18,7 +18,6 @@ public class FireAcid extends Fire{
     public void FireIteration(Unit unit){
         rotationTower = -unit.rotation_tower-90;
         SoundPlay.sound( unit.sound_fire,1-((float) sqrt(pow2(unit.x_rend) + pow2(unit.y_rend))/SoundConst));
-
         SoundPacket soundPacket = new SoundPacket();
         soundPacket.ix = (int) unit.x;
         soundPacket.iy = (int) unit.y;

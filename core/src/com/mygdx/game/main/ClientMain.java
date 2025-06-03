@@ -41,6 +41,7 @@ import static com.mygdx.game.build.BuildRegister.PacketBuilding;
 import static com.mygdx.game.bull.BulletRegister.IDBullet;
 import static com.mygdx.game.bull.BulletRegister.PacketBull;
 import static com.mygdx.game.main.Main.*;
+import static com.mygdx.game.method.CycleTimeDay.lightGlobal;
 import static com.mygdx.game.method.Option.SoundConst;
 import static com.mygdx.game.method.pow2.pow2;
 import static com.mygdx.game.object_map.MapObject.PacketMapObjects;
@@ -127,6 +128,9 @@ public class ClientMain extends Listener {
             PacketBull.clear();
 
             CycleTimeDay.lightTotal = ((PackerServer) p).TotalLight;
+            lightGlobal = (CycleTimeDay.lightTotal-CycleTimeDay.lightFlame);
+            CycleTimeDay.lightRealGlobal = lightGlobal*1.2f;
+            CycleTimeDay.lightColorGlobal = lightGlobal*10f;
             PacketUnit = ((PackerServer) p).player;
             i = 0;
             if(PacketUnit.size()== UnitList.size()) {
@@ -215,29 +219,8 @@ public class ClientMain extends Listener {
             for (SoundPacket pack : SoundRegister.SoundPack) {
                 SoundPlay.sound((Sound) IDSound.get(pack.ID)[0],
                         1f-((float) sqrt(pow2(RC.x-pack.ix) + pow2(RC.y-pack.iy)) / SoundConst));
-
-                //KeyboardObj.zoom_const();
             }
-
-
-//            PacketSoldat = ((PackerServer) p).soldat;
-//            if (PacketSoldat.size() == SoldatList.size()) {
-//                for (int i = 0; i < PacketSoldat.size(); i++) {
-//                    soldat_data(i);
-//                }
-//            } else {
-//                SoldatList.clear();
-//                for (SoldatPacket soldatPacket : PacketSoldat) {
-//                    if (soldatPacket.name.equals("flame")) {
-//                        SoldatList.add(new SoldatFlamse(0, 0, UnitList));
-//                    } else if (soldatPacket.name.equals("bull")) {
-//                        SoldatList.add(new SoldatBull(0, 0, UnitList));
-//                    }
-//                }
-//                KeyboardObj.zoom_const();
-//            }
             ItemPackList.clear();
-            //InventoryPack.clear();
             PacketMapObjects.clear();
             PacketBull.clear();
             PacketUnit.clear();
