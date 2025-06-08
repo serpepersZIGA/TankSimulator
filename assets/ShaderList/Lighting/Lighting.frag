@@ -39,10 +39,10 @@ void main() {
         if (dist > light.radius) continue;
 
         attenuation = 1.0 - smoothstep(light.radius
-       * 0.55 /* 0.1 - это обратно пропорациональная сила рассеивания. Чем больше тем жестче */, light.radius, dist);
+       * 0.15 /* 0.1 - это обратно пропорациональная сила рассеивания. Чем больше тем жестче */, light.radius, dist);
         attenuation *= (1.0 - light.transparency);
         attenuation = pow(attenuation, 1.5);
-        lightEffect = light.color * light.intensity * attenuation*((light.radius/dist)*0.25);
+        lightEffect = (light.color * light.intensity * attenuation) + ((light.radius / dist) * 0.05);
         accumulatedLight.rgb += lightEffect.rgb * lightEffect.a;
         accumulatedLight.a *= (1.0 - lightEffect.a * attenuation);
     }
