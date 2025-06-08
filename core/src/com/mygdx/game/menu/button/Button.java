@@ -1,6 +1,7 @@
 package com.mygdx.game.menu.button;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.mygdx.game.main.Main;
@@ -76,12 +77,11 @@ public abstract class Button {
         }
     }
     protected void RenderButtonRect(){
-        Render.setColor(RGBTotal[0],RGBTotal[1],RGBTotal[2],1f);
-        Render.rect(this.x*ZoomWindowX,this.y*ZoomWindowY,this.width*ZoomWindowX,this.height*ZoomWindowY);
+        Render.rect(this.x*ZoomWindowX,this.y*ZoomWindowY,this.width*ZoomWindowX,this.height*ZoomWindowY,
+                new Color(RGBTotal[0],RGBTotal[1],RGBTotal[2],1f));
     }
     protected void RenderButtonCircle(){
-        Render.setColor(RGBTotal[0],RGBTotal[1],RGBTotal[2],1f);
-        Render.circle(this.x*ZoomWindowX,this.y*ZoomWindowY,radius);
+        Render.circle(this.x*ZoomWindowX,this.y*ZoomWindowY,radius,radius,new Color(RGBTotal[0],RGBTotal[1],RGBTotal[2],1f));
     }
     public void TXTRender(){
         font.setColor(0.1f,0.9f,0.8f,1f);

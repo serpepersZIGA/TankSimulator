@@ -1,5 +1,6 @@
 package Content.Particle;
 
+import com.badlogic.gdx.graphics.Color;
 import com.mygdx.game.main.Main;
 import com.mygdx.game.method.rand;
 import com.mygdx.game.particle.Particle;
@@ -20,8 +21,7 @@ public class Bang extends Particle {
     public void all_action(int i) {
         size_rise();
         float[]xy = Main.RC.render_objZoom(this.x,this.y);
-        Main.Render.setColor(r,g,b,(float)0.4);
-        Main.Render.circle(xy[0],xy[1],(int)(size* Main.Zoom),(int)(size* Main.Zoom));
+        Main.Render.circle(xy[0],xy[1],(int)(size* Main.Zoom),(int)(size* Main.Zoom),new Color(r,g,b,(float)0.4));
         timer(Main.BangList);
     }
 

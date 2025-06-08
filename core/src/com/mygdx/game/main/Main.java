@@ -2,15 +2,20 @@ package com.mygdx.game.main;
 import Content.Particle.*;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Matrix4;
 import com.mygdx.game.Event.EventRegister;
 import com.mygdx.game.FunctionalComponent.FunctionalBullet.FunctionalComponentBulletRegister;
 import com.mygdx.game.Inventory.*;
 import com.mygdx.game.MapFunction.MapScan;
+import com.mygdx.game.Shader.LightingMainSystem;
 import com.mygdx.game.Sound.SoundRegister;
 import com.mygdx.game.block.Block;
 import com.mygdx.game.block.BlockMap;
@@ -23,10 +28,7 @@ import com.mygdx.game.bull.Updater.UpdateRegister;
 import com.mygdx.game.menu.InputWindow;
 import com.mygdx.game.menu.MapAllLoad;
 import com.mygdx.game.menu.button.*;
-import com.mygdx.game.method.CycleTimeDay;
-import com.mygdx.game.method.Keyboard;
-import com.mygdx.game.method.Option;
-import com.mygdx.game.method.RenderCenter;
+import com.mygdx.game.method.*;
 import com.mygdx.game.object_map.MapObject;
 import com.mygdx.game.object_map.VoidObject;
 import com.mygdx.game.particle.*;
@@ -41,6 +43,7 @@ import com.mygdx.game.unit.SpawnPlayer.PlayerSpawnData;
 import com.mygdx.game.unit.SpawnPlayer.PlayerSpawnListData;
 import com.mygdx.game.unit.moduleUnit.*;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -72,14 +75,13 @@ public class Main extends ApplicationAdapter {
 	public static int screenWidth;
 	public static int screenHeight;
 	public static float Zoom = 1,ZoomWindowX,ZoomWindowY;
-	public static ShapeRenderer Render;
 	public static AI Ai;
 	public static boolean EnumerationList;
 	public static ActionGame ActionGame;
 	public static boolean GameStart;
 	public static int FPS;
 	public static boolean GameHost;
-	public static int width_block_2, height_block_2,x_block,y_block,width_block= 50,height_block =50,width_block_air= 15,height_block_air =15,quantity_width,quantity_height;
+	public static int width_block_2, height_block_2,x_block,y_block,width_block= 50,height_block =50,width_block_air= 12,height_block_air =12,quantity_width,quantity_height;
 	public static int width_block_zoom= 50,height_block_zoom =50,width_block_render= 64,height_block_render =64;
 	public static float radius_air_max = 150,radius_air_max_zoom;
 	public static ServerMain serverMain;
@@ -114,6 +116,9 @@ public class Main extends ApplicationAdapter {
 	public static ArrayList<PacketInventory> InventoryPack = new ArrayList<>();
 	public static InventoryInterface inventoryMain;
 	public static ArrayList<ItemPacket>ItemPackList = new ArrayList<>();
+	public static LightingMainSystem LightSystem;
+	public static boolean[][] MapLighting;
+	public static RenderPrimitive Render;
 
 
 
@@ -168,7 +173,7 @@ public class Main extends ApplicationAdapter {
 			if(y_block == 0){
 				confWallY = true;
 			}
-			else if(i == quantity_height-3){
+			else if(i == quantity_height){
 				confWallY = true;
 			}
 			y_block += height_block;
@@ -179,7 +184,7 @@ public class Main extends ApplicationAdapter {
 			for(int i2 = 0;i2<quantity_width;i2++){
 				x_block += width_block;
 				BlockList2D.get(i).add(new BlockMap(x_block,y_block));
-				if(quantity_width-3 == i2){
+				if(quantity_width == i2){
 					confWallX = true;
 				}
 				if(confWallX || confWallY){
@@ -192,19 +197,27 @@ public class Main extends ApplicationAdapter {
 			}
 			confWallY = false;
 		}
-		quantity_width = (int)(screenWidth/width_block_air);
-		quantity_height = (int)(screenHeight/height_block_air);
-		y_block = -height_block_air;
-		for(int i = 0; i<quantity_height+1;i++){
-			AirList.add(new ArrayList<>());
-			y_block += height_block_air;
-			x_block = -width_block_air;
-			for(int i2 = 0; i2<quantity_width+1;i2++){
-				x_block += width_block_air;
-				AirList.get(i).add(new Air(x_block,y_block));
-
-			}
-		}
+		//width_block-= 1;
+		//height_block-= 1;
+//		quantity_width = (int)(screenWidth/width_block_air);
+//		quantity_height = (int)(screenHeight/height_block_air);
+//		y_block = -height_block_air;
+//		for(int i = 0; i<quantity_height+1;i++){
+//			AirList.add(new ArrayList<>());
+//			y_block += height_block_air;
+//			x_block = -width_block_air;
+//			for(int i2 = 0; i2<quantity_width+1;i2++){
+//				x_block += width_block_air;
+//				AirList.get(i).add(new Air(x_block,y_block));
+//
+//			}
+//		}
+//		MapLighting = new boolean[quantity_height][quantity_width];
+//		for(int i = 0;i<quantity_height;i++){
+//			for(int i2 = 0;i2<quantity_width;i2++){
+//				MapLighting[i][i2] = BlockList2D.get(i).get(i2).passability;
+//			}
+//		}
 
 		LiquidList.add(new Acid(200,200));
 		LiquidList.add(new Blood(200,200));
@@ -218,6 +231,8 @@ public class Main extends ApplicationAdapter {
 		RegisterFunctionalComponent = new FunctionalComponentUnitRegister();
 		FunctionalComponentBulletRegister.FunctionalComponentBulletRegisters();
 		UpdateRegister.UpdateBulletRegisterCreate();
+		LightSystem = new LightingMainSystem();
+		LightSystem.setAmbientColor(new Color(0,0,0,1f));
 
 
 		VoidObj = new VoidObject();
@@ -238,10 +253,18 @@ public class Main extends ApplicationAdapter {
 		GunRegister.Create();
 		ItemRegister.Create();
 		InventoryPack = new ArrayList<>();//new PacketInventory();
-		CycleDayNight = new CycleTimeDay(5,5,3,3,0.4f,0.9f);
+		CycleDayNight = new CycleTimeDay(5,5,3,3,0.3f,0.95f);
 		BuildingRegister = new UpdateBuildingRegister();
 		PacketBuildingServer = new PacketBuildingServer();
-		Render = new ShapeRenderer();
+
+		Render = new RenderPrimitive();
+//		Render = new ShapeRenderer(128,LightSystem.shader);
+//		Matrix4 u_projTrans = new Matrix4();
+//		Render.setTransformMatrix(u_projTrans);
+//		u_projTrans.setToOrtho2D(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
+
+
 		RC = new RenderCenter(0,0);
 		Batch = new SpriteBatch();
 		font = TXTFont((int) (64*ZoomWindowX),"font/Base/BaseFont4.ttf");
@@ -253,10 +276,10 @@ public class Main extends ApplicationAdapter {
 		Keyboard.ZoomMaxMin();
 		Main.Zoom = 1;
 		Gdx.input.setInputProcessor(KeyboardObj);
-		field(160, 160);
 		Option = new Option();
 		Ai = new AI();
 		TransportRegister.Create();
+		field(160, 160);
 		spawn_object();
 		ButtonList.add(new Play(100,600,400,120,"PLAY",(byte)0));
 		ButtonList.add(new PlayHost(100,800,400,120,"HOST",(byte)1));
@@ -270,9 +293,9 @@ public class Main extends ApplicationAdapter {
 		RC.const_xy_block();
 		xMap = Main.BlockList2D.get(0).size();
 		yMap = Main.BlockList2D.size();
-		xMaxAir = Main.AirList.get(0).size();
-		yMaxAir = Main.AirList.size();
 		SpawnPlayer = PlayerSpawnCannonVoid;
+		//Render.begin(ShapeRenderer.ShapeType.Filled);
+		//Render.setAutoShapeType(true);
 
 		//viewport = new StretchViewport(ZoomWindowX, ZoomWindowY, camera);
 		//viewport = new StretchViewport(ZoomWindowX, ZoomWindowY, camera);
@@ -290,6 +313,7 @@ public class Main extends ApplicationAdapter {
 	@Override
 	public void render () {
 		ActionGame.action();
+		//LightSystem.clearLights();
 	}
 	@Override
 	public void dispose () {

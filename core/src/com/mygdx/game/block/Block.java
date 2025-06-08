@@ -1,5 +1,6 @@
 package com.mygdx.game.block;
 
+import com.badlogic.gdx.graphics.Color;
 import com.mygdx.game.main.Main;
 import com.mygdx.game.object_map.MapObject;
 
@@ -96,16 +97,16 @@ public abstract class Block {
                 lightingReal = 0.2F;
             }
             lightingColor = (lightColorGlobal)*rad;
-            Main.Render.setColor(r / lightingColor, g / lightingColor, b / lightingColor, lightingReal);
-            Main.Render.rect(x, y, Main.width_block_air, Main.height_block_air);
+            Main.Render.rect(x, y, Main.width_block_air, Main.height_block_air,
+                    new Color(r / lightingColor, g / lightingColor, b / lightingColor, lightingReal));
 
 //            Main.Render.setColor(0, 0, 0, lightingReal);
 //            Main.Render.rect(x, y, Main.width_block_air, Main.height_block_air);
 
             r = 0;g =0;b=0;
         } else{
-            Main.Render.setColor(0, 0, 0,lightTotal);
-            Main.Render.rect(x,y,Main.width_block_air,Main.height_block_air);
+            Main.Render.rect(x,y,Main.width_block_air,Main.height_block_air,
+                    new Color(r / lightingColor, g / lightingColor, b / lightingColor, lightingReal));
         }
     }
     public static void LightingAir(int xZOOM, int yZOOM, float[] RGB){

@@ -1,5 +1,6 @@
 package Content.Particle;
 
+import com.badlogic.gdx.graphics.Color;
 import com.mygdx.game.method.rand;
 
 import com.mygdx.game.main.Main;
@@ -33,8 +34,7 @@ public class Flame extends Particle {
     }
     public void update(){
         float[]xy = Main.RC.render_objZoom(this.x,this.y);
-        Main.Render.setColor(r,g,b,1);
-        Main.Render.circle(xy[0],xy[1],size_render,size_render);
+        Main.Render.circle(xy[0],xy[1],size_render,size_render,new Color(r,g,b,1));
     }
 
 }

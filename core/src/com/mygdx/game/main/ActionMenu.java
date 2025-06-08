@@ -2,6 +2,7 @@ package com.mygdx.game.main;
 
 import Content.Particle.*;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.mygdx.game.Inventory.Inventory;
 import com.mygdx.game.Inventory.InventoryInterface;
@@ -22,6 +23,7 @@ public class ActionMenu extends ActionGame {
     private int timer = 0;
     @Override
     public void action() {
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         Main.RC.method();
         if(Keyboard.PressW){
             Main.RC.y += 10;
@@ -60,7 +62,9 @@ public class ActionMenu extends ActionGame {
         }
         if(flame_spawn_time > 0){flame_spawn_time-=1;}
         Batch.begin();
-        Render.begin(ShapeRenderer.ShapeType.Filled);
+        LightSystem.begin(Batch);
+
+        Render.begin();
         Main.RC.render_block();
         Batch.end();
         for (i= 0; i< Main.LiquidList.size(); i++){
@@ -78,7 +82,7 @@ public class ActionMenu extends ActionGame {
         }
         Render.end();
         Batch.begin();
-        Render.begin(ShapeRenderer.ShapeType.Filled);
+        Render.begin();
         for (i= 0; i< Main.FlameSpawnList.size(); i++){
             Main.FlameSpawnList.get(i).all_action(i);
         }
@@ -97,7 +101,7 @@ public class ActionMenu extends ActionGame {
         RC.BuildingIteration();
         Batch.draw(textureBuffer,-20,1,1,1);
         Render.end();
-        Render.begin(ShapeRenderer.ShapeType.Filled);
+        Render.begin();
 
         for (i = 0; i< Main.BulletList.size(); i++){
             if(Main.BulletList.get(i).height == 2) {
@@ -115,16 +119,19 @@ public class ActionMenu extends ActionGame {
                 ButtonList.get(i).render(i);
             }
         }
-        for (i= 0; i< AirList.size(); i++){
-            for(int i2= 0; i2< AirList.get(i).size(); i2++) {
-                AirList.get(i).get(i2).all_action();
-            }
-        }
+//        for (i= 0; i< AirList.size(); i++){
+//            for(int i2= 0; i2< AirList.get(i).size(); i2++) {
+//                AirList.get(i).get(i2).all_action();
+//            }
+//        }
+        //lighting.begin(Batch, normalMap);
+        //LightSystem.end(Batch);
         for (i= 0; i< Main.BangList.size(); i++){
             Main.BangList.get(i).all_action(i);}
         Render.end();
         Batch.end();
         Batch.begin();
+        LightSystem.end(Batch);
         for (i = 0;i< ButtonList.size();i++){
             if(Main.ConfigMenu == ButtonList.get(i).ConfigMenu & !ButtonList.get(i).TypeFont) {
                 ButtonList.get(i).TXTRender();
@@ -137,6 +144,8 @@ public class ActionMenu extends ActionGame {
         }
         if(flame_spawn_time <= 0){flame_spawn_time=flame_spawn_time_max;}
         Batch.end();
+        //LightSystem.end(Batch);
+        //LightSystem.clearLights();
         if(GameStart) {
             PacketServer = new PackerServer();
             PacketClient = new Packet_client();

@@ -1,6 +1,10 @@
 package com.mygdx.game.method;
 
+import com.badlogic.gdx.graphics.Color;
 import com.mygdx.game.main.Main;
+
+import static com.mygdx.game.main.Main.LightSystem;
+import static java.lang.StrictMath.abs;
 
 public class CycleTimeDay {
     public static int timeDay,timeNight,totalTime,MaxTime,timeTransitionDay,timeTransitionNight;
@@ -16,7 +20,7 @@ public class CycleTimeDay {
         CycleTimeDay.timeTransitionDay = timeTransitionDay* Main.FPS;
         CycleTimeDay.timeTransitionNight = timeTransitionNight* Main.FPS;
         CycleTimeDay.lightDay = lightDay;
-        CycleTimeDay.lightFlame = CycleTimeDay.lightDay-0.1f;
+        CycleTimeDay.lightFlame = CycleTimeDay.lightDay+0.1f;
         CycleTimeDay.lightNight = lightNight;
         CycleTimeDay.MaxTime = CycleTimeDay.timeDay;
         CycleTimeDay.ConfigTime = 0;
@@ -32,6 +36,9 @@ public class CycleTimeDay {
         lightGlobal = (lightTotal-lightFlame);
         lightRealGlobal = lightGlobal*1.5f;
         lightColorGlobal = lightGlobal*8f;
+        LightSystem.setAmbientColor(new Color(0,0,0,lightTotal));
+        //LightSystem.setMinLightness(lightTotal);
+
         totalTime += 1;
         if (MaxTime < totalTime) {
             ConfigTime += 1;

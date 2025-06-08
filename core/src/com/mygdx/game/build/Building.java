@@ -1,7 +1,10 @@
 package com.mygdx.game.build;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.mygdx.game.Shader.LightingMainSystem;
 import com.mygdx.game.block.Block;
 import com.mygdx.game.main.Main;
+import static Data.DataColor.*;
 
 
 import com.mygdx.game.method.rand;
@@ -12,6 +15,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+import static com.mygdx.game.main.Main.LightSystem;
+
 
 public abstract class Building implements Serializable {
     public int width,height,x,y,time_flame,width_2,height_2,x_rend,y_rend,width_render,height_render,brightness_max = 240,brightness;
@@ -21,6 +26,7 @@ public abstract class Building implements Serializable {
     private int distance_light,density_light_x,density_light_y;
     public ArrayList<int[]>xy_light = new ArrayList<>();
     public ArrayList<int[]>xy_light_render = new ArrayList<>();
+    public ArrayList<LightingMainSystem.Light>Lighting = new ArrayList<>();
     public BuildType name;
     public boolean[][]ConstructBuilding;
     public int xMatrix,yMatrix;
@@ -31,7 +37,7 @@ public abstract class Building implements Serializable {
 
     protected void Data(){
         DataCollision();
-        distance_light = 100;
+        distance_light = 200;
         density_light_y=(int)((double)height/distance_light);
         density_light_x=(int)((double)width/distance_light);
         size_light();
@@ -52,15 +58,19 @@ public abstract class Building implements Serializable {
     }
     private void size_light(){
         int x_light = x;
-        int y_light;
+        int y_light = y;
         for(int i = 0;i<density_light_x;i++){
             x_light += distance_light;
-            y_light = y-100;
             for(int j = 0;j<density_light_y;j++){
                 y_light += distance_light;
-                xy_light.add(new int[]{x_light,y_light});
-                xy_light_render.add(Main.RC.WindowSynchronization(x_light,y_light));
+                //System.out.println(x_light+" "+y_light);
+                LightSystem.addLight().set(x_light,y_light
+                        ,new Color(RGBFlame[0],RGBFlame[1],RGBFlame[2],0.3f),
+                        2f,420,0.2f);
+//                LightSystem.addLight().set(this.x,this.y,new Color(RGBFlame[0],RGBFlame[1]
+//                        ,RGBFlame[2],0.3f),3.2f,420,0.2f);
             }
+            y_light = y;
         }
     }
     public void all_action(int i){
@@ -85,10 +95,10 @@ public abstract class Building implements Serializable {
 
     public void flame_build(LinkedList<Particle> part){
         if(this.time_flame>0){
-            iteration_light_build();
-            for (int[] ints : xy_light_render) {
-                Block.LightingAir((int) (ints[0] * Main.Zoom), (int) (ints[1] * Main.Zoom), rgb);
-            }
+            //iteration_light_build();
+//            for (int[] ints : xy_light_render) {
+//                Block.LightingAir((int) (ints[0] * Main.Zoom), (int) (ints[1] * Main.Zoom), rgb);
+//            }
             this.brightness = brightness_max;
             if(rand.rand(4)== 1) {
                 int z = rand.rand(4);

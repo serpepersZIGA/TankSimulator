@@ -1,5 +1,7 @@
 package com.mygdx.game.main;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import Content.Particle.Acid;
 import Content.Particle.FlameSpawn;
@@ -29,6 +31,7 @@ public class ActionGameClient extends com.mygdx.game.main.ActionGame {
     int i;
     private static int timer = 0;
     public void action() {
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         Main.RC.method();
         if(Main.UnitList.size()==0){
             if(Keyboard.PressW){
@@ -72,7 +75,8 @@ public class ActionGameClient extends com.mygdx.game.main.ActionGame {
 
 
         Batch.begin();
-        Render.begin(ShapeRenderer.ShapeType.Filled);
+        LightSystem.begin(Batch);
+        Render.begin();
         Main.RC.render_block();
         if(flame_spawn_time > 0){flame_spawn_time-=1;}
         Batch.end();
@@ -94,7 +98,7 @@ public class ActionGameClient extends com.mygdx.game.main.ActionGame {
         }
         Render.end();
         Batch.begin();
-        Render.begin(ShapeRenderer.ShapeType.Filled);
+        Render.begin();
         for (i= 0; i< Main.FlameSpawnList.size(); i++){
             Main.FlameSpawnList.get(i).all_action(i);
         }
@@ -146,7 +150,7 @@ public class ActionGameClient extends com.mygdx.game.main.ActionGame {
         Batch.draw(textureBuffer,-20,1,1,1);
         Render.end();
 
-        Render.begin(ShapeRenderer.ShapeType.Filled);
+        Render.begin();
 
         for (i = 0; i< Main.BulletList.size(); i++){
             Bullet bullet = Main.BulletList.get(i);
@@ -154,11 +158,6 @@ public class ActionGameClient extends com.mygdx.game.main.ActionGame {
                 if (bullet.height == 2) {
                     bullet.all_action_client();
                 }
-            }
-        }
-        for (i= 0; i< AirList.size(); i++){
-            for(int i2= 0; i2< AirList.get(i).size(); i2++) {
-                AirList.get(i).get(i2).all_action();
             }
         }
         for (i= 0; i< Main.BangList.size(); i++){

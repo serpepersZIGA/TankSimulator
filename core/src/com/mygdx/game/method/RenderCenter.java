@@ -1,10 +1,11 @@
 package com.mygdx.game.method;
 
-import com.mygdx.game.block.UpdateRegister;
+import com.mygdx.game.Shader.LightingMainSystem;
 import com.mygdx.game.main.Main;
 
 import java.util.ArrayList;
 
+import static com.mygdx.game.main.Main.LightSystem;
 import static java.lang.StrictMath.abs;
 
 
@@ -95,6 +96,18 @@ public class RenderCenter {
         if(render_y_min <0){render_y_min = 0;}
         else if(render_y_max >block_i_y_max){render_y_max = block_i_y_max;}
         BuildingConst();
+        LightSystem.lightsRender.clear();
+        for(LightingMainSystem.Light light : LightSystem.lights){
+            if(light.XRender+LightSystem.limitLightingRender >0 &
+                    light.YRender+LightSystem.limitLightingRender >0&
+                    light.XRender-LightSystem.limitLightingRender < Main.screenWidth &
+                    light.YRender-LightSystem.limitLightingRender <Main.screenHeight
+            ){
+                LightSystem.lightsRender.add(light);
+
+            }
+        }
+
     }
     public void BuildingConst(){
         IndBuilding.clear();

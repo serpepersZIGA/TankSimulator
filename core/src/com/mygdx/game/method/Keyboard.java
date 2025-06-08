@@ -3,6 +3,7 @@ package com.mygdx.game.method;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.mygdx.game.Inventory.ItemObject;
+import com.mygdx.game.Shader.LightingMainSystem;
 import com.mygdx.game.block.Block;
 import com.mygdx.game.build.Building;
 import com.mygdx.game.bull.Bullet;
@@ -13,7 +14,6 @@ import com.mygdx.game.unit.Unit;
 
 import java.util.ArrayList;
 
-import static com.mygdx.game.Inventory.ItemObject.ItemList;
 import static com.mygdx.game.block.Block.lighting;
 import static com.mygdx.game.block.Block.lighting_zoom;
 import static com.mygdx.game.main.Main.*;
@@ -189,6 +189,10 @@ public class Keyboard extends InputAdapter{
         RC.CameraMapConf();
         RC.cam_x_width = (int) (RC.WidthRenderZoom/Main.width_block);
         RC.cam_y_height= (int) (RC.HeightRenderZoom/Main.height_block);
+
+        for(LightingMainSystem.Light light : LightSystem.lights){
+            light.radiusZoom = light.radius*Main.Zoom;
+        }
 
         Main.width_block_zoom = (int) (Main.width_block_render * Main.Zoom);
         Main.height_block_zoom = (int) (Main.height_block_render * Main.Zoom);

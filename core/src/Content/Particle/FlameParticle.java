@@ -1,8 +1,14 @@
 package Content.Particle;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.mygdx.game.method.rand;
 import com.mygdx.game.main.Main;
 import com.mygdx.game.particle.Particle;
+
+import java.text.Format;
 
 import static Data.DataColor.*;
 
@@ -25,7 +31,6 @@ public class FlameParticle extends Particle {
     }
     public void update(){
         float[]xy = Main.RC.render_objZoom(this.x,this.y);
-        Main.Render.setColor(r,g,b,0.4f);
-        Main.Render.circle(xy[0],xy[1],size_render,size_render);
+        Main.Render.circle(xy[0],xy[1],size_render,size_render,new Color(r,g,b,0.4f));
     }
 }

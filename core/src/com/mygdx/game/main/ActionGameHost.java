@@ -1,5 +1,7 @@
 package com.mygdx.game.main;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import Content.Particle.Acid;
 import Content.Particle.FlameSpawn;
@@ -25,6 +27,7 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
     private int i;
     private static int timer = 0;
     public void action() {
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         RC.method();
         if(Main.UnitList.size()==0){
             if(Keyboard.PressW){
@@ -75,7 +78,8 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
         }
         if(flame_spawn_time > 0){flame_spawn_time-=1;}
         Batch.begin();
-        Render.begin(ShapeRenderer.ShapeType.Filled);
+        Render.begin();
+        LightSystem.begin(Batch);
         Main.RC.render_block();
         Batch.end();
         for (i= 0; i< Main.LiquidList.size(); i++){
@@ -93,7 +97,7 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
         }
         Render.end();
         Batch.begin();
-        Render.begin(ShapeRenderer.ShapeType.Filled);
+        Render.begin();
         for (i= 0; i< Main.FlameSpawnList.size(); i++){
             Main.FlameSpawnList.get(i).all_action(i);
         }
@@ -152,22 +156,18 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
         Batch.draw(textureBuffer,-20,1,1,1);
         Render.end();
 
-        Render.begin(ShapeRenderer.ShapeType.Filled);
+        Render.begin();
 
         for (i = 0; i< Main.BulletList.size(); i++){
             if(Main.BulletList.get(i).height == 2) {
                 Main.BulletList.get(i).all_action();
             }
         }
-        for (i= 0; i< AirList.size(); i++){
-            for(int i2= 0; i2< AirList.get(i).size(); i2++) {
-                AirList.get(i).get(i2).all_action();
-            }
-        }
         for (i= 0; i< Main.BangList.size(); i++){
             Main.BangList.get(i).all_action(i);}
         Render.end();
         Batch.end();
+        LightSystem.end(Batch);
         server_packet();
         //System.out.println(UnitList.size());
 //        if(Unit.ai_sost == 0){

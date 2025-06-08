@@ -4,6 +4,8 @@ import com.mygdx.game.main.Main;
 import com.mygdx.game.object_map.PacketMapObject;
 import com.mygdx.game.unit.Unit;
 
+import static com.mygdx.game.main.Main.LightSystem;
+
 public class CollisionBreak extends ComponentCollisionSystem{
     public int x,y,width,height;
     public CollisionBreak(int x,int y,int width,int height){
@@ -21,6 +23,7 @@ public class CollisionBreak extends ComponentCollisionSystem{
             Main.PacketServer.mapObject.add(new PacketMapObject());
             Main.PacketServer.mapObject.get(n).ix = ix;
             Main.PacketServer.mapObject.get(n).iy = iy;
+            LightSystem.lights.removeValue(Main.BlockList2D.get(iy).get(ix).objMap.light,true);
             Main.BlockList2D.get(iy).get(ix).objMap = Main.VoidObj;
 
         }

@@ -1,4 +1,5 @@
 package Content.Particle;
+import com.badlogic.gdx.graphics.Color;
 import com.mygdx.game.main.Main;
 import com.mygdx.game.method.rand;
 import com.mygdx.game.particle.Particle;
@@ -31,8 +32,7 @@ public class FlameStatic extends Particle {
     }
     public void update(){
         center_render();
-        Main.Render.setColor(r,g,b,1);
-        Main.Render.circle(this.x_rend,this.y_rend,size_render,size_render);
+        Main.Render.circle(this.x_rend,this.y_rend,size_render,size_render,new Color(r,g,b,1));
     }
 
 }

@@ -1,6 +1,7 @@
 package com.mygdx.game.unit;
 import Content.Particle.Blood;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.mygdx.game.Event.EventGame;
 import com.mygdx.game.Inventory.*;
@@ -603,23 +604,25 @@ public abstract class Unit implements Cloneable{
 
     }
     protected void indicator_hp_2() {
-        Render.setColor(Option.hp_2_r_indicator, Option.hp_2_g_indicator, Option.hp_2_b_indicator, 0.3F);
-        Render.rect(((this.x_rend - Option.const_hp_x_zoom)), ((this.y_rend - Option.const_hp_y_zoom)), Option.size_x_indicator_zoom, Option.size_y_indicator_zoom);
+        Render.rect(((this.x_rend - Option.const_hp_x_zoom)), ((this.y_rend - Option.const_hp_y_zoom)), Option.size_x_indicator_zoom, Option.size_y_indicator_zoom
+        ,new Color(Option.hp_2_r_indicator, Option.hp_2_g_indicator, Option.hp_2_b_indicator, 0.3F));
         if(!crite_life){
-            Render.setColor(Option.hp_r_indicator, Option.hp_g_indicator, Option.hp_b_indicator, 0.3F);
-            Render.rect(((this.x_rend - Option.const_hp_x_zoom)), ((this.y_rend - Option.const_hp_y_zoom)), (int) (green_len * Main.Zoom), Option.size_y_indicator_zoom);
+            Render.rect(((this.x_rend - Option.const_hp_x_zoom)), ((this.y_rend - Option.const_hp_y_zoom)), (int) (green_len * Main.Zoom), Option.size_y_indicator_zoom,
+                    new Color(Option.hp_r_indicator, Option.hp_g_indicator, Option.hp_b_indicator, 0.3F));
         }
         else{
-            Render.setColor(Option.hp_crite_r_indicator, Option.hp_crite_g_indicator, Option.hp_crite_b_indicator, 0.3F);
-            Render.rect(((this.x_rend - Option.const_hp_x_zoom)), ((this.y_rend - Option.const_hp_y_zoom)), (int) (green_len * Main.Zoom), Option.size_y_indicator_zoom);
+            Render.rect(((this.x_rend - Option.const_hp_x_zoom)), ((this.y_rend - Option.const_hp_y_zoom)), (int) (green_len * Main.Zoom), Option.size_y_indicator_zoom
+            ,new Color(Option.hp_crite_r_indicator, Option.hp_crite_g_indicator, Option.hp_crite_b_indicator, 0.3F));
         }
     }
     protected void indicator_reload(){
         green_len_reload = (this.reload/this.reload_max)* Option.size_x_indicator;
-        Render.setColor(Option.reload_r_indicator, Option.reload_g_indicator, Option.reload_b_indicator,0.3f);
-        Render.rect((this.x_tower_rend+ width_tower_zoom-Option.size_x_indicator_zoom),(this.y_tower_rend- height_tower_zoom), Option.size_x_indicator_zoom, Option.size_y_indicator_zoom);
-        Render.setColor(Option.reload_2_r_indicator, Option.reload_2_g_indicator, Option.reload_2_b_indicator,0.3f);
-        Render.rect((this.x_tower_rend+ width_tower_zoom-Option.size_x_indicator_zoom),(this.y_tower_rend- height_tower_zoom),(int)(green_len_reload* Main.Zoom), Option.size_y_indicator_zoom);
+        Render.rect((this.x_tower_rend+ width_tower_zoom-Option.size_x_indicator_zoom),(this.y_tower_rend- height_tower_zoom),
+                Option.size_x_indicator_zoom,
+                Option.size_y_indicator_zoom,new Color(Option.reload_r_indicator, Option.reload_g_indicator, Option.reload_b_indicator,0.3f));
+        Render.rect((this.x_tower_rend+ width_tower_zoom-Option.size_x_indicator_zoom),
+                (this.y_tower_rend- height_tower_zoom),(int)(green_len_reload* Main.Zoom),
+                Option.size_y_indicator_zoom,new Color(Option.reload_2_r_indicator, Option.reload_2_g_indicator, Option.reload_2_b_indicator,0.3f));
     }
     public void FireControl(){
         if(this.reload_bot() && this.left_mouse){
