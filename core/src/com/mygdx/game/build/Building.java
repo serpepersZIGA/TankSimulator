@@ -64,12 +64,15 @@ public abstract class Building implements Serializable {
             for(int j = 0;j<density_light_y;j++){
                 y_light += distance_light;
                 //System.out.println(x_light+" "+y_light);
-                LightSystem.addLight().set(x_light,y_light
+                LightingMainSystem.Light light = LightSystem.addLight().set(x_light,y_light
                         ,new Color(RGBFlame[0],RGBFlame[1],RGBFlame[2],0.3f),
                         2f,420,0.2f);
+                light.work = false;
+                Lighting.add(light);
 //                LightSystem.addLight().set(this.x,this.y,new Color(RGBFlame[0],RGBFlame[1]
 //                        ,RGBFlame[2],0.3f),3.2f,420,0.2f);
             }
+
             y_light = y;
         }
     }
@@ -99,6 +102,9 @@ public abstract class Building implements Serializable {
 //            for (int[] ints : xy_light_render) {
 //                Block.LightingAir((int) (ints[0] * Main.Zoom), (int) (ints[1] * Main.Zoom), rgb);
 //            }
+            for(LightingMainSystem.Light light : Lighting){
+                light.work = true;
+            }
             this.brightness = brightness_max;
             if(rand.rand(4)== 1) {
                 int z = rand.rand(4);
@@ -116,6 +122,9 @@ public abstract class Building implements Serializable {
             }
         }
         else{
+            for(LightingMainSystem.Light light : Lighting){
+                light.work = false;
+            }
             this.brightness = 0;
         }
     }

@@ -1,24 +1,23 @@
-// lighting.frag
 #ifdef GL_ES
     precision mediump float;
 #endif
 
-#define MAX_LIGHTS 160
+#define MAX 160
 
 uniform sampler2D u_texture;
-uniform vec4 u_ambientColor; // RGBA
+uniform vec4 u_ambientColor;
 uniform float u_minLightness;
 
 struct Light {
     vec2 position;
-    vec4 color;         // RGBA
+    vec4 color;
     float intensity;
     float radius;
-    float transparency; // 0.0 - непрозрачный, 1.0 - полностью прозрачный
+    float transparency;
 };
 
-uniform Light u_lights[MAX_LIGHTS];
 uniform int u_activeLights;
+uniform Light u_lights[MAX];
 
 varying vec4 v_color;
 varying vec2 v_texCoords;
@@ -26,42 +25,30 @@ varying vec2 v_worldPos;
 
 void main() {
     vec4 texColor = texture2D(u_texture, v_texCoords) * v_color;
-
-    // Пропускаем полностью прозрачные пиксели
+    float dist;
+    float attenuation;
+    vec4 lightEffect;
+    vec4 finalColor;
+    int i;
     if (texColor.a <= 0.0) discard;
-
     vec4 accumulatedLight = u_ambientColor;
-
-    for (int i = 0; i < MAX_LIGHTS; i++) {
+    for (i = 0; i < MAX; i++) {
         if (i >= u_activeLights) break;
-
         Light light = u_lights[i];
-        float dist = distance(v_worldPos, light.position);
-
-        // Пропускаем свет вне радиуса
+        dist = distance(v_worldPos, light.position);
         if (dist > light.radius) continue;
 
-        // Рассчитываем затухание с учётом прозрачности
-        float attenuation = 1.0 - smoothstep(light.radius * 0.7, light.radius, dist);
-        attenuation *= (1.0 - light.transparency); // Учитываем прозрачность
+        attenuation = 1.0 - smoothstep(light.radius
+       * 0.55 /* 0.1 - это обратно пропорациональная сила рассеивания. Чем больше тем жестче */, light.radius, dist);
+        attenuation *= (1.0 - light.transparency);
         attenuation = pow(attenuation, 1.5);
-
-        // Рассчитываем вклад света с учётом его альфа-канала
-        vec4 lightEffect = light.color * light.intensity * attenuation;
-
-        // Правильное смешивание с накопленным светом
+        lightEffect = light.color * light.intensity * attenuation*((light.radius/dist)*0.25);
         accumulatedLight.rgb += lightEffect.rgb * lightEffect.a;
         accumulatedLight.a *= (1.0 - lightEffect.a * attenuation);
     }
-
-    // Применяем освещение к текстуре
-    vec4 finalColor = texColor;
+    finalColor = texColor;
     finalColor.rgb *= max(accumulatedLight.rgb, vec3(u_minLightness));
-    finalColor.a *= accumulatedLight.a;
-
-    // Финализируем цвет
     finalColor.rgb = clamp(finalColor.rgb, 0.0, 1.0);
-    finalColor.a = clamp(1-finalColor.a, 0.0, 1.0);
-
+    finalColor.a = clamp(finalColor.a, 0.0, 1.0);
     gl_FragColor = finalColor;
 }
